@@ -1,1 +1,18 @@
-<p>first works!</p>
+<mat-card class="item__card">
+    <mat-card-header>
+        <mat-card-title>{{name}}</mat-card-title>
+        <mat-card-subtitle>{{category}}</mat-card-subtitle>
+        <div *ngIf="isAvailable; else elseBlock">
+            <span class="item_in-stock">Available</span>
+        </div>
+        <ng-template #elseBlock>
+            <span class="item_out-of-stock">Unavailable</span>
+        </ng-template>
+    </mat-card-header>
+    <img mat-card-image src="https://amazingame.ru/upload/iblock/0eb/0eb2b37ea08a9080ee9ec38134edee6f.jpg"
+        alt="Photo of {{name}}">
+    <mat-card-content>
+        <p>{{description}}</p>
+        <p><b>{{price}}$</b></p>
+    </mat-card-content>
+</mat-card>
