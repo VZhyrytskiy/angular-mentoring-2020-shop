@@ -1,0 +1,11 @@
+.item {
+    &__card {
+        max-width: 300px;
+    }
+    &_in-stock {
+        color: green;
+    }
+    &_out-of-stock {
+        color: red;
+    }
+}
