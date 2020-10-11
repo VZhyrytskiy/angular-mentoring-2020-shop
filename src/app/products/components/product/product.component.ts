@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
 import { ProductModel } from '../../models/product.model';
 
 @Component({
@@ -8,9 +9,11 @@ import { ProductModel } from '../../models/product.model';
 })
 export class ProductComponent implements OnInit {
 
-  constructor(public model: ProductModel) { }
+  constructor() { }
 
-  onBuy() {
+  @Input() model: ProductModel;
+
+  onBuy(): void {
     console.log(`Someone just bought ${this.model.name}`);
   }
 
