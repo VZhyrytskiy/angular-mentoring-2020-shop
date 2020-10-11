@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../../category.enum';
+import { ProductModel } from '../../models/product.model';
 
 @Component({
   selector: 'app-product',
@@ -8,17 +8,10 @@ import { Category } from '../../category.enum';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
-
-  name = 'Mi Notebook 15.6';
-  description = '15.6-inch screen, 1920x1080 pixel display. Full-size keyboard. CPU: Intel Core i5-10210U or i7-10510U processor, Quad core up to 4.2GHz-4.9GHz.';
-  price = 1500;
-  category: Category = Category.Notebook;
-  isAvailable = true;
-  rates: number[] = [4, 5, 4.5];
+  constructor(public model: ProductModel) { }
 
   onBuy() {
-    console.log(`Someone just bought ${this.name}`);
+    console.log(`Someone just bought ${this.model.name}`);
   }
 
   ngOnInit(): void {
