@@ -1,8 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,16 +9,22 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { ProductComponent } from './products/components/product/product.component';
 import { ProductListComponent } from './products/components/product-list/product-list.component';
 import { CartListComponent } from './cart/components/cart-list/cart-list.component';
+import { CartItemComponent } from './cart/components/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
     ProductListComponent,
-    CartListComponent
+    CartListComponent,
+    CartItemComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { CartListComponent } from './cart/components/cart-list/cart-list.compone
     MatMenuModule,
     MatSidenavModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

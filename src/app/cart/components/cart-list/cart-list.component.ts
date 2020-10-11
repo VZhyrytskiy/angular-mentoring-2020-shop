@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartListComponent implements OnInit {
 
+  items: any[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
