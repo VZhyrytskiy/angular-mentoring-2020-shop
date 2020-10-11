@@ -1,11 +1,15 @@
 .item {
-    &__card {
-        max-width: 300px;
+    &__card{
+        max-width: 250px;
     }
-    &_in-stock {
+    &__image {
+        max-width: 250px;
+        max-height: 250px;
+    }
+    &--in-stock {
         color: green;
     }
-    &_out-of-stock {
+    &--out-of-stock {
         color: red;
     }
 }
