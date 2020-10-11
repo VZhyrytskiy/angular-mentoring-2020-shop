@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from './category.enum';
-
+import {Category } from '../../category.enum';
 @Component({
-  selector: 'app-first',
-  templateUrl: './first.component.html',
-  styleUrls: ['./first.component.scss']
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
-export class FirstComponent implements OnInit {
+export class ProductComponent implements OnInit {
 
   constructor() { }
 
