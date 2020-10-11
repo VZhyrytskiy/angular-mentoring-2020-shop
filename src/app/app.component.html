@@ -1,5 +1,8 @@
-<mat-toolbar class="navigation-bar" color="primary"></mat-toolbar>
+<mat-toolbar class="navigation-bar" color="primary">
+    <span class="navigation-item"><a mat-button href="#">Shop</a></span>
+    <span class="navigation-item"><a mat-button routerLink="/">Products</a></span>
+    <span class="navigation-item"><a mat-button routerLink="/cart">Cart</a></span>
+</mat-toolbar>
 <section>
-    <app-product-list></app-product-list>
+    <router-outlet></router-outlet>
 </section>
-<router-outlet></router-outlet>
