@@ -21,7 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTreeModule } from '@angular/material/tree';
 import { ProductComponent } from './products/components/product/product.component';
-import { ProductListComponent } from './products/product-list/product-list.component';
+import { ProductListComponent } from './products/components/product-list/product-list.component';
 
 @NgModule({
   declarations: [
