@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Category } from '../../category.enum';
+import { Category } from '../../category.enum';
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -15,6 +16,10 @@ export class ProductComponent implements OnInit {
   category: Category = Category.Notebook;
   isAvailable = true;
   rates: number[] = [4, 5, 4.5];
+
+  onBuy() {
+    console.log(`Someone just bought ${this.name}`);
+  }
 
   ngOnInit(): void {
   }
