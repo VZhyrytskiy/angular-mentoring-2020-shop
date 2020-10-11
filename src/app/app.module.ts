@@ -11,15 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTreeModule } from '@angular/material/tree';
 import { ProductComponent } from './products/components/product/product.component';
 import { ProductListComponent } from './products/components/product-list/product-list.component';
 
@@ -39,16 +31,8 @@ import { ProductListComponent } from './products/components/product-list/product
     MatIconModule,
     MatMenuModule,
     MatSidenavModule,
-    MatListModule,
     MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTreeModule
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
