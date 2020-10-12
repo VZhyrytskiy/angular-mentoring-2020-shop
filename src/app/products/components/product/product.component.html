@@ -1,21 +1,21 @@
-<mat-card class="item__card">
+
+<mat-card class="mat-elevation-z4">
     <mat-card-header>
         <mat-card-title>{{model.name}}</mat-card-title>
         <mat-card-subtitle>{{model.category}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://amazingame.ru/upload/iblock/0eb/0eb2b37ea08a9080ee9ec38134edee6f.jpg"
-        alt="Photo of {{model.name}}" class="item__image">
+    <img mat-card-image src="{{model.imageUrl}}" alt="Photo of {{model.name}}" class="product__image">
     <mat-card-content>
-        <p>{{model.description}}</p>
+        <p class="product__description">{{model.description}}</p>
         <span *ngIf="model.isAvailable; else elseBlock">
-            <span class="item--in-stock">Available</span>
+            <span class="product--in-stock">Available</span>
         </span>
         <ng-template #elseBlock>
-            <span class="item--out-of-stock">Unavailable</span>
+            <span class="product--out-of-stock">Unavailable</span>
         </ng-template>
         <p><b>{{model.price}}$</b></p>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-button (click)="onBuy()">Buy</button>
+        <button mat-button (click)="onBuy()" color="primary">Buy</button>
     </mat-card-actions>
 </mat-card>

@@ -1,3 +1,5 @@
-<div *ngFor='let product of products'>
-    <app-product [model]="product"></app-product>
+<h2>Products</h2>
+<mat-divider></mat-divider>
+<div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <app-product fxFlex="25%" [model]="product" *ngFor="let product of products"></app-product>
 </div>
