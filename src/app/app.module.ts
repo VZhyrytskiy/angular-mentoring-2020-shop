@@ -32,6 +32,8 @@ import { CartItemComponent } from './cart/components/cart-item/cart-item.compone
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonModule,
+    // чтобы не было длинного списка модулей, удобно организовать отдельный модуль,
+    // в нем перечислить все необходимые модули и его тут подключить, назвать например MaterialModule
     MatGridListModule,
     MatToolbarModule,
     MatIconModule,

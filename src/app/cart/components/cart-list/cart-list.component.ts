@@ -11,11 +11,12 @@ export class CartListComponent implements OnInit {
 
   items: CartItemModel[] = [];
 
-  constructor() {
-    this.items = new CartService().getCartItems();
+  constructor(private cartService: CartService) {
+    // this.items = new CartService().getCartItems();
    }
 
   ngOnInit(): void {
+    this.items = this.cartService.getCartItems();
   }
 
 }

@@ -1,14 +1,18 @@
+import { Injectable } from '@angular/core';
 import { ProductModel } from 'src/app/products/models/product.model';
 import { ProductsService } from 'src/app/products/services/products.service';
 import { CartItemComponent } from '../components/cart-item/cart-item.component';
 import { CartItemModel } from '../models/cart-item.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class CartService {
 
-    private productsService: ProductsService;
+    // private productsService: ProductsService;
 
-    constructor() {
-        this.productsService = new ProductsService();
+    constructor(private productsService: ProductsService) {
+        // this.productsService = new ProductsService();
     }
 
     getCartItems(): CartItemModel[] {

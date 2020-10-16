@@ -12,11 +12,13 @@ export class ProductListComponent implements OnInit {
 
   products: ProductModel[] = [];
 
-  constructor() {
-    this.products = new ProductsService().getProducts();
+  constructor(private productService: ProductsService) {
+    // В даном случае так можно, но лучше полагаться на конструктор и не создавать зависимость самостоятельно
+    // this.products = new ProductsService().getProducts();
   }
 
   ngOnInit(): void {
+    this.products = this.productService.getProducts();
   }
 
 }

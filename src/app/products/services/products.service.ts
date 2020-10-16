@@ -1,6 +1,11 @@
+import { Injectable } from '@angular/core';
 import { Category } from '../category.enum';
 import { ProductModel } from '../models/product.model';
 
+// Это надо для регистрации сервиса, еще будем проходить
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductsService {
     private products: ProductModel[] = [{
         name: 'Mi Notebook 15.6',
