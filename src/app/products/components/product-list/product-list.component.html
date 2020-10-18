@@ -2,4 +2,5 @@
 <mat-divider></mat-divider>
 <div fxLayout="row wrap" fxLayoutGap="16px grid">
     <app-product fxFlex="25%" [model]="product" *ngFor="let product of products"></app-product>
+    <app-product fxFlex="50%" (addedToCart)="onAddedToCart($event)" [model]="product" *ngFor="let product of products"></app-product>
 </div>

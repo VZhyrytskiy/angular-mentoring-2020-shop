@@ -15,6 +15,6 @@
         <p><b>{{model.price}}$</b></p>
     </mat-card-content>
     <mat-card-actions>
-        <button [disabled]="!model.isAvailable" mat-button (click)="onBuy()" color="primary">Buy</button>
+        <button [disabled]="!model.isAvailable" mat-button (click)="onAddToCart()" color="primary">Add to cart</button>
     </mat-card-actions>
 </mat-card>
