@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { ProductModel } from 'src/app/products/models/product.model';
-import { ProductsService } from 'src/app/products/services/products.service';
 import { CartItemModel } from '../models/cart-item.model';
 
 @Injectable({
@@ -9,12 +8,14 @@ import { CartItemModel } from '../models/cart-item.model';
 })
 export class CartService {
 
-    constructor(private readonly productsService: ProductsService) { }
+    private cartItems: CartItemModel[] = [];
 
     getCartItems(): CartItemModel[] {
-        return this.productsService
-            .getProducts()
-            .map(this.toCartItem);
+        return this.cartItems;
+    }
+
+    addProductToCart(product: ProductModel): void {
+        this.cartItems.push(this.toCartItem(product));
     }
 
     private toCartItem(source: ProductModel): CartItemModel {
