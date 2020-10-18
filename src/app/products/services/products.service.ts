@@ -1,7 +1,13 @@
+import { Injectable } from '@angular/core';
+
 import { Category } from '../category.enum';
 import { ProductModel } from '../models/product.model';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class ProductsService {
+
     private products: ProductModel[] = [{
         name: 'Mi Notebook 15.6',
         imageUrl: 'https://amazingame.ru/upload/iblock/0eb/0eb2b37ea08a9080ee9ec38134edee6f.jpg',
