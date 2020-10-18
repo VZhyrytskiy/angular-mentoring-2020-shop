@@ -3,17 +3,15 @@
         max-width: 250px;
         max-height: 250px;
     }
-
-    &--in-stock {
-        color: green;
-    }
-
-    &--out-of-stock {
-        color: red;
-    }
     &__description {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    &--in-stock {
+        color: green;
+    }
+    &--out-of-stock {
+        color: red;
     }
 }
