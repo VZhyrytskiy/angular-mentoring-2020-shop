@@ -15,13 +15,21 @@ export class CartService {
     }
 
     addProductToCart(product: ProductModel): void {
-        this.cartItems.push(this.toCartItem(product));
+        const itemIndex = this.cartItems.findIndex(cartItem => cartItem.name == product.name);
+        const cartHasProduct = itemIndex > -1;     
+        if (cartHasProduct) {
+            const existingItem = this.cartItems[itemIndex];
+            existingItem.quantity++;
+        } else {
+            this.cartItems.push(this.toCartItem(product));
+        }
     }
 
-    private toCartItem(source: ProductModel): CartItemModel {
+    private toCartItem(product: ProductModel): CartItemModel {
         return {
-            name: source?.name,
-            imageUrl: source?.imageUrl
-        };
+            imageUrl: product.imageUrl,
+            name: product.name,
+            quantity: 1
+        }
     }
 }
