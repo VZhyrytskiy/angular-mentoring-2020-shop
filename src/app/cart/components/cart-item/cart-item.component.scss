@@ -3,12 +3,21 @@
         padding: 0;
     }
 
-    &__quantity{
+    &__quantity {
         width: 50px;
+        text-align: center;
+    }
+
+    &__price {
+        max-width: 100px;
         text-align: center;
     }
 }
 
 .mat-card-title {
+    margin-bottom: 0;
+}
+
+.mat-card-content {
     margin-bottom: 0;
 }

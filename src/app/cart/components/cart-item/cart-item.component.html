@@ -1,9 +1,12 @@
-<mat-card fxLayout="row" fxLayoutAlign="space-between space-between">
+<mat-card fxLayout="row wrap" fxLayoutAlign="space-between space-between" fxLayout.lt-sm="column">
     <mat-card-header class="cart-item__header" fxLayoutAlign="center center">
         <img mat-card-avatar src="{{item.product.imageUrl}}" alt="Photo of {{item.product.name}}">
         <mat-card-title>{{item.product.name}}</mat-card-title>
     </mat-card-header>
-    <mat-card-actions class="cart-item__actions">
+    <mat-card-content fxLayoutAlign="center center">
+        <input class="cart-item__price" matInput disabled value="{{getTotalPrice()}}$">
+    </mat-card-content>
+    <mat-card-actions class="cart-item__actions" fxLayoutAlign="center center">
         <button mat-button color="primary" (click)="onIncreaseByOne()">+</button>
         <mat-form-field class="cart-item__quantity">
             <input matInput value="{{item.quantity}}" disabled>

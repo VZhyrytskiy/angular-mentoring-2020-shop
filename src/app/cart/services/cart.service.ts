@@ -14,6 +14,10 @@ export class CartService {
         return this.cartItems;
     }
 
+    getCartItemTotalPrice(cartItem: CartItemModel): number {
+        return cartItem.product.price * cartItem.quantity;
+    }
+
     addProductToCart(product: ProductModel): void {
         const existingItem = this.searchCartForProductByName(product.name);
         if (existingItem !== undefined) {

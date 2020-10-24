@@ -1,6 +1,6 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<div *ngIf="items?.length > 0; else emptyCart">
+<div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
     <app-cart-item
         [item]="item"
         (itemQuantityDecreased)="onItemQuantityDecreased($event)"
