@@ -1,10 +1,10 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<mat-list role="list" *ngIf="items?.length > 0; else emptyCart">
-    <app-cart-item role="listitem" [item]="item" *ngFor="let item of items"></app-cart-item>
-</mat-list>
+<div *ngIf="items?.length > 0; else emptyCart">
+    <app-cart-item [item]="item" *ngFor="let item of items"></app-cart-item>
+</div>
 <ng-template #emptyCart>
     <mat-card>No items...
-        <a routerLink="/" mat-button color="primary">Let's add few here</a>
+        <a routerLink="/products" mat-button color="primary">Let's add few here</a>
     </mat-card>
 </ng-template>
