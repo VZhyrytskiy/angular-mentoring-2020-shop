@@ -10,26 +10,48 @@ export class CartService {
 
     private cartItems: CartItemModel[] = [];
 
-    getCartItems(): CartItemModel[] {
+    getCartItems(): ReadonlyArray<CartItemModel> {
         return this.cartItems;
     }
 
     addProductToCart(product: ProductModel): void {
-        const itemIndex = this.cartItems.findIndex(cartItem => cartItem.name == product.name);
-        const cartHasProduct = itemIndex > -1;     
-        if (cartHasProduct) {
-            const existingItem = this.cartItems[itemIndex];
-            existingItem.quantity++;
+        const existingItem = this.searchCartForProductByName(product.name);
+        if (existingItem !== undefined) {
+            this.increaseQuantityByOne(product);
         } else {
-            this.cartItems.push(this.toCartItem(product));
+            this.cartItems.push(this.createNewCartItem(product));
         }
     }
 
-    private toCartItem(product: ProductModel): CartItemModel {
-        return {
-            imageUrl: product.imageUrl,
-            name: product.name,
-            quantity: 1
+    increaseQuantityByOne(product: ProductModel): void {
+        const itemToIncrease = this.searchCartForProductByName(product.name);
+        if (itemToIncrease !== undefined) {
+            itemToIncrease.quantity++;
         }
+    }
+
+    decreaseQuantityByOne(product: ProductModel): void {
+        const itemToDecrease = this.searchCartForProductByName(product.name);
+        if (itemToDecrease !== undefined) {
+            itemToDecrease.quantity--;
+        }
+    }
+
+    removeProductFromCart(product: ProductModel): void {
+        const productToRemove = this.searchCartForProductByName(product.name);
+        console.log(`before: ${this.cartItems.length}`);
+        this.cartItems = this.cartItems.filter(item => item !== productToRemove);
+        console.log(`after: ${this.cartItems.length}`);
+    }
+
+    private searchCartForProductByName(productName: string): CartItemModel {
+        return this.cartItems.find(item => item.product.name === productName);
+    }
+
+    private createNewCartItem(product: ProductModel): CartItemModel {
+        return {
+            product,
+            quantity: 1
+        };
     }
 }

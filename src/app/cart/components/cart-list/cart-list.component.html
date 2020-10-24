@@ -1,7 +1,13 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
 <div *ngIf="items?.length > 0; else emptyCart">
-    <app-cart-item [item]="item" *ngFor="let item of items"></app-cart-item>
+    <app-cart-item
+        [item]="item"
+        (itemQuantityDecreased)="onItemQuantityDecreased($event)"
+        (itemQuantityIncreased)="onItemQuantityIncreased($event)"         
+        (itemRemoved)="onItemRemoved($event)"
+        *ngFor="let item of items">
+    </app-cart-item>
 </div>
 <ng-template #emptyCart>
     <mat-card>No items...

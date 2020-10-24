@@ -1,14 +1,14 @@
 <mat-card fxLayout="row" fxLayoutAlign="space-between space-between">
     <mat-card-header class="cart-item__header" fxLayoutAlign="center center">
-        <img mat-card-avatar src="{{item.imageUrl}}" alt="Photo of {{item.name}}">
-        <mat-card-title>{{item.name}}</mat-card-title>
+        <img mat-card-avatar src="{{item.product.imageUrl}}" alt="Photo of {{item.product.name}}">
+        <mat-card-title>{{item.product.name}}</mat-card-title>
     </mat-card-header>
     <mat-card-actions class="cart-item__actions">
         <button mat-button color="primary" (click)="onIncreaseByOne()">+</button>
         <mat-form-field class="cart-item__quantity">
-            <input matInput value="{{item.quantity}}">
+            <input matInput value="{{item.quantity}}" disabled>
         </mat-form-field>
         <button mat-button color="secondary" (click)="onDecreaseByOne()">-</button>
-        <button mat-button color="primary" (click)="onProductRemoved()">Remove</button>
+        <button mat-button color="primary" (click)="onRemoved()">Remove</button>
     </mat-card-actions>
 </mat-card>
