@@ -1,13 +1,14 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
 <div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
-    <app-cart-item
-        [item]="item"
-        (itemQuantityDecreased)="onItemQuantityDecreased($event)"
-        (itemQuantityIncreased)="onItemQuantityIncreased($event)"         
-        (itemRemoved)="onItemRemoved($event)"
+    <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
+        (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
         *ngFor="let item of items">
     </app-cart-item>
+    <mat-divider></mat-divider>
+    <mat-card>
+        <div>Total: <span>{{getCartTotalPrice()}}$</span></div>
+    </mat-card>
 </div>
 <ng-template #emptyCart>
     <mat-card>No items...

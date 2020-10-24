@@ -25,6 +25,10 @@ export class CartListComponent implements OnInit, DoCheck {
     this.cartService.removeProductFromCart(item.product);
   }
 
+  getCartTotalPrice(): number {
+    return this.cartService.getCartTotalPrice();
+  }
+
   ngOnInit(): void {
     this.items = this.cartService.getCartItems();
   }
