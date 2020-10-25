@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { CartItemModel } from '../../models/cart-item.model';
 import { CartService } from '../../services/cart.service';
 
