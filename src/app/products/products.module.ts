@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
+
 import { ProductComponent } from './components/product/product.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { MaterialModule } from '../shared/material.module';
-import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
     imports: [
-        MaterialModule,
-        CommonModule,
-        FlexLayoutModule
+        SharedModule
     ],
     declarations: [
         ProductComponent,

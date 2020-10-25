@@ -20,7 +20,7 @@ export class CartService {
 
     getCartTotalPrice(): number {
         return this.cartItems.map(this.getCartItemTotalPrice)
-            .reduce((prev, next) => prev + next, 0)
+            .reduce((prev, next) => prev + next, 0);
     }
 
     addProductToCart(product: ProductModel): void {
@@ -54,7 +54,7 @@ export class CartService {
 
     removeProductFromCart(product: ProductModel): void {
         const productToRemove = this.searchCartForProductByName(product.name);
-        this.cartItems = this.cartItems.filter(item => item !== productToRemove); 
+        this.cartItems = this.cartItems.filter(item => item !== productToRemove);
     }
 
     private searchCartForProductByName(productName: string): CartItemModel {
