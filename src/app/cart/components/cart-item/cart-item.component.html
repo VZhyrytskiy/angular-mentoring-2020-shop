@@ -1,4 +1,4 @@
-<mat-card fxLayout="row wrap" fxLayoutAlign="space-between space-between" fxLayout.lt-sm="column">
+<mat-card fxLayout="row wrap" fxLayoutAlign="space-between space-between" fxLayout.lt-sm="column" [appHighLight]="'#D8D8D8'">
     <mat-card-header class="cart-item__header" fxLayoutAlign="center center">
         <img mat-card-avatar src="{{item.product.imageUrl}}" alt="Photo of {{item.product.name}}">
         <mat-card-title>{{item.product.name}}</mat-card-title>

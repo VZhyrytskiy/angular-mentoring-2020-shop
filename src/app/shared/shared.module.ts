@@ -4,7 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
-import { HighlightDirective } from './directives/highlight.directive';
+import { HighlightDirective } from './directives/highlight/highlight.directive';
 
 
 @NgModule({
@@ -18,7 +18,8 @@ import { HighlightDirective } from './directives/highlight.directive';
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
-        RouterModule
+        RouterModule,
+        HighlightDirective
     ],
     declarations: [HighlightDirective]
 })
