@@ -16,8 +16,7 @@ export class CartItemComponent implements OnInit {
   @Output() itemQuantityDecreased: EventEmitter<CartItemModel> = new EventEmitter<CartItemModel>();
   @Output() itemRemoved: EventEmitter<CartItemModel> = new EventEmitter<CartItemModel>();
 
-  constructor(private readonly cartService: CartService) {
-  }
+  constructor(private readonly cartService: CartService) { }
 
   onDecreaseByOne(): void {
     this.itemQuantityDecreased.emit(this.item);
@@ -35,6 +34,5 @@ export class CartItemComponent implements OnInit {
     return this.cartService.getCartItemTotalPrice(this.item);
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 }
