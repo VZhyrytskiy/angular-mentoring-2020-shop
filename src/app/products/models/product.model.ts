@@ -1,6 +1,6 @@
 import { Category } from '../category.enum';
 
-export class ProductModel {
+export interface ProductModel {
     name: string;
     imageUrl: string;
     description: string;

@@ -1,5 +1,4 @@
-
-<mat-card class="mat-elevation-z4">
+<mat-card>
     <mat-card-header>
         <mat-card-title>{{model.name}}</mat-card-title>
         <mat-card-subtitle>{{model.category}}</mat-card-subtitle>
@@ -16,6 +15,6 @@
         <p><b>{{model.price}}$</b></p>
     </mat-card-content>
     <mat-card-actions>
-        <button [disabled]="!model.isAvailable" mat-button (click)="onBuy()" color="primary">Buy</button>
+        <button [disabled]="!model.isAvailable" mat-button (click)="onAddToCart()" color="primary">Add to cart</button>
     </mat-card-actions>
 </mat-card>
