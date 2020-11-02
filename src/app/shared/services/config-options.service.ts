@@ -5,5 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigOptionsService {
 
-  constructor() { }
+  private config: object = {};
+
+  get(): object {
+    return this.config;
+  }
+
+  set(values: object): void {
+    this.config = Object.assign(this.config, values);
+  }
 }
