@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CartService } from 'src/app/cart/services/cart.service';
 
 import { ProductModel } from '../../models/product.model';
+import { CartService } from 'src/app/cart/services/cart.service';
 import { ProductsService } from '../../services/products.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class ProductListComponent implements OnInit {
 
   products: ProductModel[] = [];
 
-  constructor(private readonly productsService: ProductsService,
+  constructor(
+    private readonly productsService: ProductsService,
     private readonly cartService: CartService,
     private readonly snackBar: MatSnackBar) { }
 
