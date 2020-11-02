@@ -8,24 +8,24 @@ import { CartItemModel } from '../models/cart-item.model';
 })
 export class CartService {
 
-    private _cartItems: CartItemModel[] = [];
-    private _totalQuantity: number = 0;
-    private _totalSum: number = 0;
+    private cartItems: CartItemModel[] = [];
+    private cartQuantity = 0;
+    private cartTotal = 0;
 
     get totalQuantity(): number {
-        return this._totalQuantity;
+        return this.cartQuantity;
     }
 
     get isEmpty(): boolean {
-        return this._totalQuantity === 0;
+        return this.cartQuantity === 0;
     }
 
     get totalSum(): number {
-        return this._totalSum;
+        return this.cartTotal;
     }
 
     getCartItems(): ReadonlyArray<CartItemModel> {
-        return this._cartItems;
+        return this.cartItems;
     }
 
     getCartItemTotalPrice(cartItem: CartItemModel): number {
@@ -37,7 +37,7 @@ export class CartService {
         if (existingItem !== undefined) {
             this.increaseQuantityByOne(product);
         } else {
-            this._cartItems.push(this.createNewCartItem(product));
+            this.cartItems.push(this.createNewCartItem(product));
             this.updateCart();
         }
     }
@@ -69,12 +69,12 @@ export class CartService {
 
     removeProductFromCart(product: ProductModel): void {
         const productToRemove = this.searchCartForProductByName(product.name);
-        this._cartItems = this._cartItems.filter(item => item !== productToRemove);
+        this.cartItems = this.cartItems.filter(item => item !== productToRemove);
         this.updateCart();
     }
 
     removeAllProducts(): void {
-        this._cartItems = [];
+        this.cartItems = [];
         this.updateCart();
     }
 
@@ -84,18 +84,18 @@ export class CartService {
     }
 
     private updateTotalSum(): void {
-        this._totalSum = this._cartItems.map(this.getCartItemTotalPrice)
+        this.cartTotal = this.cartItems.map(this.getCartItemTotalPrice)
             .reduce((prev, next) => prev + next, 0);
     }
 
     private updateTotalQuantity(): void {
-        this._totalQuantity = this._cartItems
-            .map((item) => { return item.quantity })
+        this.cartQuantity = this.cartItems
+            .map((item) => item.quantity)
             .reduce((prev, next) => prev + next, 0);
     }
 
     private searchCartForProductByName(productName: string): CartItemModel {
-        return this._cartItems.find(item => item.product.name === productName);
+        return this.cartItems.find(item => item.product.name === productName);
     }
 
     private createNewCartItem(product: ProductModel): CartItemModel {
