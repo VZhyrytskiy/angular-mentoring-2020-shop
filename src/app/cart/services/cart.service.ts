@@ -2,26 +2,33 @@ import { Injectable } from '@angular/core';
 
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
+import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CartService {
 
+    private readonly cartItemsStorageKey = 'cartItems';
     private cartItems: CartItemModel[] = [];
-    private cartQuantity = 0;
-    private cartTotal = 0;
+
+    constructor(private readonly storage: LocalStorageService) {
+        this.cartItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey) || [];
+    }
 
     get totalQuantity(): number {
-        return this.cartQuantity;
+        return this.cartItems
+            .map((item) => item.quantity)
+            .reduce((prev, next) => prev + next, 0);
     }
 
     get isEmpty(): boolean {
-        return this.cartQuantity === 0;
+        return this.totalQuantity === 0;
     }
 
     get totalSum(): number {
-        return this.cartTotal;
+        return this.cartItems.map(this.getCartItemTotalPrice)
+            .reduce((prev, next) => prev + next, 0);
     }
 
     getCartItems(): ReadonlyArray<CartItemModel> {
@@ -79,19 +86,7 @@ export class CartService {
     }
 
     updateCart(): void {
-        this.updateTotalSum();
-        this.updateTotalQuantity();
-    }
-
-    private updateTotalSum(): void {
-        this.cartTotal = this.cartItems.map(this.getCartItemTotalPrice)
-            .reduce((prev, next) => prev + next, 0);
-    }
-
-    private updateTotalQuantity(): void {
-        this.cartQuantity = this.cartItems
-            .map((item) => item.quantity)
-            .reduce((prev, next) => prev + next, 0);
+        this.storage.setItem<Array<CartItemModel>>(this.cartItemsStorageKey, this.cartItems);
     }
 
     private searchCartForProductByName(productName: string): CartItemModel {
