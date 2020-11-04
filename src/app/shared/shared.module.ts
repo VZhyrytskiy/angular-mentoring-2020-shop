@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
+import { AppConfig, ConstantsService } from './services/constants.service';
 
 
 @NgModule({
@@ -18,6 +19,12 @@ import { HighlightDirective } from './directives/highlight/highlight.directive';
         RouterModule,
         HighlightDirective
     ],
-    declarations: [HighlightDirective]
+    declarations: [HighlightDirective],
+    providers: [
+        {
+            provide: AppConfig,
+            useValue: ConstantsService
+        }
+    ]
 })
 export class SharedModule { }
