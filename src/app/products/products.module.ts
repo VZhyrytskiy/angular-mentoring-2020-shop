@@ -10,10 +10,6 @@ import { ProductComponent, ProductListComponent } from './index';
     declarations: [
         ProductComponent,
         ProductListComponent
-    ],
-    exports: [
-        ProductComponent,
-        ProductListComponent
     ]
 })
 export class ProductsModule { }

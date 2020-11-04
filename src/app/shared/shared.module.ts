@@ -9,10 +9,7 @@ import { HighlightDirective } from './directives/highlight/highlight.directive';
 
 @NgModule({
     imports: [
-        CommonModule,
-        MaterialModule,
-        FlexLayoutModule,
-        RouterModule
+        CommonModule
     ],
     exports: [
         CommonModule,

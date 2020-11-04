@@ -10,10 +10,6 @@ import { CartItemComponent, CartListComponent } from './index';
     declarations: [
         CartItemComponent,
         CartListComponent
-    ],
-    exports: [
-        CartItemComponent,
-        CartListComponent
     ]
 })
 export class CartModule { }
