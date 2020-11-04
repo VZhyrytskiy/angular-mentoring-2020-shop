@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     imports: [
+      // можно оформить в один массив и использовать в двух местах, будет в 2 раза меньше кода
         MatToolbarModule,
         MatIconModule,
         MatGridListModule,

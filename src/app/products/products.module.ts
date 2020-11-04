@@ -12,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
         ProductComponent,
         ProductListComponent
     ],
-    exports: [
+    exports: [ // компонентом управляет роутер, можно не экспортировать или хотя бы экспортировать второй, первый не нужен
         ProductComponent,
         ProductListComponent
     ]

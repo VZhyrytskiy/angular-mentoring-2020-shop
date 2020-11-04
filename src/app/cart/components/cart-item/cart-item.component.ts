@@ -31,6 +31,8 @@ export class CartItemComponent implements OnInit {
   }
 
   getTotalPrice(): number {
+    // как по мне, то не стоит внедрять зависимость для того, чтобы перемножить два свойства доступного объекта,
+    // но на ваше усмотрение
     return this.cartService.getCartItemTotalPrice(this.item);
   }
 

@@ -11,9 +11,9 @@ import { CartListComponent } from './components/cart-list/cart-list.component';
         CartItemComponent,
         CartListComponent
     ],
-    exports: [
-        CartItemComponent,
-        CartListComponent
-    ]
+    // exports: [
+    //     CartItemComponent,
+    //     CartListComponent
+    // ]
 })
 export class CartModule { }
