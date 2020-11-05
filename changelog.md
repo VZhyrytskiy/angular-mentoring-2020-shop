@@ -19,3 +19,10 @@ Project changes will be described in this file.
 - Buy button changed to Add to Cart. When user clicks button - it shows notification that product was added to cart
 - Reworked styles to be more mobile-friendly
 - Fix review comments from Module 1
+
+## [Module 3]
+- Added all required methods to cart service
+- Constants, Generator, ConfigOptions services and Generator factory are added
+- Cart service store data in local storage
+- FontAdjustment directive added. When user clicks button 'Add to Cart' - it changes the font size according given input 
+- Fix review comments from Module 2

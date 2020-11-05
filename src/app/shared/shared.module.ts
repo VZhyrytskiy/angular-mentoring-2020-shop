@@ -5,22 +5,31 @@ import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from './material.module';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
+import { AppConfig, ConstantsService } from './services/constants.service';
+import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
 
 
 @NgModule({
     imports: [
-        CommonModule,
-        MaterialModule,
-        FlexLayoutModule,
-        RouterModule
+        CommonModule
     ],
     exports: [
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
         RouterModule,
-        HighlightDirective
+        HighlightDirective,
+        FontAdjustmentDirective
     ],
-    declarations: [HighlightDirective]
+    declarations: [
+        HighlightDirective,
+        FontAdjustmentDirective
+    ],
+    providers: [
+        {
+            provide: AppConfig,
+            useValue: ConstantsService
+        }
+    ]
 })
 export class SharedModule { }
