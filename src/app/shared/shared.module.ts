@@ -25,6 +25,9 @@ import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjus
         HighlightDirective,
         FontAdjustmentDirective
     ],
+    // обычно в шаред модулях не провадят сервисы,
+    // из-за того, что если их подключить к двум разным лейзи модулям,
+    // то у вас будет два экземпляра сервиса
     providers: [
         {
             provide: AppConfig,
