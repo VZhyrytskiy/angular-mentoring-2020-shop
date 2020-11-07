@@ -25,7 +25,7 @@ export class AppComponent implements AfterViewInit {
   @ViewChild('appTitle') titleRef: ElementRef<HTMLHeadingElement>;
 
   constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
-    @Optional() @Inject(GeneratedId) private readonly id: string) {
+              @Optional() @Inject(GeneratedId) private readonly id: string) {
     console.log(id);
   }
 
