@@ -12,7 +12,7 @@
         <ng-template #elseBlock>
             <span class="product--out-of-stock">Unavailable</span>
         </ng-template>
-        <p><b>{{model.price}}$</b></p>
+        <p><b>{{model.price | currency:'USD'}}</b></p>
     </mat-card-content>
     <mat-card-actions>
         <button [disabled]="!model.isAvailable" mat-button (click)="onAddToCart()" color="primary"

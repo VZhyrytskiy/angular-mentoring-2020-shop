@@ -7,7 +7,7 @@
     </app-cart-item>
     <mat-divider></mat-divider>
     <mat-card>
-        <div>Total: <span>{{getCartTotalPrice()}}$</span></div>
+        <div>Total: <span>{{getCartTotalPrice() | currency: 'USD'}}</span></div>
     </mat-card>
 </div>
 <ng-template #emptyCart>
