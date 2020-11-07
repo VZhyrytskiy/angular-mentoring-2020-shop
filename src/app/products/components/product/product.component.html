@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title>{{model.name}}</mat-card-title>
-        <mat-card-subtitle>{{model.category}}</mat-card-subtitle>
+        <mat-card-subtitle>{{model.category | uppercase}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image src="{{model.imageUrl}}" alt="Photo of {{model.name}}" class="product__image">
     <mat-card-content>
