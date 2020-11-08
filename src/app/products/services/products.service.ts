@@ -28,6 +28,15 @@ export class ProductsService {
                 category: Category.MobilePhone,
                 isAvailable: false,
                 rates: [5, 1, 3, 4, 6]
+            },
+            {
+                name: 'Xiaomi Mi Note 10 Lite',
+                imageUrl: 'https://www.gizmochina.com/wp-content/uploads/2020/04/Xiaomi-Mi-Note-10-Lite.jpg',
+                description: 'Xiaomi Mi Note 10 Lite specifications include a 6.47-inch curved AMOLED display, Snapdragon 730G processor, coupled with 6GB of RAM and up to 128GB of internal storage, and massive 5,260mAh battery. There is a quad-camera setup with a 64MP primary shooter, on the back, while at the front, the device features a 16MP unit inside of a waterdrop-style notch. The Mi Note 10 Lite comes with Android 10 out of the box.',
+                price: 1000,
+                category: Category.MobilePhone,
+                isAvailable: true,
+                rates: [5, 2, 3, 4, 3, 2]
             }
         ];
     private readonly products = new BehaviorSubject<ProductModel[]>(this.initialProducts);
