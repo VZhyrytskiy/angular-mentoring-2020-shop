@@ -17,7 +17,7 @@ export class OrderByPipe implements PipeTransform {
   }
 
   private getComparator(key: string, isAsc: boolean): (a: object, b: object) => number {
-    if (key.indexOf(".") === -1) {
+    if (key.indexOf('.') === -1) {
       return (a, b) => (a[key] > b[key] ? 1 : -1) * (isAsc ? 1 : -1);
     }
 
