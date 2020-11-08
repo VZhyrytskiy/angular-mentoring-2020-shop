@@ -1,22 +1,32 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'orderBy',
-  pure: false
+  name: 'orderBy'
 })
 export class OrderByPipe implements PipeTransform {
 
-  private static getComparator(key: string): (a: object, b: object) => number {
-    if (key.indexOf('.') === -1) {
-      return (a, b) => a[key] > b[key] ? 1 : -1;
+  transform<T>(items: Array<T>, key: string, isAsc: boolean = true): Array<T> {
+    if (items?.length === 0) {
+      return items;
+    }
+
+    const objs = this.cast<Array<object>>(items);
+    const sortedObjs = objs.sort(this.getComparator(key, isAsc));
+
+    return this.cast<Array<T>>(sortedObjs);
+  }
+
+  private getComparator(key: string, isAsc: boolean): (a: object, b: object) => number {
+    if (key.indexOf(".") === -1) {
+      return (a, b) => (a[key] > b[key] ? 1 : -1) * (isAsc ? 1 : -1);
     }
 
     const keys = key.replace(/\[(\w+)\]/g, '.$1').replace(/^\./, '').split('.');
 
-    return (a, b) => OrderByPipe.getNestedValue(a, keys) > OrderByPipe.getNestedValue(b, keys) ? 1 : -1;
+    return (a, b) => (this.getNestedValue(a, keys) > this.getNestedValue(b, keys) ? 1 : -1) * (isAsc ? 1 : -1);
   }
 
-  private static getNestedValue(object: object, keys: string[]): object {
+  private getNestedValue(object: object, keys: string[]): object {
     keys.forEach(key => {
       if (!(key in object)) {
         return false;
@@ -28,17 +38,7 @@ export class OrderByPipe implements PipeTransform {
     return object;
   }
 
-  transform(items: Array<object>, key: string, reverse: boolean = false): Array<object> {
-    if (items?.length === 0) {
-      return items;
-    }
-
-    const sorted = items.sort(OrderByPipe.getComparator(key));
-
-    if (reverse) {
-      return sorted.reverse();
-    }
-
-    return sorted;
+  private cast<T>(item: unknown): T {
+    return item as T;
   }
 }
