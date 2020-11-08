@@ -6,6 +6,7 @@ import { MaterialModule } from './material.module';
 
 import { HighlightDirective } from './directives/highlight/highlight.directive';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
+import { OrderByPipe } from './pipes/order-by.pipe';
 
 @NgModule({
     imports: [
@@ -17,11 +18,13 @@ import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjus
         FlexLayoutModule,
         RouterModule,
         HighlightDirective,
-        FontAdjustmentDirective
+        FontAdjustmentDirective,
+        OrderByPipe
     ],
     declarations: [
         HighlightDirective,
-        FontAdjustmentDirective
+        FontAdjustmentDirective,
+        OrderByPipe
     ]
 })
 export class SharedModule { }

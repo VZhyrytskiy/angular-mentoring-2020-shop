@@ -3,7 +3,7 @@
 <div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
     <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
         (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
-        *ngFor="let item of items">
+        *ngFor="let item of items | orderBy: 'product.name'">
     </app-cart-item>
     <mat-divider></mat-divider>
     <mat-card>
