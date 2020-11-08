@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
   selector: '[appFontAdjustment]'
 })
 export class FontAdjustmentDirective {
-  
+
   @Input('appFontAdjustment') multiplier: number;
 
   private readonly fontSizeStyleName = 'font-size';

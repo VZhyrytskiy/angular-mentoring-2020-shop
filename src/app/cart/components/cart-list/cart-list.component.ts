@@ -1,15 +1,23 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { CartItemModel } from '../../models/cart-item.model';
 import { CartService } from '../../services/cart.service';
+import { CartListOrderByOption, CartListSortDirectionOption, CartOrderByOptions, CartSortDirectionOptions } from './cart-list.constants';
 
 @Component({
   selector: 'app-cart-list',
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.scss']
 })
-export class CartListComponent implements OnInit, DoCheck {
+export class CartListComponent implements OnInit {
 
-  items: ReadonlyArray<CartItemModel> = [];
+  items: Array<CartItemModel>;
+
+  orderBySelectedOptionValue: string;
+  orderByOptions: CartListOrderByOption[];
+
+  orderBySortDirectionOptions: CartListSortDirectionOption[];
+  orderByIsAscending: boolean;
 
   constructor(private readonly cartService: CartService) { }
 
@@ -30,10 +38,11 @@ export class CartListComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
-    this.items = this.cartService.getCartItems();
-  }
-
-  ngDoCheck(): void {
-    this.items = this.cartService.getCartItems();
+    this.orderByOptions = CartOrderByOptions;
+    this.orderBySortDirectionOptions = CartSortDirectionOptions;
+    this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
+    this.orderBySelectedOptionValue = this.orderByOptions[0].value;
+    this.items = (this.cartService.getCartItems() as Array<CartItemModel>);
   }
 }
+

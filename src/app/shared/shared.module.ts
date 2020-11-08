@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { MaterialModule } from './material.module';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
-import { AppConfig, ConstantsService } from './services/constants.service';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
-
+import { OrderByPipe } from './pipes/order-by.pipe';
 
 @NgModule({
     imports: [
@@ -15,21 +15,18 @@ import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjus
     ],
     exports: [
         CommonModule,
+        FormsModule,
         MaterialModule,
         FlexLayoutModule,
         RouterModule,
         HighlightDirective,
-        FontAdjustmentDirective
+        FontAdjustmentDirective,
+        OrderByPipe
     ],
     declarations: [
         HighlightDirective,
-        FontAdjustmentDirective
-    ],
-    providers: [
-        {
-            provide: AppConfig,
-            useValue: ConstantsService
-        }
+        FontAdjustmentDirective,
+        OrderByPipe
     ]
 })
 export class SharedModule { }

@@ -26,3 +26,9 @@ Project changes will be described in this file.
 - Cart service store data in local storage
 - FontAdjustment directive added. When user clicks button 'Add to Cart' - it changes the font size according given input 
 - Fix review comments from Module 2
+
+## [Module 4]
+- Pipes used to format product price, category and retrieve async products list
+- Items in the cart can be sorted by properties (name, price, quantity | asc/desc)
+- Fixed styles issues 
+- Fix review comments from Module 3

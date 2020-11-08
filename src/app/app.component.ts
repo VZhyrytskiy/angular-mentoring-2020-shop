@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Inject, Optional, ViewChild } from '@angular/core';
-import { AppConfig } from './shared/services/constants.service';
+
+import { AppConfig, ConstantsService } from './shared/services/constants.service';
 import { generatorFactory, GeneratedId } from './shared/services/generator.factory';
 import { GeneratorService } from './shared/services/generator.service';
 
@@ -12,6 +13,10 @@ import { GeneratorService } from './shared/services/generator.service';
       provide: GeneratedId,
       useFactory: generatorFactory(15),
       deps: [GeneratorService]
+    },
+    {
+      provide: AppConfig,
+      useValue: ConstantsService
     }
   ]
 })
