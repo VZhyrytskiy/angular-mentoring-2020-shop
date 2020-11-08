@@ -7,6 +7,7 @@ import { MaterialModule } from './material.module';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
 import { OrderByPipe } from './pipes/order-by.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import { OrderByPipe } from './pipes/order-by.pipe';
     ],
     exports: [
         CommonModule,
+        FormsModule,
         MaterialModule,
         FlexLayoutModule,
         RouterModule,
