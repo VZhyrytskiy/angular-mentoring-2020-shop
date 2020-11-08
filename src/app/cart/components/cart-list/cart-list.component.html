@@ -1,9 +1,26 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
 <div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
+    <mat-card fxLayout="row wrap" fxLayoutAlign="end space-between">
+        <mat-form-field fxLayoutAlign="center center">
+            <mat-label>Sort</mat-label>
+            <mat-select [(ngModel)]="orderBySelectedOptionValue">
+                <mat-option *ngFor="let orderByOption of orderByOptions" [value]="orderByOption.value">
+                    {{orderByOption.displayValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-radio-group fxLayoutAlign="center center" [(ngModel)]="orderByIsAscending">
+            <mat-radio-button *ngFor="let sortOrderOption of orderBySortDirectionOptions" [value]="sortOrderOption.isAscending"
+                [checked]="sortOrderOption.isDefault">
+                {{sortOrderOption.displayValue}}
+            </mat-radio-button>
+        </mat-radio-group>
+    </mat-card>
+    <mat-divider></mat-divider>
     <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
         (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
-        *ngFor="let item of items | orderBy: 'product.name'">
+        *ngFor="let item of items | orderBy: orderBySelectedOptionValue:orderByIsAscending">
     </app-cart-item>
     <mat-divider></mat-divider>
     <mat-card>
