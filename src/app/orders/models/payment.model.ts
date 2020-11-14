@@ -1,2 +1,2 @@
-export class Payment.Model {
+export class PaymentModel {
 }

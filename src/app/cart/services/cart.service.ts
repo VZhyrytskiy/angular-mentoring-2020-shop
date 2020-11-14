@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { LocalStorageService } from 'src/app/shared/services';
 
 @Injectable({
     providedIn: 'root'

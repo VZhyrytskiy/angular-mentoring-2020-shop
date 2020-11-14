@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { UsersService } from '../../services/users.service';
+import { UsersService } from './../../services/index';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.usersService.login(this.loginForm.value.username)
-      .subscribe(() => this.dialogRef.close());
+      .subscribe(() => { this.dialogRef.close(); });
   }
 
   ngOnInit(): void {
