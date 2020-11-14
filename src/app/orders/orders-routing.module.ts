@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ConfirmationComponent, DeliveryComponent, PaymentComponent } from './components';
+import { ConfirmationComponent, DeliveryComponent, PaymentComponent } from './index';
 
 const routes: Routes = [
   { path: 'confirmation', component: ConfirmationComponent },
