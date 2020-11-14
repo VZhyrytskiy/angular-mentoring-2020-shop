@@ -11,12 +11,12 @@
         </span>
         <ng-template #loggedUser>
             <span class="navigation-item">
-                <a mat-button>Hi, {{userName | async}}</a>
+                <a mat-button><mat-icon>account_circle</mat-icon>Hi, {{userName | async}}</a>
             </span>
         </ng-template>
         <span class="navigation-item">
             <a mat-button routerLink="/cart">
-                <mat-icon>shopping_cart</mat-icon>({{cartItemsCount | async}})
+                <mat-icon>shopping_cart</mat-icon>({{totalQuantity | async}})
             </a>
         </span>
     </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Observable } from 'rxjs';
+
 import { CartItemModel } from '../../models/cart-item.model';
 import { CartService } from '../../services/cart.service';
 import { CartListOrderByOption, CartListSortDirectionOption, CartOrderByOptions, CartSortDirectionOptions } from './cart-list.constants';
@@ -11,7 +13,8 @@ import { CartListOrderByOption, CartListSortDirectionOption, CartOrderByOptions,
 })
 export class CartListComponent implements OnInit {
 
-  items: Array<CartItemModel>;
+  items: Observable<Array<CartItemModel>>;
+  totalSum: Observable<number>;
 
   orderBySelectedOptionValue: string;
   orderByOptions: CartListOrderByOption[];
@@ -33,16 +36,13 @@ export class CartListComponent implements OnInit {
     this.cartService.removeProductFromCart(item.product);
   }
 
-  getCartTotalPrice(): number {
-    return this.cartService.totalSum;
-  }
-
   ngOnInit(): void {
     this.orderByOptions = CartOrderByOptions;
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
-    this.items = (this.cartService.getCartItems() as Array<CartItemModel>);
+    this.items = this.cartService.getCartItems();
+    this.totalSum = this.cartService.totalSum();
   }
 }
 

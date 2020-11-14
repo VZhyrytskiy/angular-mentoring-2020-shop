@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   public userName: Observable<string>;
   public isLoggedIn: Observable<boolean>;
-  public cartItemsCount: Observable<number>;
+  public totalQuantity: Observable<number>;
 
   constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
               public loginDialog: MatDialog,
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.userName = this.usersService.getCurrentUser().pipe(map(x => x?.username));
     this.isLoggedIn = this.usersService.getCurrentUser().pipe(map(x => x !== null && x !== undefined));
-    this.cartItemsCount = new BehaviorSubject(this.cartService.totalQuantity).asObservable();
+    this.totalQuantity = this.cartService.totalQuantity();
   }
 
   ngAfterViewInit(): void {

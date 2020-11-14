@@ -1,6 +1,6 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
+<div *ngIf="((items | async)?.length > 0); else emptyCart" fxLayout.lt-sm="column">
     <mat-card fxLayout="row wrap" fxLayoutAlign="end space-between">
         <mat-form-field fxLayoutAlign="center center">
             <mat-label>Sort</mat-label>
@@ -20,11 +20,11 @@
     <mat-divider></mat-divider>
     <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
         (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
-        *ngFor="let item of items | orderBy: orderBySelectedOptionValue:orderByIsAscending">
+        *ngFor="let item of items | async | orderBy: orderBySelectedOptionValue:orderByIsAscending">
     </app-cart-item>
     <mat-divider></mat-divider>
     <mat-card>
-        <div>Total: <span>{{getCartTotalPrice() | currency: 'USD'}}</span></div>
+        <div>Total: <span>{{totalSum | async | currency: 'USD'}}</span></div>
     </mat-card>
 </div>
 <ng-template #emptyCart>
