@@ -11,7 +11,12 @@
         </span>
         <ng-template #loggedUser>
             <span class="navigation-item">
-                <a mat-button><mat-icon>account_circle</mat-icon>Hi, {{userName | async}}</a>
+                <a mat-button [matMenuTriggerFor]="accountMenu">
+                    <mat-icon>account_circle</mat-icon>Hi, {{userName | async}}
+                </a>
+                <mat-menu #accountMenu="matMenu">
+                    <button mat-menu-item (click)="onLogoutClick()">Logout</button>
+                </mat-menu>
             </span>
         </ng-template>
         <span class="navigation-item">
