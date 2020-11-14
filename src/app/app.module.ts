@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { OrdersModule } from './orders/orders.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { OrdersModule } from './orders/orders.module';
     SharedModule,
     ProductsModule,
     CartModule,
-    OrdersModule
+    OrdersModule,
+    AdminModule
   ],
   bootstrap: [AppComponent]
 })
