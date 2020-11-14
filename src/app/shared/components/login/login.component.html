@@ -1,0 +1,9 @@
+<form [formGroup]="loginForm" (submit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Username:</mat-label>
+        <input matInput formControlName="username" required>
+    </mat-form-field>
+    <div fxLayoutAlign="center center">
+        <button mat-button type="submit">Login</button>
+    </div>
+</form>
