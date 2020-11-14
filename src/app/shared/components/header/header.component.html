@@ -1,0 +1,23 @@
+<mat-toolbar class="navigation-bar" fxLayoutAlign="space-between center" fxLayout="row wrap" color="primary">
+    <div>
+        <span class="navigation-item">
+            <a mat-button routerLink="/">
+                <h1 #appTitle></h1>
+            </a></span>
+    </div>
+    <div>
+        <span class="navigation-item" *ngIf="(userName | async) == null else loggedUser">
+            <a mat-button (click)="onLoginClick()">Login</a>
+        </span>
+        <ng-template #loggedUser>
+            <span class="navigation-item">
+                <a mat-button>Hi, {{userName | async}}</a>
+            </span>
+        </ng-template>
+        <span class="navigation-item">
+            <a mat-button routerLink="/cart">
+                <mat-icon>add_shopping_cart</mat-icon>({{cartItemsCount | async}})
+            </a>
+        </span>
+    </div>
+</mat-toolbar>
