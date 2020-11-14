@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
-import { DeliveryComponent, PaymentComponent, ConfirmationComponent } from './components';
-import { Order } from './models/order.model/order.model.component'
-
+import { OrdersRoutingModule } from './orders-routing.module';
+import { DeliveryComponent, PaymentComponent, ConfirmationComponent } from './index';
 
 @NgModule({
   declarations: [
     DeliveryComponent,
     PaymentComponent,
-    ConfirmationComponent,
-    Order.ModelComponent
+    ConfirmationComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    OrdersRoutingModule
   ]
 })
 export class OrdersModule { }
