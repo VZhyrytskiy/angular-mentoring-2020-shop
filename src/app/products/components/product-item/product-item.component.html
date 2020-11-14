@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{model.name}}</mat-card-title>
+        <mat-card-subtitle>{{model.category | uppercase}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{model.imageUrl}}" alt="Photo of {{model.name}}" class="product__image">
+    <mat-card-content>
+        <p class="product__description">{{model.description}}</p>
+        <span *ngIf="model.isAvailable; else elseBlock">
+            <span class="product--in-stock">Available</span>
+        </span>
+        <ng-template #elseBlock>
+            <span class="product--out-of-stock">Unavailable</span>
+        </ng-template>
+        <p><b>{{model.price | currency:'USD'}}</b></p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="onViewClick()" color="primary">View</button>
+        <button [disabled]="!model.isAvailable" mat-button (click)="onAddToCart()" color="primary"
+        [appFontAdjustment]=1.1>Add to cart</button>
+    </mat-card-actions>
+</mat-card>
