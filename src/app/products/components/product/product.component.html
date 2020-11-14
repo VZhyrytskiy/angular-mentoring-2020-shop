@@ -1,4 +1,6 @@
-<mat-card>
+<h2>Product</h2>
+<mat-divider></mat-divider>
+<mat-card *ngIf="model">
     <mat-card-header>
         <mat-card-title>{{model.name}}</mat-card-title>
         <mat-card-subtitle>{{model.category | uppercase}}</mat-card-subtitle>

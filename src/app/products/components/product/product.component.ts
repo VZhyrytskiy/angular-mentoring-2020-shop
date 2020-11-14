@@ -1,7 +1,11 @@
-import { ChangeDetectionStrategy } from '@angular/core';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CartService } from 'src/app/cart/services/cart.service';
 
 import { ProductModel } from '../../models/product.model';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-product',
@@ -11,15 +15,26 @@ import { ProductModel } from '../../models/product.model';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly activatedRoute: ActivatedRoute,
+              private readonly router: Router,
+              private readonly productsService: ProductsService,
+              private readonly cartService: CartService,
+              private readonly snackBar: MatSnackBar) { }
 
-  @Input() model: ProductModel;
-
-  @Output() addedToCart: EventEmitter<ProductModel> = new EventEmitter<ProductModel>();
+  public model: ProductModel;
 
   onAddToCart(): void {
-    this.addedToCart.emit(this.model);
+    this.cartService.addProductToCart(this.model);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    const product = this.productsService.getProductById(id);
+
+    if (product == null) {
+      this.router.navigateByUrl('/product-not-found');
+    }
+
+    this.model = product;
+  }
 }

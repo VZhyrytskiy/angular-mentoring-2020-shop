@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
-import { ProductComponent, ProductListComponent } from './index';
+import { ProductComponent, ProductListComponent, ProductItemComponent } from './index';
 
 @NgModule({
     imports: [
@@ -9,6 +9,11 @@ import { ProductComponent, ProductListComponent } from './index';
     ],
     declarations: [
         ProductComponent,
+        ProductListComponent,
+        ProductItemComponent
+    ],
+    exports: [
+        ProductItemComponent,
         ProductListComponent
     ]
 })

@@ -14,7 +14,7 @@ import { ProductModel } from '../../models/product.model';
 export class ProductItemComponent implements OnInit {
 
   constructor(private router: Router,
-    private readonly cartService: CartService) { }
+              private readonly cartService: CartService) { }
 
   @Input() model: ProductModel;
 

@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
 import { LocalStorageService } from 'src/app/shared/services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class CartService {
     private readonly cartItemsStorageKey = 'cartItems';
     private cartItems: BehaviorSubject<Array<CartItemModel>>;
 
-    constructor(private readonly storage: LocalStorageService) {
+    constructor(private readonly storage: LocalStorageService, private readonly snackBar: MatSnackBar) {
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
         const storedItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
         this.cartItems.next(storedItems || []);
@@ -57,6 +58,12 @@ export class CartService {
             items.push(this.createNewCartItem(product));
             this.cartItems.next(items);
         }
+
+        this.snackBar.open(`Product ${product.name} was added to cart`, null, {
+            duration: 2000,
+            verticalPosition: 'bottom',
+            horizontalPosition: 'end'
+        });
     }
 
     increaseQuantityByOne(product: ProductModel): void {
