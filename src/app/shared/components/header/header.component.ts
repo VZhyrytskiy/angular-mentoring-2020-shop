@@ -28,9 +28,9 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   public totalQuantity: Observable<number>;
 
   constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
-    public loginDialog: MatDialog,
-    private readonly usersService: UsersService,
-    private readonly cartService: CartService) { }
+              public loginDialog: MatDialog,
+              private readonly usersService: UsersService,
+              private readonly cartService: CartService) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
