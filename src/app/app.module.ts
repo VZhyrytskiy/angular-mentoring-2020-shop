@@ -16,13 +16,13 @@ import { AdminModule } from './admin/admin.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
     ProductsModule,
     CartModule,
     OrdersModule,
-    AdminModule
+    AdminModule,
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })

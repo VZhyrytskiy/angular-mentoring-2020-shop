@@ -9,9 +9,9 @@ const routes: Routes = [
   { path: 'cart', component: CartListComponent },
   { path: 'product/:id', component: ProductComponent },
   { path: 'products', component: ProductListComponent },
-  { path: 'product-not-found', redirectTo: '**' },
   { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: '**', component: NotFoundComponent }
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: '/not-found' }
 ];
 
 @NgModule({
