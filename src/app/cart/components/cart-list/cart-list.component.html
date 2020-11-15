@@ -11,8 +11,8 @@
             </mat-select>
         </mat-form-field>
         <mat-radio-group fxLayoutAlign="center center" [(ngModel)]="orderByIsAscending">
-            <mat-radio-button *ngFor="let sortOrderOption of orderBySortDirectionOptions" [value]="sortOrderOption.isAscending"
-                [checked]="sortOrderOption.isDefault">
+            <mat-radio-button *ngFor="let sortOrderOption of orderBySortDirectionOptions"
+                [value]="sortOrderOption.isAscending" [checked]="sortOrderOption.isDefault">
                 {{sortOrderOption.displayValue}}
             </mat-radio-button>
         </mat-radio-group>
@@ -23,8 +23,9 @@
         *ngFor="let item of items | async | orderBy: orderBySelectedOptionValue:orderByIsAscending">
     </app-cart-item>
     <mat-divider></mat-divider>
-    <mat-card>
+    <mat-card fxLayout="row wrap" fxLayoutAlign="space-between center">
         <div>Total: <span>{{totalSum | async | currency: 'USD'}}</span></div>
+        <button mat-flat-button color="accent" (click)="onCheckoutClick()">Checkout</button>
     </mat-card>
 </div>
 <ng-template #emptyCart>
