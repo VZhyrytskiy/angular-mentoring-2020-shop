@@ -32,7 +32,7 @@ export class ProductComponent implements OnInit {
     const product = this.productsService.getProductById(id);
 
     if (product == null) {
-      this.router.navigateByUrl('/product-not-found');
+      this.router.navigateByUrl('/not-found');
     }
 
     this.model = product;

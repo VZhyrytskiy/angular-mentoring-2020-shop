@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -30,14 +31,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
               public loginDialog: MatDialog,
               private readonly usersService: UsersService,
-              private readonly cartService: CartService) { }
+              private readonly cartService: CartService,
+              private readonly router: Router) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout();
+    this.usersService.logout().subscribe(() =>
+    this.router.navigateByUrl(''));
   }
 
   ngOnInit(): void {
