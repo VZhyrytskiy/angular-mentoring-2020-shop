@@ -18,10 +18,10 @@ export class ProductComponent implements OnInit {
   public averageScore: number;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly productsService: ProductsService,
-    private readonly cartService: CartService,
-    private readonly snackBar: MatSnackBar) { }
+              private readonly router: Router,
+              private readonly productsService: ProductsService,
+              private readonly cartService: CartService,
+              private readonly snackBar: MatSnackBar) { }
 
   public model: ProductModel;
 
