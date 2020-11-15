@@ -17,12 +17,12 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+                   state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.isAdmin();
   }
 
   canActivate(route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+              state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.isAdmin();
   }
 
