@@ -1,1 +1,5 @@
-<p>admin-dashboard works!</p>
+<h2>Admin dashboard</h2>
+<mat-divider></mat-divider>
+<div *ngFor="let product of products | async">
+    <app-admin-dashboard-item [item]="product"></app-admin-dashboard-item>
+</div>
