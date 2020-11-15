@@ -46,6 +46,6 @@ export class UsersService {
   }
 
   isCurrentUserInRole(role: string): Observable<boolean> {
-    return this.getCurrentUser().pipe(map(x => x.roles.some(userRole => userRole === role)));
+    return this.getCurrentUser().pipe(map(user => user?.roles.some(userRole => userRole === role)));
   }
 }

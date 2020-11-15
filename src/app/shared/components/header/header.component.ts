@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   public userName: Observable<string>;
   public isLoggedIn: Observable<boolean>;
+  public isAdmin: Observable<boolean>;
   public totalQuantity: Observable<number>;
 
   constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
@@ -40,16 +41,21 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   onLogoutClick(): void {
     this.usersService.logout().subscribe(() =>
-    this.router.navigateByUrl(''));
+      this.router.navigateByUrl(''));
   }
 
   ngOnInit(): void {
-    this.userName = this.usersService.getCurrentUser().pipe(map(user => {
+    const currentUser = this.usersService.getCurrentUser();
+
+    this.userName = currentUser.pipe(map(user => {
       return user?.username;
     }));
-    this.isLoggedIn = this.usersService.getCurrentUser().pipe(map(user => {
+
+    this.isLoggedIn = currentUser.pipe(map(user => {
       return user !== null && user !== undefined;
     }));
+
+    this.isAdmin = this.usersService.isCurrentUserInRole('admin');
     this.totalQuantity = this.cartService.totalQuantity();
   }
 
