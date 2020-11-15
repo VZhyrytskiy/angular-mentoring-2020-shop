@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductComponent, ProductListComponent } from './products/index';
 import { CartListComponent } from './cart/index';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
-import { AdminDashboardComponent } from './admin';
 import { AdminGuard } from './admin/admin.guard';
 
 const routes: Routes = [
@@ -12,12 +11,12 @@ const routes: Routes = [
   { path: 'product/:id', component: ProductComponent },
   { path: 'products', component: ProductListComponent },
   { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: 'not-found', component: NotFoundComponent },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
     canLoad: [AdminGuard]
   },
+  { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
 
