@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { UserModel } from '../models/user.model';
 import { LocalStorageService } from './local-storage/local-storage.service';
-import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,15 +38,14 @@ export class UsersService {
   logout(): Observable<void> {
     this.localStorageService.removeItem(this.userKey);
     this.user.next(null);
-
     return of();
-  }
-
-  isInRole(role: string): Observable<boolean> {
-    return this.getCurrentUser().pipe(map(x => x?.roles.some(userRole => userRole === role)));
   }
 
   getCurrentUser(): Observable<UserModel> {
     return this.user.asObservable();
+  }
+
+  isCurrentUserInRole(role: string): Observable<boolean> {
+    return this.getCurrentUser().pipe(map(x => x.roles.some(userRole => userRole === role)));
   }
 }
