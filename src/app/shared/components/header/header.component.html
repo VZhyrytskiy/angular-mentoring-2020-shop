@@ -4,11 +4,6 @@
             <a mat-button routerLink="/">
                 <h1 #appTitle></h1>
             </a></span>
-        <span *ngIf="isAdmin | async">
-            <a mat-flat-button color="accent" routerLink="/admin">
-                Admin Dashboard
-            </a>
-        </span>
     </div>
     <div>
         <span class="navigation-item" *ngIf="(userName | async) == null else loggedUser">
@@ -20,6 +15,7 @@
                     <mat-icon>account_circle</mat-icon>Hi, {{userName | async}}
                 </a>
                 <mat-menu #accountMenu="matMenu">
+                    <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin/products">Admin dashboard</button>
                     <button mat-menu-item (click)="onLogoutClick()">Logout</button>
                 </mat-menu>
             </span>

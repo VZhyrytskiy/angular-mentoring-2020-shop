@@ -6,10 +6,14 @@ import { AdminDashboardComponent } from './index';
 
 const routes: Routes = [
   {
-    path: 'admin', component: AdminDashboardComponent,
+    path: 'admin',
     canActivate: [AdminGuard],
     canActivateChild: [AdminGuard],
-    children: []
+    children: [
+      {
+        path: 'products', component: AdminDashboardComponent
+      }
+    ]
   }
 ];
 
