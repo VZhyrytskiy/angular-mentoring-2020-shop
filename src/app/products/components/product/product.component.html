@@ -12,6 +12,11 @@
             </mat-card-header>
             <mat-card-content style="margin: 0 16px;">
                 <p class="product__description">{{model.description}}</p>
+                <div>
+                    <span *ngFor="let i of [].constructor(averageScore)">
+                        <mat-icon color="accent">star_rate</mat-icon>
+                    </span>
+                </div>
                 <span *ngIf="model.isAvailable; else elseBlock">
                     <span class="product--in-stock">Available</span>
                 </span>
