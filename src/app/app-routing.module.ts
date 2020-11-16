@@ -6,10 +6,15 @@ import { CartListComponent } from './cart';
 import { NotFoundComponent } from './shared';
 import { AdminGuard } from './admin';
 import { CartIsNotEmptyGuard } from './orders';
+import { ProductResolver } from './products/product.resolver';
 
 const routes: Routes = [
   { path: 'cart', component: CartListComponent },
-  { path: 'product/:id', component: ProductComponent },
+  {
+    path: 'product/:id',
+    component: ProductComponent,
+    resolve: { product: ProductResolver }
+  },
   { path: 'products', component: ProductListComponent },
   { path: 'not-found', component: NotFoundComponent },
   {

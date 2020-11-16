@@ -1,32 +1,32 @@
 <h2>Product</h2>
 <mat-divider></mat-divider>
-<mat-card *ngIf="model">
+<mat-card *ngIf="product">
     <div fxLayout="row" fxLayout.xs="column" fxFlexFill>
         <div fxFlex="40">
-            <img mat-card-image src="{{model.imageUrl}}" alt="Photo of {{model.name}}" class="product__image">
+            <img mat-card-image src="{{product.imageUrl}}" alt="Photo of {{product.name}}" class="product__image">
         </div>
         <div fxFlex="60">
             <mat-card-header>
-                <mat-card-title>{{model.name}}</mat-card-title>
-                <mat-card-subtitle>{{model.category | uppercase}}</mat-card-subtitle>
+                <mat-card-title>{{product.name}}</mat-card-title>
+                <mat-card-subtitle>{{product.category | uppercase}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content style="margin: 0 16px;">
-                <p class="product__description">{{model.description}}</p>
+                <p class="product__description">{{product.description}}</p>
                 <div>
                     <span *ngFor="let i of [].constructor(averageScore)">
                         <mat-icon color="accent">star_rate</mat-icon>
                     </span>
                 </div>
-                <span *ngIf="model.isAvailable; else elseBlock">
+                <span *ngIf="product.isAvailable; else elseBlock">
                     <span class="product--in-stock">Available</span>
                 </span>
                 <ng-template #elseBlock>
                     <span class="product--out-of-stock">Unavailable</span>
                 </ng-template>
-                <p><b>{{model.price | currency:'USD'}}</b></p>
+                <p><b>{{product.price | currency:'USD'}}</b></p>
             </mat-card-content>
             <mat-card-actions style="margin: 0 16px;">
-                <button [disabled]="!model.isAvailable" mat-flat-button (click)="onAddToCart()" color="primary"
+                <button [disabled]="!product.isAvailable" mat-flat-button (click)="onAddToCart()" color="primary"
                     [appFontAdjustment]=1.1>Add to cart</button>
             </mat-card-actions>
         </div>
