@@ -19,6 +19,8 @@ export class CartListComponent implements OnInit {
 
   items: Observable<Array<CartItemModel>>;
   totalSum: Observable<number>;
+  totalQuantity: Observable<number>;
+  isEmpty: Observable<boolean>;
 
   orderBySelectedOptionValue: string;
   orderByOptions: CartListOrderByOption[];
@@ -44,6 +46,10 @@ export class CartListComponent implements OnInit {
     this.router.navigateByUrl('/order/delivery');
   }
 
+  onClearClick(): void {
+    this.cartService.removeAllProducts();
+  }
+
   ngOnInit(): void {
     this.orderByOptions = CartOrderByOptions;
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
@@ -51,6 +57,8 @@ export class CartListComponent implements OnInit {
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
     this.items = this.cartService.getCartItems();
     this.totalSum = this.cartService.totalSum();
+    this.totalQuantity = this.cartService.totalQuantity();
+    this.isEmpty = this.cartService.isEmpty();
   }
 }
 

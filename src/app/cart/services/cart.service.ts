@@ -31,7 +31,7 @@ export class CartService {
     }
 
     isEmpty(): Observable<boolean> {
-        return this.totalQuantity().pipe(map(x => x === 0));
+        return this.totalQuantity().pipe(map(quantity => quantity === 0));
     }
 
     totalSum(): Observable<number> {

@@ -1,6 +1,6 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<div *ngIf="((items | async)?.length > 0); else emptyCart" fxLayout.lt-sm="column">
+<div *ngIf="!(isEmpty | async) else emptyCart" fxLayout.lt-sm="column">
     <mat-card fxLayout="row wrap" fxLayoutAlign="end space-between">
         <mat-form-field fxLayoutAlign="center center">
             <mat-label>Sort</mat-label>
@@ -25,6 +25,8 @@
     <mat-divider></mat-divider>
     <mat-card fxLayout="row wrap" fxLayoutAlign="space-between center">
         <div>Total: <span>{{totalSum | async | currency: 'USD'}}</span></div>
+        <div>Total items: <span>{{totalQuantity | async }}</span></div>
+        <button mat-flat-button color="warn" (click)="onClearClick()">Clear</button>
         <button mat-flat-button color="accent" (click)="onCheckoutClick()">Checkout</button>
     </mat-card>
 </div>
