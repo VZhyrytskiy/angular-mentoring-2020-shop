@@ -4,10 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { ConfirmationComponent, DeliveryComponent, PaymentComponent } from './index';
 
 const routes: Routes = [
-  { path: 'confirmation', component: ConfirmationComponent },
-  { path: 'payment', component: PaymentComponent },
-  { path: 'delivery', component: DeliveryComponent },
-  { path: '', redirectTo: '/products', pathMatch: 'full' }
+  {
+    path: 'order',
+    children: [
+      { path: 'confirmation', component: ConfirmationComponent },
+      { path: 'payment', component: PaymentComponent },
+      { path: 'delivery', component: DeliveryComponent },
+      { path: '', redirectTo: '/delivery', pathMatch: 'full' }
+    ]
+  }
 ];
 
 @NgModule({
