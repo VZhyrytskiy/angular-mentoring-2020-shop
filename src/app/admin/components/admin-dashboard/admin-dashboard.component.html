@@ -1,5 +1,8 @@
 <h2>Admin dashboard</h2>
 <mat-divider></mat-divider>
+<mat-card fxLayout="row wrap" fxLayoutAlign="end center" fxLayout.lt-sm="column">
+    <button mat-flat-button color="primary" routerLink="/admin/products/create">Create</button>
+</mat-card>
 <div *ngFor="let product of products | async">
     <app-admin-dashboard-item [item]="product"></app-admin-dashboard-item>
 </div>
