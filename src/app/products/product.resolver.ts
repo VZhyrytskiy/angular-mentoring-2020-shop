@@ -13,7 +13,7 @@ export class ProductResolver implements Resolve<ProductModel> {
 
     resolve(route: ActivatedRouteSnapshot): ProductModel {
         const id = route.paramMap.get('id');
-        
+
         return this.productsService.getProductById(id);
     }
 }
