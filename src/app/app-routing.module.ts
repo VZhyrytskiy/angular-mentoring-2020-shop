@@ -5,12 +5,13 @@ import { ProductComponent, ProductListComponent } from './products';
 import { CartListComponent } from './cart';
 import { NotFoundComponent } from './shared';
 import { AdminGuard } from './admin';
+import { CartIsNotEmptyGuard } from './orders';
 
 const routes: Routes = [
   { path: 'cart', component: CartListComponent },
   { path: 'product/:id', component: ProductComponent },
   { path: 'products', component: ProductListComponent },
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: 'not-found', component: NotFoundComponent },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
@@ -19,8 +20,9 @@ const routes: Routes = [
   {
     path: 'order',
     loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule),
+    canLoad: [CartIsNotEmptyGuard]
   },
-  { path: 'not-found', component: NotFoundComponent },
+  { path: '', redirectTo: '/products', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found' }
 ];
 

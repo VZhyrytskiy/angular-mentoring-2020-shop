@@ -41,7 +41,7 @@ export class CartListComponent implements OnInit {
   }
 
   onCheckoutClick(): void {
-    this.router.navigateByUrl('/delivery');
+    this.router.navigateByUrl('/order/delivery');
   }
 
   ngOnInit(): void {

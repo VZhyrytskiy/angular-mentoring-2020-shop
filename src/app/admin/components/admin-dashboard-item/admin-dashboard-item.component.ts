@@ -6,7 +6,7 @@ import { ProductModel } from 'src/app/products/models/product.model';
   templateUrl: './admin-dashboard-item.component.html',
   styleUrls: ['./admin-dashboard-item.component.scss']
 })
-export class AdminDashboardItemComponent implements OnInit {  
+export class AdminDashboardItemComponent implements OnInit {
   @Input() item: ProductModel;
 
   constructor() { }
