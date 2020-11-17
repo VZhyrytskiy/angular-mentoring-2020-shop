@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 
-import { AppConfig, ConstantsService } from './shared/services/constants.service';
-import { generatorFactory, GeneratedId } from './shared/services/generator.factory';
-import { GeneratorService } from './shared/services/generator.service';
+import { GeneratedId, GeneratorService } from './shared/index';
+import { generatorFactory } from './shared/services/generator/generator.factory';
 
 @Component({
   selector: 'app-root',
@@ -13,23 +12,9 @@ import { GeneratorService } from './shared/services/generator.service';
       provide: GeneratedId,
       useFactory: generatorFactory(15),
       deps: [GeneratorService]
-    },
-    {
-      provide: AppConfig,
-      useValue: ConstantsService
     }
   ]
 })
-export class AppComponent implements AfterViewInit {
-
-  @ViewChild('appTitle') titleRef: ElementRef<HTMLHeadingElement>;
-
-  constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
-              @Optional() @Inject(GeneratedId) private readonly id: string) {
-    console.log(id);
-  }
-
-  ngAfterViewInit(): void {
-    this.titleRef.nativeElement.textContent = this.appConfig.title;
-  }
+export class AppComponent {
+  constructor(@Optional() @Inject(GeneratedId) private readonly id: string) { }
 }

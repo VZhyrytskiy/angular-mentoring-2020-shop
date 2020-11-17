@@ -12,7 +12,7 @@
         <mat-form-field class="cart-item__quantity">
             <input matInput value="{{item.quantity}}" disabled>
         </mat-form-field>
-        <button mat-button color="secondary" (click)="onDecreaseByOne()">-</button>
-        <button mat-button color="primary" (click)="onRemoved()">Remove</button>
+        <button mat-button color="primary" (click)="onDecreaseByOne()">-</button>
+        <button mat-button color="warn" (click)="onRemoved()">Remove</button>
     </mat-card-actions>
 </mat-card>

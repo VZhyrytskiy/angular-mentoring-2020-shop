@@ -1,0 +1,10 @@
+<mat-card fxLayout="row wrap" fxLayoutAlign="space-between space-between" fxLayout.lt-sm="column">
+    <mat-card-header fxLayoutAlign="start center" fxFlex="30">
+        <img mat-card-avatar src="{{item.imageUrl}}" alt="Photo of {{item.name}}">
+        <mat-card-title>{{item.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-actions fxLayoutAlign="center center">
+        <button mat-button color="accent" routerLink="/admin/products/edit/{{item.id}}">Edit</button>
+        <button mat-button color="warn">Delete</button>
+    </mat-card-actions>
+</mat-card>

@@ -1,6 +1,11 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<div *ngIf="items?.length > 0; else emptyCart" fxLayout.lt-sm="column">
+<div *ngIf="(isEmpty | async) else cartWithItems" fxLayout.lt-sm="column">
+    <mat-card>No items...
+        <a routerLink="/products" mat-button color="primary">Let's add few here</a>
+    </mat-card>
+</div>
+<ng-template #cartWithItems>
     <mat-card fxLayout="row wrap" fxLayoutAlign="end space-between">
         <mat-form-field fxLayoutAlign="center center">
             <mat-label>Sort</mat-label>
@@ -11,8 +16,8 @@
             </mat-select>
         </mat-form-field>
         <mat-radio-group fxLayoutAlign="center center" [(ngModel)]="orderByIsAscending">
-            <mat-radio-button *ngFor="let sortOrderOption of orderBySortDirectionOptions" [value]="sortOrderOption.isAscending"
-                [checked]="sortOrderOption.isDefault">
+            <mat-radio-button *ngFor="let sortOrderOption of orderBySortDirectionOptions"
+                [value]="sortOrderOption.isAscending" [checked]="sortOrderOption.isDefault">
                 {{sortOrderOption.displayValue}}
             </mat-radio-button>
         </mat-radio-group>
@@ -20,15 +25,13 @@
     <mat-divider></mat-divider>
     <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
         (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
-        *ngFor="let item of items | orderBy: orderBySelectedOptionValue:orderByIsAscending">
+        *ngFor="let item of items | async | orderBy: orderBySelectedOptionValue:orderByIsAscending">
     </app-cart-item>
     <mat-divider></mat-divider>
-    <mat-card>
-        <div>Total: <span>{{getCartTotalPrice() | currency: 'USD'}}</span></div>
-    </mat-card>
-</div>
-<ng-template #emptyCart>
-    <mat-card>No items...
-        <a routerLink="/products" mat-button color="primary">Let's add few here</a>
+    <mat-card fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <div>Total: <span>{{totalSum | async | currency: 'USD'}}</span></div>
+        <div>Total items: <span>{{totalQuantity | async }}</span></div>
+        <button mat-flat-button color="warn" (click)="onClearClick()">Clear</button>
+        <button mat-flat-button color="accent" (click)="onCheckoutClick()">Checkout</button>
     </mat-card>
 </ng-template>

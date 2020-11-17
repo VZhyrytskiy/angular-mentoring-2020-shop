@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy } from '@angular/core';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { ProductModel } from '../../models/product.model';
+import { CartService } from './../../../cart/services/cart.service';
+import { ProductModel } from './../../models/product.model';
 
 @Component({
   selector: 'app-product',
@@ -11,15 +13,18 @@ import { ProductModel } from '../../models/product.model';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  product: ProductModel;
+  averageScore: number;
 
-  @Input() model: ProductModel;
-
-  @Output() addedToCart: EventEmitter<ProductModel> = new EventEmitter<ProductModel>();
+  constructor(private readonly cartService: CartService, private readonly activatedRoute: ActivatedRoute) { }
 
   onAddToCart(): void {
-    this.addedToCart.emit(this.model);
+    this.cartService.addProductToCart(this.product);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.product = this.activatedRoute.snapshot.data.product;
+    const ratesSum = this.product.rates.reduce((prev, next) => prev + next, 0);
+    this.averageScore = Math.ceil(ratesSum / this.product.rates.length);
+  }
 }

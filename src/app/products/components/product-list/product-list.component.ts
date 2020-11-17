@@ -17,16 +17,10 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private readonly productsService: ProductsService,
-    private readonly cartService: CartService,
-    private readonly snackBar: MatSnackBar) { }
+    private readonly cartService: CartService) { }
 
   onAddedToCart(product: ProductModel): void {
     this.cartService.addProductToCart(product);
-    this.snackBar.open(`Product ${product.name} was added to cart`, null, {
-      duration: 2000,
-      verticalPosition: 'bottom',
-      horizontalPosition: 'end'
-    });
   }
 
   ngOnInit(): void {

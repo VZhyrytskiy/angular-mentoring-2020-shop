@@ -1,0 +1,29 @@
+<mat-toolbar class="navigation-bar" fxLayoutAlign="space-between center" fxLayout="row wrap" color="primary">
+    <div>
+        <span class="navigation-item">
+            <a mat-button routerLink="/">
+                <h1 #appTitle></h1>
+            </a></span>
+    </div>
+    <div>
+        <span class="navigation-item" *ngIf="(userName | async) == null else loggedUser">
+            <a mat-button (click)="onLoginClick()">Login</a>
+        </span>
+        <ng-template #loggedUser>
+            <span class="navigation-item">
+                <a mat-button [matMenuTriggerFor]="accountMenu">
+                    <mat-icon>account_circle</mat-icon>Hi, {{userName | async}}
+                </a>
+                <mat-menu #accountMenu="matMenu">
+                    <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin">Admin dashboard</button>
+                    <button mat-menu-item (click)="onLogoutClick()">Logout</button>
+                </mat-menu>
+            </span>
+        </ng-template>
+        <span class="navigation-item">
+            <a mat-button routerLink="/cart">
+                <mat-icon>shopping_cart</mat-icon>({{totalQuantity | async}})
+            </a>
+        </span>
+    </div>
+</mat-toolbar>

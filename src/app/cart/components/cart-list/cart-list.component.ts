@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Observable } from 'rxjs';
 
 import { CartItemModel } from '../../models/cart-item.model';
 import { CartService } from '../../services/cart.service';
-import { CartListOrderByOption, CartListSortDirectionOption, CartOrderByOptions, CartSortDirectionOptions } from './cart-list.constants';
+import {
+  CartListOrderByOption, CartListSortDirectionOption,
+  CartOrderByOptions, CartSortDirectionOptions
+} from './cart-list.constants';
 
 @Component({
   selector: 'app-cart-list',
@@ -11,7 +17,10 @@ import { CartListOrderByOption, CartListSortDirectionOption, CartOrderByOptions,
 })
 export class CartListComponent implements OnInit {
 
-  items: Array<CartItemModel>;
+  items: Observable<Array<CartItemModel>>;
+  totalSum: Observable<number>;
+  totalQuantity: Observable<number>;
+  isEmpty: Observable<boolean>;
 
   orderBySelectedOptionValue: string;
   orderByOptions: CartListOrderByOption[];
@@ -19,7 +28,7 @@ export class CartListComponent implements OnInit {
   orderBySortDirectionOptions: CartListSortDirectionOption[];
   orderByIsAscending: boolean;
 
-  constructor(private readonly cartService: CartService) { }
+  constructor(private readonly cartService: CartService, private readonly router: Router) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
     this.cartService.decreaseQuantityByOne(item.product);
@@ -33,8 +42,12 @@ export class CartListComponent implements OnInit {
     this.cartService.removeProductFromCart(item.product);
   }
 
-  getCartTotalPrice(): number {
-    return this.cartService.totalSum;
+  onCheckoutClick(): void {
+    this.router.navigateByUrl('/order/delivery');
+  }
+
+  onClearClick(): void {
+    this.cartService.removeAllProducts();
   }
 
   ngOnInit(): void {
@@ -42,7 +55,10 @@ export class CartListComponent implements OnInit {
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
-    this.items = (this.cartService.getCartItems() as Array<CartItemModel>);
+    this.items = this.cartService.getCartItems();
+    this.totalSum = this.cartService.totalSum();
+    this.totalQuantity = this.cartService.totalQuantity();
+    this.isEmpty = this.cartService.isEmpty();
   }
 }
 
