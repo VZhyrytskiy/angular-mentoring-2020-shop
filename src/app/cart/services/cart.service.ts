@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
 import { LocalStorageService } from 'src/app/shared/services';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +19,8 @@ export class CartService {
     constructor(private readonly storage: LocalStorageService, private readonly snackBar: MatSnackBar) {
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
         const storedItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
-        this.cartItems.next(storedItems || []);
         this.cartItems.subscribe(updatedItems => this.updateLocalCart(updatedItems));
+        this.cartItems.next(storedItems || []);
     }
 
     totalQuantity(): Observable<number> {
