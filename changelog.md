@@ -32,3 +32,12 @@ Project changes will be described in this file.
 - Items in the cart can be sorted by properties (name, price, quantity | asc/desc)
 - Fixed styles issues 
 - Fix review comments from Module 3
+
+## [Module 5]
+- Header component added. Header has login butto, that opens popup with Login component.
+- User logged as admin, has access to admin dashboard, defined in Admin module. If user has no permissions, module is not loaded (guard).
+- Not implemented feature component added, to notify user if some features are not implemented.
+- Not found component added.
+- Orders module template init. User can pass to order pages if it has items in basket (guard).
+- Cart service reworked (RxJS usage).
+- Product view component added (with product resolver).
