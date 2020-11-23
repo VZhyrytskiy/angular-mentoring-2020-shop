@@ -3,7 +3,6 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { ProductsService } from './services/products.service';
 import { ProductModel } from './models/product.model';
-import { delay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'

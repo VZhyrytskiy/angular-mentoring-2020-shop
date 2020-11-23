@@ -19,7 +19,7 @@ export class ProductComponent implements OnInit {
   constructor(private readonly cartService: CartService, private readonly activatedRoute: ActivatedRoute) { }
 
   onAddToCart(): void {
-    this.cartService.addProductToCart(this.product);
+    this.cartService.addProduct(this.product);
   }
 
   ngOnInit(): void {

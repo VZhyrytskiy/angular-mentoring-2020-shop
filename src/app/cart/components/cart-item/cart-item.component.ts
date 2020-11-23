@@ -31,7 +31,7 @@ export class CartItemComponent implements OnInit {
   }
 
   getTotalPrice(): number {
-    return this.cartService.getCartItemTotalPrice(this.item);
+    return this.cartService.getItemTotalPrice(this.item);
   }
 
   ngOnInit(): void { }

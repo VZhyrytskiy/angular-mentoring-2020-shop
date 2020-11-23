@@ -39,7 +39,7 @@ export class CartListComponent implements OnInit {
   }
 
   onItemRemoved(item: CartItemModel): void {
-    this.cartService.removeProductFromCart(item.product);
+    this.cartService.removeProduct(item.product);
   }
 
   onCheckoutClick(): void {
@@ -55,7 +55,7 @@ export class CartListComponent implements OnInit {
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
-    this.items = this.cartService.getCartItems();
+    this.items = this.cartService.getItems();
     this.totalSum = this.cartService.totalSum();
     this.totalQuantity = this.cartService.totalQuantity();
     this.isEmpty = this.cartService.isEmpty();

@@ -23,7 +23,7 @@ export class ProductItemComponent implements OnInit {
   }
 
   onAddToCart(): void {
-    this.cartService.addProductToCart(this.model);
+    this.cartService.addProduct(this.model);
   }
 
   ngOnInit(): void { }
