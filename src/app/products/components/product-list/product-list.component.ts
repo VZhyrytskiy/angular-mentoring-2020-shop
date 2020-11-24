@@ -32,7 +32,7 @@ export class ProductListComponent implements OnInit {
     return {
       next: (addedProduct) => {
         const message = `Product ${addedProduct.name} was added to cart`;
-        
+
         const snackBarConfig: MatSnackBarConfig = {
           duration: 2000,
           verticalPosition: 'bottom',
@@ -41,6 +41,6 @@ export class ProductListComponent implements OnInit {
 
         this.snackBar.open(message, null, snackBarConfig);
       }
-    }
+    };
   }
 }
