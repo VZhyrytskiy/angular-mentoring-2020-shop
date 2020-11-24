@@ -1,18 +1,39 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpEventType, HttpResponse, HttpParams } from '@angular/common/http';
+
 import { Observable } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TimingInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  private readonly requestStartTimeKey = 'requestStartTime';
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request);
+  constructor() { }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!request.url.includes('product')) {
+      return next.handle(request);
+    }
+
+    return next.handle(request.clone(this.setRequestStartTime()))
+      .pipe(
+        filter((event: HttpEvent<unknown>) => event.type === HttpEventType.Response),
+        tap((event: HttpResponse<unknown>) => {
+          const url = event.url;
+          const requestStartTime = +this.extractRequestStartTime(new URL(url));
+          console.log(`${event.url}: ${Date.now() - requestStartTime}ms`);
+        })
+      );
+  }
+
+  private setRequestStartTime(): object {
+    const now = Date.now();
+    const params = new HttpParams().set(this.requestStartTimeKey, now.toString());
+    return { params };
+  }
+
+  private extractRequestStartTime(url: URL): Date {
+    return new Date(url.searchParams.get(this.requestStartTimeKey));
   }
 }
