@@ -28,7 +28,7 @@ export class CartService {
         return this.cartItems.pipe(
             map(items => items
                 .map(item => item.quantity)
-                .reduce((prev, next) => prev + next)
+                .reduce((prev, next) => prev + next, 0)
             )
         );
     }
@@ -40,7 +40,7 @@ export class CartService {
     totalSum(): Observable<number> {
         return this.cartItems.pipe(
             map(items => items.map(this.getItemTotalPrice)
-                .reduce((prev, next) => prev + next)
+                .reduce((prev, next) => prev + next, 0)
             )
         );
     }
