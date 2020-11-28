@@ -1,2 +1,16 @@
+@import '~@angular/material/theming';
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+$primary: mat-palette($mat-orange);
+$accent: mat-palette($mat-yellow);
+$warn: mat-palette($mat-red);
+$default-warn: mat-palette($mat-red);
+$dark-theme: mat-dark-theme($primary, $accent, $warn);
+
+.dark {
+    @include angular-material-theme($dark-theme);
+    $accent: map-get($dark-theme, accent);
+    $background: map-get($dark-theme, background);
+}
