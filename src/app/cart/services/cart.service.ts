@@ -18,7 +18,7 @@ export class CartService {
     constructor(private readonly storage: LocalStorageService) {
 
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
-        this.cartItems.pipe(tap(updatedItems => this.updateLocal(updatedItems)));
+        this.cartItems.subscribe(updatedItems => this.updateLocal(updatedItems));
 
         const storedItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
         this.publish(storedItems || []);
