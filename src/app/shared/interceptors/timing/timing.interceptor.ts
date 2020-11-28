@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpEventType, HttpResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpRequest, HttpHandler, HttpEvent,
+  HttpInterceptor, HttpEventType,
+  HttpResponse, HttpParams
+} from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -21,7 +25,7 @@ export class TimingInterceptor implements HttpInterceptor {
         filter((event: HttpEvent<unknown>) => event.type === HttpEventType.Response),
         tap((event: HttpResponse<unknown>) => {
           const url = event.url;
-          const requestStartTime = +this.extractRequestStartTime(new URL(url));
+          const requestStartTime = this.extractRequestStartTime(new URL(url));
           console.log(`${event.url}: ${Date.now() - requestStartTime}ms`);
         })
       );
@@ -33,7 +37,7 @@ export class TimingInterceptor implements HttpInterceptor {
     return { params };
   }
 
-  private extractRequestStartTime(url: URL): Date {
-    return new Date(url.searchParams.get(this.requestStartTimeKey));
+  private extractRequestStartTime(url: URL): number {
+    return +url.searchParams.get(this.requestStartTimeKey);
   }
 }
