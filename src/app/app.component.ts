@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     @Optional() @Inject(GeneratedId) private readonly id: string,
     @Inject(DOCUMENT) private readonly document: Document,
     @Inject(AppConfig) private readonly appConfig: AppConfig,
-    private readonly appSettings: AppSettingsService,) {
+    private readonly appSettings: AppSettingsService) {
 
   }
 

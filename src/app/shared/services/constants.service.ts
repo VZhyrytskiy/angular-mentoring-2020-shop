@@ -2,7 +2,7 @@ import { InjectionToken } from '@angular/core';
 
 export interface AppConfig {
   title: string;
-  darkThemeClassName: string
+  darkThemeClassName: string;
 }
 
 export const AppConfig = new InjectionToken<AppConfig>('app.config');
