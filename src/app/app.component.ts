@@ -1,6 +1,10 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 
-import { GeneratedId, GeneratorService } from './shared/index';
+import { map } from 'rxjs/operators';
+
+import { AppConfig, GeneratedId, GeneratorService } from './shared/index';
+import { AppSettingsService } from './shared/services/app-settings.service';
 import { generatorFactory } from './shared/services/generator/generator.factory';
 
 @Component({
@@ -15,6 +19,18 @@ import { generatorFactory } from './shared/services/generator/generator.factory'
     }
   ]
 })
-export class AppComponent {
-  constructor(@Optional() @Inject(GeneratedId) private readonly id: string) { }
+export class AppComponent implements OnInit {
+  constructor(
+    @Optional() @Inject(GeneratedId) private readonly id: string,
+    @Inject(DOCUMENT) private readonly document: Document,
+    @Inject(AppConfig) private readonly appConfig: AppConfig,
+    private readonly appSettings: AppSettingsService,) {
+
+  }
+
+  ngOnInit(): void {
+    this.appSettings.channel$.pipe(map(x => x.isDarkTheme)).subscribe(x => {
+      this.document.body.classList.toggle(this.appConfig.darkThemeClassName);
+    });
+  }
 }
