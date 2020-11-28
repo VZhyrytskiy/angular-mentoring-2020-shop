@@ -17,6 +17,12 @@
                 <mat-menu #accountMenu="matMenu">
                     <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin">Admin dashboard</button>
                     <button mat-menu-item (click)="onLogoutClick()">Logout</button>
+                    <span mat-menu-item>
+                        <mat-slide-toggle (change)="onChange($event)" [checked]="isDarkTheme">
+                            Use Dark theme
+                        </mat-slide-toggle>
+                    </span>
+
                 </mat-menu>
             </span>
         </ng-template>
