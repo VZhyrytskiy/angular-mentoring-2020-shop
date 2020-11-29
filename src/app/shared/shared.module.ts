@@ -9,7 +9,6 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
 import { HeaderComponent, LoginComponent, FeatureNotAvailableComponent } from './components';
-import { TimingInterceptor } from './interceptors/timing/timing.interceptor';
 
 const imports = [
     CommonModule,
