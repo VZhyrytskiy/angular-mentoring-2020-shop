@@ -3,8 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, identity, Observable, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 
 import { CartService } from 'src/app/cart/services/cart.service';
 import { AppSettingsModel } from '../../models/app-settings.model';
@@ -62,12 +62,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.userNameSub = currentUser.subscribe(user => this.userName.next(user?.username));
 
-    this.isLoggedIn = currentUser.pipe(map(user => user !== null && user !== undefined));
-    this.isLoggedIn.subscribe(x => {
-      if (!x) {
-        this.appSettings.reset();
-      }
-    })
+    this.isLoggedIn = currentUser.pipe(map(user => user !== null && user !== undefined), tap());
+    this.isLoggedIn.pipe(filter(isLoggedIn => !isLoggedIn)).subscribe(this.appSettings.reset);
     this.isAdmin = this.usersService.isCurrentUserInRole('admin');
     this.totalQuantity = this.cartService.totalQuantity();
     this.settings = this.appSettings.settings$;

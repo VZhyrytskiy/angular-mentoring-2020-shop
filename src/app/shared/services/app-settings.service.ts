@@ -16,11 +16,11 @@ export class AppSettingsService {
   private readonly appSettingsUrl = '/assets/app-settings.json';
   private readonly appSettingsKey = 'appSettings';
   private readonly defaultSettings: AppSettingsModel = new AppSettingsModel(false);
-
   private readonly settings: BehaviorSubject<AppSettingsModel> = new BehaviorSubject(this.defaultSettings);
   settings$: Observable<AppSettingsModel> = this.settings.asObservable();
-   
-  constructor(private readonly localStorageService: LocalStorageService,
+
+  constructor(
+    private readonly localStorageService: LocalStorageService,
     private readonly http: HttpClient) { }
 
   update(username: string, settings: AppSettingsModel): void {
@@ -30,7 +30,6 @@ export class AppSettingsService {
 
   get(username: string): Observable<AppSettingsModel> {
     const localSettings = this.localStorageService.getItem<AppSettingsModel>(this.appSettingsKey + username);
-    
     if (!localSettings) {
       return this.fetch(username);
     }

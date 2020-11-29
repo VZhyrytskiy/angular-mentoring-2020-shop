@@ -10,7 +10,7 @@ import { AppConfig, ConstantsService, UsersService } from './../../services/inde
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers:[
+  providers: [
     {
       provide: AppConfig,
       useValue: ConstantsService
@@ -21,12 +21,13 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<LoginComponent>,
-    private usersService: UsersService,
+  constructor(
+    public readonly dialogRef: MatDialogRef<LoginComponent>,
+    private readonly formBuilder: FormBuilder,
+    private readonly usersService: UsersService,
+    private readonly appSettings: AppSettingsService,
     @Inject(DOCUMENT) private readonly document: Document,
-    @Inject(AppConfig) private readonly appConfig: AppConfig,
-    private readonly appSettings: AppSettingsService) { }
+    @Inject(AppConfig) private readonly appConfig: AppConfig) { }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
           }
           this.dialogRef.close();
         });
-      })
+      });
   }
 
   private darkThemeIsSet(): boolean {

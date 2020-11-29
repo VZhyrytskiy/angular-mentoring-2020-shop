@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { UserModel } from '../models/user.model';
-import { AppSettingsService } from './app-settings.service';
 import { LocalStorageService } from './local-storage/local-storage.service';
 
 @Injectable({
@@ -13,10 +12,10 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 export class UsersService {
 
   private readonly userKey = 'user';
-  private user: BehaviorSubject<UserModel>;
-  user$ : Observable<UserModel>;
-  
-  constructor(private readonly localStorageService: LocalStorageService, private readonly appSettings: AppSettingsService) {
+  private readonly user: BehaviorSubject<UserModel>;
+  user$: Observable<UserModel>;
+
+  constructor(private readonly localStorageService: LocalStorageService) {
     this.user = new BehaviorSubject<UserModel>(this.localStorageService.getItem(this.userKey));
     this.user$ = this.user.asObservable();
   }
