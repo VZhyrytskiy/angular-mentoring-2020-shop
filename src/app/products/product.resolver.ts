@@ -11,7 +11,7 @@ export class ProductResolver implements Resolve<ProductModel> {
 
     constructor(private productsService: ProductsService) { }
 
-    resolve(route: ActivatedRouteSnapshot): ProductModel {
+    resolve(route: ActivatedRouteSnapshot): Promise<ProductModel> {
         const id = route.paramMap.get('id');
 
         return this.productsService.getProductById(id);

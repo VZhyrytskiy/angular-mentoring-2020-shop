@@ -1,62 +1,61 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { CartService } from 'src/app/cart/services/cart.service';
+import { ThemeService } from '../../services/theme.service';
 import { LoginComponent } from '../login/login.component';
-import { AppConfig, ConstantsService, UsersService } from './../../services/index';
+import { AppConfig, UsersService } from './../../services/index';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  providers: [
-    {
-      provide: AppConfig,
-      useValue: ConstantsService
-    }
-  ]
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('appTitle') titleRef: ElementRef<HTMLHeadingElement>;
 
-  public userName: Observable<string>;
-  public isLoggedIn: Observable<boolean>;
-  public isAdmin: Observable<boolean>;
-  public totalQuantity: Observable<number>;
+  userName: BehaviorSubject<string> = new BehaviorSubject(null);
+  isLoggedIn: Observable<boolean>;
+  isAdmin: Observable<boolean>;
 
-  constructor(@Inject(AppConfig) private readonly appConfig: AppConfig,
-              public loginDialog: MatDialog,
-              private readonly usersService: UsersService,
-              private readonly cartService: CartService,
-              private readonly router: Router) { }
+  constructor(
+    public readonly themeService: ThemeService,
+    public readonly cartService: CartService,
+    @Inject(AppConfig) private readonly appConfig: AppConfig,
+    private readonly loginDialog: MatDialog,
+    private readonly usersService: UsersService,
+    private readonly router: Router) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout().subscribe(() =>
-      this.router.navigateByUrl(''));
+    this.usersService.logout().subscribe(() => this.router.navigateByUrl(''));
+  }
+
+  onChange(event: MatSlideToggleChange): void {
+    this.themeService.setIsDarkTheme(this.userName.getValue(), event.checked);
   }
 
   ngOnInit(): void {
-    const currentUser = this.usersService.getCurrentUser();
+    this.isLoggedIn = this.usersService.user$.pipe(switchMap(user => {
+      const isLogged = user !== null && user !== undefined;
 
-    this.userName = currentUser.pipe(map(user => {
-      return user?.username;
-    }));
+      if (isLogged) {
+        this.userName.next(user.username);
+      }
 
-    this.isLoggedIn = currentUser.pipe(map(user => {
-      return user !== null && user !== undefined;
+      return of(isLogged);
     }));
 
     this.isAdmin = this.usersService.isCurrentUserInRole('admin');
-    this.totalQuantity = this.cartService.totalQuantity();
   }
 
   ngAfterViewInit(): void {

@@ -9,6 +9,7 @@ import { OrderByPipe } from './pipes/order-by/order-by.pipe';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
 import { HeaderComponent, LoginComponent, FeatureNotAvailableComponent } from './components';
+import { AppConfig, ConstantsService } from '.';
 
 const imports = [
     CommonModule,
@@ -31,6 +32,12 @@ const declarations = [
 @NgModule({
     imports,
     exports: [...imports, ...declarations],
+    providers: [
+        {
+            provide: AppConfig,
+            useValue: ConstantsService
+        }
+    ],
     declarations
 })
 export class SharedModule { }

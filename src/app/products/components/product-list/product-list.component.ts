@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
 import { ProductModel } from '../../models/product.model';
@@ -17,10 +17,21 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private readonly productsService: ProductsService,
-    private readonly cartService: CartService) { }
+    private readonly cartService: CartService,
+    private readonly snackBar: MatSnackBar) { }
 
   onAddedToCart(product: ProductModel): void {
-    this.cartService.addProductToCart(product);
+    this.cartService.addProduct(product).then((addedProduct) => {
+      const message = `Product ${addedProduct.name} was added to cart`;
+
+      const snackBarConfig: MatSnackBarConfig = {
+        duration: 2000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'end'
+      };
+
+      this.snackBar.open(message, null, snackBarConfig);
+    });
   }
 
   ngOnInit(): void {

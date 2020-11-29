@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
+import { ThemeService } from '../../services/theme.service';
 import { UsersService } from './../../services/index';
 
 @Component({
@@ -13,9 +14,12 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<LoginComponent>,
-              private usersService: UsersService) { }
+  constructor(
+    public readonly dialogRef: MatDialogRef<LoginComponent>,
+    private readonly formBuilder: FormBuilder,
+    private readonly usersService: UsersService,
+    private readonly themeService: ThemeService
+  ) { }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -26,7 +30,10 @@ export class LoginComponent implements OnInit {
     }
 
     this.usersService.login(this.loginForm.value.username)
-      .subscribe(() => { this.dialogRef.close(); });
+      .subscribe(user => {
+        this.themeService.restore(user.username);
+        this.dialogRef.close();
+      });
   }
 
   ngOnInit(): void {

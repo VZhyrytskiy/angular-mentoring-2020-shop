@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,18 +15,22 @@ export class CartService {
     private readonly cartItemsStorageKey = 'cartItems';
     private cartItems: BehaviorSubject<Array<CartItemModel>>;
 
-    constructor(private readonly storage: LocalStorageService, private readonly snackBar: MatSnackBar) {
+    constructor(private readonly storage: LocalStorageService) {
+
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
+        this.cartItems.subscribe(updatedItems => this.updateLocal(updatedItems));
+
         const storedItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
-        this.cartItems.subscribe(updatedItems => this.updateLocalCart(updatedItems));
-        this.cartItems.next(storedItems || []);
+        this.publish(storedItems || []);
     }
 
     totalQuantity(): Observable<number> {
-        return this.cartItems.pipe(map(items => {
-            return items.map((item) => item.quantity)
-                .reduce((prev, next) => prev + next, 0);
-        }));
+        return this.cartItems.pipe(
+            map(items => items
+                .map(item => item.quantity)
+                .reduce((prev, next) => prev + next, 0)
+            )
+        );
     }
 
     isEmpty(): Observable<boolean> {
@@ -35,81 +38,87 @@ export class CartService {
     }
 
     totalSum(): Observable<number> {
-        return this.cartItems.pipe(map(items => {
-            return items.map(this.getCartItemTotalPrice)
-                .reduce((prev, next) => prev + next, 0);
-        }));
+        return this.cartItems.pipe(
+            map(items => items.map(this.getItemTotalPrice)
+                .reduce((prev, next) => prev + next, 0)
+            )
+        );
     }
 
-    getCartItems(): Observable<Array<CartItemModel>> {
+    getItems(): Observable<Array<CartItemModel>> {
         return this.cartItems.asObservable();
     }
 
-    getCartItemTotalPrice(cartItem: CartItemModel): number {
+    getItemTotalPrice(cartItem: CartItemModel): number {
         return cartItem.product.price * cartItem.quantity;
     }
 
-    addProductToCart(product: ProductModel): void {
-        const existingItem = this.searchCartForProductByName(product.name);
-        if (existingItem !== undefined) {
-            this.increaseQuantityByOne(product);
+    addProduct(product: ProductModel): Promise<ProductModel> {
+        const items = this.cartItems.getValue();
+
+        const productIndex = items.findIndex(x => x.product.id === product.id);
+
+        if (productIndex === -1) {
+            this.publish([...items, this.toCartItem(product)]);
         } else {
-            const items = this.cartItems.getValue();
-            items.push(this.createNewCartItem(product));
-            this.cartItems.next(items);
+            this.increaseQuantityByOne(product);
         }
 
-        this.snackBar.open(`Product ${product.name} was added to cart`, null, {
-            duration: 2000,
-            verticalPosition: 'bottom',
-            horizontalPosition: 'end'
-        });
+        return Promise.resolve(product);
     }
 
     increaseQuantityByOne(product: ProductModel): void {
-        const itemToIncrease = this.searchCartForProductByName(product.name);
-        if (itemToIncrease === undefined) {
+        const items = this.cartItems.getValue();
+
+        const productIndex = items.findIndex(x => x.product.id === product.id);
+
+        if (productIndex === -1) {
             return;
         }
 
-        itemToIncrease.quantity++;
-        this.cartItems.next(this.cartItems.getValue());
+        const item = items[productIndex];
+        const updatedItem = { ...item, quantity: item.quantity + 1 };
+        const updatedItems = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex+1)];
+
+        this.publish(updatedItems);
     }
 
     decreaseQuantityByOne(product: ProductModel): void {
-        const itemToDecrease = this.searchCartForProductByName(product.name);
-        if (itemToDecrease === undefined) {
+        const items = this.cartItems.getValue();
+
+        const productIndex = items.findIndex(x => x.product.id === product.id);
+
+        if (productIndex === -1) {
             return;
         }
 
-        if (itemToDecrease.quantity === 1) {
-            this.removeProductFromCart(product);
-        } else {
-            itemToDecrease.quantity--;
-        }
+        const updatedItem = { ...items[productIndex], quantity: items[productIndex].quantity - 1 };
+        const updated = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
 
-        this.cartItems.next(this.cartItems.getValue());
+        this.publish(updated.filter(x => x.quantity > 0));
     }
 
-    removeProductFromCart(product: ProductModel): void {
-        const productToRemove = this.searchCartForProductByName(product.name);
-        const filteredItems = this.cartItems.getValue().filter(item => item !== productToRemove);
-        this.cartItems.next(filteredItems);
+    removeProduct(product: ProductModel): void {
+        const items = this.cartItems.getValue();
+
+        const productIndex = items.findIndex(x => x.product.id === product.id);
+
+        this.publish([...items.slice(0, productIndex), ...items.slice(productIndex + 1)]);
     }
 
     removeAllProducts(): void {
-        this.cartItems.next([]);
+        this.publish([]);
     }
 
-    updateLocalCart(items: CartItemModel[]): void {
+    private updateLocal(items: CartItemModel[]): void {
         this.storage.setItem<Array<CartItemModel>>(this.cartItemsStorageKey, items);
     }
 
-    private searchCartForProductByName(productName: string): CartItemModel {
-        return this.cartItems.getValue().find(item => item.product.name === productName);
+    private publish(value: Array<CartItemModel>): void {
+        this.cartItems.next(value);
     }
 
-    private createNewCartItem(product: ProductModel): CartItemModel {
+    private toCartItem(product: ProductModel): CartItemModel {
         return {
             product,
             quantity: 1
