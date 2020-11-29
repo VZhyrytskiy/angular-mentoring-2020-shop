@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from 'src/app/cart/services/cart.service';
 
 import { ProductModel } from '../../models/product.model';
 
@@ -13,17 +11,17 @@ import { ProductModel } from '../../models/product.model';
 })
 export class ProductItemComponent implements OnInit {
 
-  constructor(private router: Router,
-              private readonly cartService: CartService) { }
+  constructor(private router: Router) { }
 
   @Input() model: ProductModel;
+  @Output() productAdded: EventEmitter<ProductModel> = new EventEmitter<ProductModel>();
 
   onViewClick(): void {
     this.router.navigate([`/product/${this.model.id}`]);
   }
 
   onAddToCart(): void {
-    this.cartService.addProduct(this.model);
+    this.productAdded.emit(this.model);
   }
 
   ngOnInit(): void { }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
@@ -53,7 +53,7 @@ export class CartService {
         return cartItem.product.price * cartItem.quantity;
     }
 
-    addProduct(product: ProductModel): Observable<ProductModel> {
+    addProduct(product: ProductModel): Promise<ProductModel> {
         const items = this.cartItems.getValue();
 
         const productIndex = items.findIndex(x => x.product.id === product.id);
@@ -64,7 +64,7 @@ export class CartService {
             this.increaseQuantityByOne(product);
         }
 
-        return of(product);
+        return Promise.resolve(product);
     }
 
     increaseQuantityByOne(product: ProductModel): void {
