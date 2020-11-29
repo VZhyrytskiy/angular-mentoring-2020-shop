@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { CartService } from 'src/app/cart/services/cart.service';
 import { AppSettingsModel } from '../../models/app-settings.model';
@@ -23,15 +23,17 @@ import { AppConfig, ConstantsService, UsersService } from './../../services/inde
     }
   ]
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('appTitle') titleRef: ElementRef<HTMLHeadingElement>;
 
-  userName: Observable<string>;
+  userName: BehaviorSubject<string> = new BehaviorSubject(null);
   isLoggedIn: Observable<boolean>;
   isAdmin: Observable<boolean>;
   totalQuantity: Observable<number>;
-  isDarkTheme: Observable<boolean>;
+  settings: Observable<AppSettingsModel>;
+
+  private userNameSub: Subscription;
 
   constructor(
     @Inject(AppConfig) private readonly appConfig: AppConfig,
@@ -39,38 +41,43 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     private readonly usersService: UsersService,
     private readonly cartService: CartService,
     private readonly router: Router,
-    private readonly settings: AppSettingsService) { }
+    private readonly appSettings: AppSettingsService) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout().subscribe(() =>
-      this.router.navigateByUrl(''));
+    this.usersService.logout().subscribe(() => {
+      this.router.navigateByUrl('');
+    });
   }
 
   onChange(event: MatSlideToggleChange): void {
-    this.settings.setIsDarkTheme(event.checked);
+    this.appSettings.update(this.userName.getValue(), new AppSettingsModel(event.checked));
   }
 
   ngOnInit(): void {
-    const currentUser = this.usersService.getCurrentUser();
+    const currentUser = this.usersService.user$;
 
-    this.userName = currentUser.pipe(map(user => {
-      return user?.username;
-    }));
+    this.userNameSub = currentUser.subscribe(user => this.userName.next(user?.username));
 
-    this.isLoggedIn = currentUser.pipe(map(user => {
-      return user !== null && user !== undefined;
-    }));
-
+    this.isLoggedIn = currentUser.pipe(map(user => user !== null && user !== undefined));
+    this.isLoggedIn.subscribe(x => {
+      if (!x) {
+        this.appSettings.reset();
+      }
+    })
     this.isAdmin = this.usersService.isCurrentUserInRole('admin');
     this.totalQuantity = this.cartService.totalQuantity();
-
+    this.settings = this.appSettings.settings$;
   }
 
   ngAfterViewInit(): void {
     this.titleRef.nativeElement.textContent = this.appConfig.title;
+  }
+
+  ngOnDestroy(): void {
+    this.userNameSub.unsubscribe();
   }
 }

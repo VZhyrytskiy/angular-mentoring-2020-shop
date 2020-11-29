@@ -1,21 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { UsersService } from './../../services/index';
+import { AppSettingsService } from '../../services/app-settings.service';
+import { AppConfig, ConstantsService, UsersService } from './../../services/index';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  providers:[
+    {
+      provide: AppConfig,
+      useValue: ConstantsService
+    }
+  ]
 })
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              public dialogRef: MatDialogRef<LoginComponent>,
-              private usersService: UsersService) { }
+    public dialogRef: MatDialogRef<LoginComponent>,
+    private usersService: UsersService,
+    @Inject(DOCUMENT) private readonly document: Document,
+    @Inject(AppConfig) private readonly appConfig: AppConfig,
+    private readonly appSettings: AppSettingsService) { }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -26,7 +37,19 @@ export class LoginComponent implements OnInit {
     }
 
     this.usersService.login(this.loginForm.value.username)
-      .subscribe(() => { this.dialogRef.close(); });
+      .subscribe(user => {
+        this.appSettings.get(user.username).subscribe(x => {
+          const result = (x.isDarkTheme && !this.darkThemeIsSet()) || (!x.isDarkTheme && this.darkThemeIsSet());
+          if (result) {
+            this.document.body.classList.toggle(this.appConfig.darkThemeClassName);
+          }
+          this.dialogRef.close();
+        });
+      })
+  }
+
+  private darkThemeIsSet(): boolean {
+    return this.document.body.classList.contains(this.appConfig.darkThemeClassName);
   }
 
   ngOnInit(): void {

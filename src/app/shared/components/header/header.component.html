@@ -18,7 +18,7 @@
                     <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin">Admin dashboard</button>
                     <button mat-menu-item (click)="onLogoutClick()">Logout</button>
                     <span mat-menu-item>
-                        <mat-slide-toggle (change)="onChange($event)" [checked]="isDarkTheme">
+                        <mat-slide-toggle (change)="onChange($event)" [checked]="(settings | async).isDarkTheme">
                             Use Dark theme
                         </mat-slide-toggle>
                     </span>

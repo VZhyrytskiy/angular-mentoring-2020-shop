@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, finalize, publish, refCount, retry, tap } from 'rxjs/operators';
 
 import { LocalStorageService } from './local-storage/local-storage.service';
@@ -13,42 +13,44 @@ import { AppSettingsModel } from '../models/app-settings.model';
 })
 export class AppSettingsService {
 
-  private readonly defaultSettings: AppSettingsModel = new AppSettingsModel(false);
-  private readonly settings: Subject<AppSettingsModel> = new Subject();
-
   private readonly appSettingsUrl = '/assets/app-settings.json';
   private readonly appSettingsKey = 'appSettings';
+  private readonly defaultSettings: AppSettingsModel = new AppSettingsModel(false);
 
-  channel$: Observable<AppSettingsModel> = this.settings.asObservable();
+  private readonly settings: BehaviorSubject<AppSettingsModel> = new BehaviorSubject(this.defaultSettings);
+  settings$: Observable<AppSettingsModel> = this.settings.asObservable();
+   
+  constructor(private readonly localStorageService: LocalStorageService,
+    private readonly http: HttpClient) { }
 
-  constructor(private localStorageService: LocalStorageService, private http: HttpClient) {
-    const localSettings = localStorageService.getItem<AppSettingsModel>(this.appSettingsKey);
-
-    this.settings.subscribe(settings => this.localStorageService.setItem(this.appSettingsKey, settings));
-
-    if (localSettings) {
-      this.update(localSettings);
-    } else {
-      this.fetch();
-    }
-  }
-
-  setIsDarkTheme(value: boolean): void {
-    this.update(new AppSettingsModel(value));
-  }
-
-  update(settings: AppSettingsModel): void {
+  update(username: string, settings: AppSettingsModel): void {
     this.settings.next(settings);
+    this.localStorageService.setItem(this.appSettingsKey + username, settings);
   }
 
-  private fetch(): void {
-    this.http.get<AppSettingsModel>(this.appSettingsUrl).pipe(
+  get(username: string): Observable<AppSettingsModel> {
+    const localSettings = this.localStorageService.getItem<AppSettingsModel>(this.appSettingsKey + username);
+    
+    if (!localSettings) {
+      return this.fetch(username);
+    }
+
+    this.update(username, localSettings);
+    return of(localSettings);
+  }
+
+  private fetch(username: string): Observable<AppSettingsModel> {
+    return this.http.get<AppSettingsModel>(this.appSettingsUrl).pipe(
       retry(2),
-      tap({ next: this.update }),
+      tap(settings => this.update(username, settings)),
       publish(),
       refCount(),
-      finalize(() => this.update(this.defaultSettings)),
+      finalize(() => this.reset()),
       catchError(this.handleError));
+  }
+
+  reset(): void {
+    this.settings.next(this.defaultSettings);
   }
 
   private handleError(errorResponse: HttpErrorResponse): Observable<never> {
