@@ -6,7 +6,7 @@
             </a></span>
     </div>
     <div>
-        <span class="navigation-item" *ngIf="(userName | async) == null else loggedUser">
+        <span class="navigation-item" *ngIf="(isLoggedIn | async) === false else loggedUser">
             <a mat-button (click)="onLoginClick()">Login</a>
         </span>
         <ng-template #loggedUser>
@@ -18,17 +18,16 @@
                     <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin">Admin dashboard</button>
                     <button mat-menu-item (click)="onLogoutClick()">Logout</button>
                     <span mat-menu-item>
-                        <mat-slide-toggle (change)="onChange($event)" [checked]="(settings | async).isDarkTheme">
-                            Use Dark theme
+                        <mat-slide-toggle (change)="onChange($event)" [checked]="this.themeService.isDarkTheme | async">
+                            Dark theme
                         </mat-slide-toggle>
                     </span>
-
                 </mat-menu>
             </span>
         </ng-template>
         <span class="navigation-item">
             <a mat-button routerLink="/cart">
-                <mat-icon>shopping_cart</mat-icon>({{totalQuantity | async}})
+                <mat-icon>shopping_cart</mat-icon>({{this.cartService.totalQuantity() | async}})
             </a>
         </span>
     </div>
