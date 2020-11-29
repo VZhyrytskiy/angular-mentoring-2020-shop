@@ -41,3 +41,10 @@ Project changes will be described in this file.
 - Orders module template init. User can pass to order pages if it has items in basket (guard).
 - Cart service reworked (RxJS usage).
 - Product view component added (with product resolver).
+
+## [Module 6]
+- Products stored on backend with json-server.
+- Product requests timing interceptor was added. 
+- Dark theme added with ThemeService. Theme preference saved for concrete user.
+- Small styles fixes.
+- Angular version updated to 11
