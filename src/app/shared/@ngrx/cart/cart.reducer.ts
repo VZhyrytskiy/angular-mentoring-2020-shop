@@ -15,7 +15,7 @@ const reducer = createReducer(
 
         return { ...state };
     }),
-    on(CartActions.setCartItems, ({ items }) => {
+    on(CartActions.setCartItems, (state,{ items }) => {
         console.log('SET_CART_ITEMS action being handled!');
 
         return {

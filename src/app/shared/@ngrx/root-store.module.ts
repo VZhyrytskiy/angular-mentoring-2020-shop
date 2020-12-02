@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
+
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { environment } from 'src/environments/environment';
 import { CartStoreModule } from './cart/cart-store.module';
 import { SharedModule } from '../shared.module';
 
 @NgModule({
-    declarations: [],
     imports: [
         SharedModule,
         StoreModule.forRoot({}, {
@@ -20,6 +21,7 @@ import { SharedModule } from '../shared.module';
                 strictActionTypeUniqueness: true
             }
         }),
+        EffectsModule.forRoot([]),
         CartStoreModule,
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]

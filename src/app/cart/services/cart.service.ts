@@ -25,7 +25,7 @@ export class CartService {
 
     loadCartItems(): Array<CartItemModel> {
         const storedItems = this.storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
-        
+
         return storedItems || [];
     }
 
@@ -83,7 +83,7 @@ export class CartService {
 
         const item = items[productIndex];
         const updatedItem = { ...item, quantity: item.quantity + 1 };
-        const updatedItems = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex+1)];
+        const updatedItems = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
 
         this.publish(updatedItems);
     }
