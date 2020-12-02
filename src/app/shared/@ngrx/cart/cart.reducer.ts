@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 
 import { CartState, initialCartState } from './cart.state';
 import * as CartActions from './cart.actions';
@@ -11,6 +11,6 @@ const reducer = createReducer(
     })
 );
 
-export function cartReducer(state: CartState, action: Action) {
+export function cartReducer(state: CartState, action: Action): CartState {
     return reducer(state, action);
 }

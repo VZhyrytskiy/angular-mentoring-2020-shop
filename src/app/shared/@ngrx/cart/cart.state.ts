@@ -11,3 +11,4 @@ export const initialCartState: CartState = {
     totalQuantity: 0,
     totalSum: 0
 };
+

@@ -11,6 +11,9 @@ import { SharedModule } from './shared/shared.module';
 import { OrdersModule } from './orders/orders.module';
 import { AdminModule } from './admin/admin.module';
 import { TimingInterceptor } from './shared';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { RootStoreModule } from './shared/@ngrx/root-store.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { TimingInterceptor } from './shared';
     CartModule,
     OrdersModule,
     AdminModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RootStoreModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
