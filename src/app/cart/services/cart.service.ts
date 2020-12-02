@@ -20,8 +20,13 @@ export class CartService {
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
         this.cartItems.subscribe(updatedItems => this.updateLocal(updatedItems));
 
-        const storedItems = storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
-        this.publish(storedItems || []);
+        this.publish(this.loadCartItems());
+    }
+
+    loadCartItems(): Array<CartItemModel> {
+        const storedItems = this.storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
+        
+        return storedItems || [];
     }
 
     totalQuantity(): Observable<number> {

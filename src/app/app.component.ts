@@ -1,4 +1,6 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as t from './shared/@ngrx';
 
 import { GeneratedId, GeneratorService } from './shared/index';
 import { generatorFactory } from './shared/services/generator/generator.factory';
@@ -15,6 +17,10 @@ import { generatorFactory } from './shared/services/generator/generator.factory'
     }
   ]
 })
-export class AppComponent {
-  constructor(@Optional() @Inject(GeneratedId) private readonly id: string) { }
+export class AppComponent implements OnInit {
+  constructor(@Optional() @Inject(GeneratedId) private readonly id: string,
+  private readonly store: Store) { }
+  ngOnInit(): void {
+    this.store.dispatch(t.initializeCartItems())
+  }
 }
