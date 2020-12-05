@@ -1,6 +1,6 @@
 <h2>Products</h2>
 <mat-divider></mat-divider>
-<div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutAlign="flex-start" fxLayoutGap="16px grid">
-    <app-product-item fxFlex="33%" *ngFor="let product of products | async" [model]="product"
+<div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="32px" fxLayoutAlign="flex-start" fxLayoutGap="16px grid">
+    <app-product-item fxFlex="50%" *ngFor="let product of products | async" [model]="product"
         (productAdded)="onAddedToCart($event)"></app-product-item>
 </div>
