@@ -31,10 +31,30 @@ export const getCartItemsSuccess = createAction(
 )
 
 export const addProductToCartItem = createAction(
-    '[Cart] ADD_PRODUCT_TO_CART',
+    '[Add Product To Cart Effect] ADD_PRODUCT_TO_CART',
     props<{ product: ProductModel }>()
 )
+
 export const addProductToCartSuccess = createAction(
     '[Cart] ADD_PRODUCT_TO_CART_SUCCESS',
     props<{ addedProduct: ProductModel }>()
+)
+
+export const increaseCartItemQuantityByOne = createAction(
+    '[Cart] INCREASE_CART_PRODUCT_QUANTITY_BY_ONE',
+    props<{ cartItem: CartItemModel }>()
+)
+
+export const decreaseCartItemQuantityByOne = createAction(
+    '[Cart] DECREASE_CART_PRODUCT_QUANTITY_BY_ONE',
+    props<{ cartItem: CartItemModel }>()
+)
+
+export const removeProductFromCart = createAction(
+    '[Cart] REMOVE_PRODUCT_FROM_CART',
+    props<{ product: ProductModel }>()
+)
+
+export const removeAllProductsFromCart = createAction(
+    '[Cart] REMOVE_ALL_PRODUCTS_FROM_CART'
 )

@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-
 import { Observable } from 'rxjs';
 
-import { CartItemModel } from '../../models/cart-item.model';
-import { CartService } from '../../services/cart.service';
-import {
-  CartListOrderByOption, CartListSortDirectionOption,
-  CartOrderByOptions, CartSortDirectionOptions
-} from './cart-list.constants';
-
 import { select, Store } from '@ngrx/store';
+
+import { CartItemModel } from '../../models/cart-item.model';
+import * as CartSelectors from 'src/app/shared/@ngrx/cart/cart.selectors';
+import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
 import {
-  selectCartItems, selectIsEmpty,
-  selectTotalQuantity, selectTotalSum
-} from 'src/app/shared/@ngrx/cart/cart.selectors';
+  CartListOrderByOption,
+  CartListSortDirectionOption,
+  CartOrderByOptions,
+  CartSortDirectionOptions
+} from './cart-list.constants';
 
 @Component({
   selector: 'app-cart-list',
@@ -35,18 +33,18 @@ export class CartListComponent implements OnInit {
   orderBySortDirectionOptions: CartListSortDirectionOption[];
   orderByIsAscending: boolean;
 
-  constructor(private readonly cartService: CartService, private readonly router: Router, private readonly store: Store) { }
+  constructor(private router: Router, private store: Store) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
-    this.cartService.decreaseQuantityByOne(item.product);
+    this.store.dispatch(CartActions.decreaseCartItemQuantityByOne({ cartItem: item }));
   }
 
   onItemQuantityIncreased(item: CartItemModel): void {
-    this.cartService.increaseQuantityByOne(item.product);
+    this.store.dispatch(CartActions.increaseCartItemQuantityByOne({ cartItem: item }));
   }
 
   onItemRemoved(item: CartItemModel): void {
-    this.cartService.removeProduct(item.product);
+    this.store.dispatch(CartActions.removeProductFromCart({ product: item.product }));
   }
 
   onCheckoutClick(): void {
@@ -54,7 +52,7 @@ export class CartListComponent implements OnInit {
   }
 
   onClearClick(): void {
-    this.cartService.removeAllProducts();
+    this.store.dispatch(CartActions.removeAllProductsFromCart());
   }
 
   ngOnInit(): void {
@@ -63,10 +61,10 @@ export class CartListComponent implements OnInit {
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
 
-    this.items = this.store.pipe(select(selectCartItems));
-    this.totalSum = this.store.pipe(select(selectTotalSum));
-    this.totalQuantity = this.store.pipe(select(selectTotalQuantity));
-    this.isEmpty = this.store.pipe(select(selectIsEmpty));
+    this.items = this.store.pipe(select(CartSelectors.selectCartItems));
+    this.totalSum = this.store.pipe(select(CartSelectors.selectTotalSum));
+    this.totalQuantity = this.store.pipe(select(CartSelectors.selectTotalQuantity));
+    this.isEmpty = this.store.pipe(select(CartSelectors.selectIsEmpty));
   }
 }
 
