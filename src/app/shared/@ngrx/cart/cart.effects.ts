@@ -19,7 +19,6 @@ export class CartEffects {
             ofType(CartActions.getLocalCartItems),
             switchMap(async () => {
                 const items = this.cartService.getLocalCartItems();
-                console.log("Effect:"+JSON.stringify(items));
                 return CartActions.setCartItems({ items: items });
             })
         )

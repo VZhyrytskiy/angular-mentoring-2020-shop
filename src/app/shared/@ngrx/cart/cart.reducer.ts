@@ -27,10 +27,7 @@ const increaseQuantityByOne = function (productIndex: number,
 const reducer = createReducer(
     initialCartState,
     on(CartActions.setCartItems, (_state,{ items }) => {
-        console.log(items);
-        const newState = createStateFrom(items);
-        console.log(newState);
-        return newState;
+        return createStateFrom(items);
     }),
     on(CartActions.addProductToCartItem, ({ items }, { product }) => {
         const productIndex = items.findIndex(x => x.product.id === product.id);
