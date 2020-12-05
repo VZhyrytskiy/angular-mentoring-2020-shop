@@ -11,7 +11,7 @@ export class OrderByPipe implements PipeTransform {
     }
 
     const objs = this.cast<Array<object>>(items);
-    const sortedObjs = objs.sort(this.getComparator(key, isAsc));
+    const sortedObjs = objs.slice().sort(this.getComparator(key, isAsc));
 
     return this.cast<Array<T>>(sortedObjs);
   }
