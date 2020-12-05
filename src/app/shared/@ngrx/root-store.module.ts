@@ -3,12 +3,13 @@ import { NgModule } from '@angular/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { environment } from 'src/environments/environment';
-import { CartStoreModule } from './cart/cart-store.module';
 import { SharedModule } from '../shared.module';
-import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { RouterSerializer } from './router';
+import { ProductsModule } from 'src/app/products/products.module';
+import { CartStoreModule } from './cart/cart-store.module';
 
 @NgModule({
     imports: [
@@ -30,7 +31,7 @@ import { RouterSerializer } from './router';
         }),
         EffectsModule.forRoot([]),
         CartStoreModule,
-
+        ProductsModule,
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]
 })
