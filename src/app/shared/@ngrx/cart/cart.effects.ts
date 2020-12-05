@@ -19,10 +19,10 @@ export class CartEffects {
             ofType(CartActions.getLocalCartItems),
             switchMap(async () => {
                 const items = this.cartService.getLocalCartItems();
-                return CartActions.setCartItems({ items: items });
+                return CartActions.setCartItems({ items });
             })
         )
-    )
+    );
 
     updateLocalCartItems$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
@@ -52,7 +52,6 @@ export class CartEffects {
     );
 
     constructor(private actions$: Actions,
-        private cartService: CartService,
-        private store: Store<AppState>) {
-    }
+                private cartService: CartService,
+                private store: Store<AppState>) { }
 }

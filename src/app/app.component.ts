@@ -19,7 +19,7 @@ import { generatorFactory } from './shared/services/generator/generator.factory'
   ]
 })
 export class AppComponent {
-  constructor(@Optional() @Inject(GeneratedId) private readonly id: string, private store: Store) {  
+  constructor(@Optional() @Inject(GeneratedId) private readonly id: string, private store: Store) {
     this.store.dispatch(getLocalCartItems());
   }
 }

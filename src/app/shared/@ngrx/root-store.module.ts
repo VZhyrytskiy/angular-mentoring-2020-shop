@@ -7,6 +7,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { environment } from 'src/environments/environment';
 import { CartStoreModule } from './cart/cart-store.module';
 import { SharedModule } from '../shared.module';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { RouterSerializer } from './router';
 
 @NgModule({
     imports: [
@@ -21,8 +23,14 @@ import { SharedModule } from '../shared.module';
                 strictActionTypeUniqueness: true
             }
         }),
+        StoreRouterConnectingModule.forRoot({
+            stateKey: 'router',
+            routerState: RouterState.Minimal,
+            serializer: RouterSerializer
+        }),
         EffectsModule.forRoot([]),
         CartStoreModule,
+
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]
 })

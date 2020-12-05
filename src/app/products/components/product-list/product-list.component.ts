@@ -9,7 +9,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { ProductModel } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
-import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions'
+import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
 
 @Component({
   selector: 'app-product-list',
@@ -28,14 +28,14 @@ export class ProductListComponent implements OnInit {
   }
 
   onAddedToCart(product: ProductModel): void {
-    this.store.dispatch(addProductToCartItem({ product: product }));
+    this.store.dispatch(addProductToCartItem({ product }));
   }
 
   ngOnInit(): void {
     this.products = this.productsService.getProducts();
 
     this.actions$.pipe(ofType(CartActions.addProductToCartSuccess))
-      .subscribe(action => this.showProductAddedMessage(action.addedProduct))
+      .subscribe(action => this.showProductAddedMessage(action.addedProduct));
   }
 
   private showProductAddedMessage(addedProduct: ProductModel): void {

@@ -4,7 +4,7 @@ import { CartState, initialCartState } from './cart.state';
 import * as CartActions from './cart.actions';
 import { CartItemModel } from 'src/app/cart/models/cart-item.model';
 
-const createStateFrom = function (items: ReadonlyArray<CartItemModel>): CartState {
+const createStateFrom = (items: ReadonlyArray<CartItemModel>): CartState => {
     const totalQuantity = items.map(item => item.quantity)
         .reduce((prev, next) => prev + next, 0);
 
@@ -13,20 +13,20 @@ const createStateFrom = function (items: ReadonlyArray<CartItemModel>): CartStat
 
     const isEmpty = items.length === 0;
 
-    return { items, totalQuantity, totalSum, isEmpty }
-}
+    return { items, totalQuantity, totalSum, isEmpty };
+};
 
-const increaseQuantityByOne = function (productIndex: number,
-    items: ReadonlyArray<CartItemModel>): ReadonlyArray<CartItemModel> {
+const increaseQuantityByOne = (productIndex: number, items: ReadonlyArray<CartItemModel>):
+    ReadonlyArray<CartItemModel> => {
     const item = items[productIndex];
     const updatedItem = new CartItemModel(item.product, item.quantity + 1);
 
     return [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
-}
+};
 
 const reducer = createReducer(
     initialCartState,
-    on(CartActions.setCartItems, (_state,{ items }) => {
+    on(CartActions.setCartItems, (state, { items }) => {
         return createStateFrom(items);
     }),
     on(CartActions.addProductToCartItem, ({ items }, { product }) => {
@@ -42,7 +42,7 @@ const reducer = createReducer(
         const productIndex = state.items.findIndex(item => item.product.id === cartItem.product.id);
 
         if (productIndex === -1) {
-            return { ...state }
+            return { ...state };
         }
 
         return createStateFrom(increaseQuantityByOne(productIndex, state.items));
@@ -53,16 +53,16 @@ const reducer = createReducer(
         const productIndex = items.findIndex(item => item.product.id === cartItem.product.id);
 
         if (productIndex === -1) {
-            return { ...state }
+            return { ...state };
         }
 
-        const item = items[productIndex];
+        const itemToUpdate = items[productIndex];
 
-        if (item.quantity === 1) {
+        if (itemToUpdate.quantity === 1) {
             return createStateFrom([...items.slice(0, productIndex), ...items.slice(productIndex + 1)]);
         }
 
-        const updatedItem = new CartItemModel(item.product, item.quantity - 1);
+        const updatedItem = new CartItemModel(itemToUpdate.product, itemToUpdate.quantity - 1);
         const updatedItems = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
 
         return createStateFrom(updatedItems);
