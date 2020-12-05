@@ -9,12 +9,12 @@ export const getLocalCartItems = createAction(
 
 export const setCartItems = createAction(
     '[Cart] SET_CART_ITEMS',
-    props<{ items: CartItemModel[] }>()
+    props<{ items: ReadonlyArray<CartItemModel> }>()
 )
 
 export const updateLocalCartItems = createAction(
     '[Set Cart Items Effect] UPDATE_LOCAL_CART_ITEMS',
-    props<{ items: CartItemModel[] }>()
+    props<{ items: ReadonlyArray<CartItemModel> }>()
 )
 
 export const updateLocalCartItemsSuccess = createAction(

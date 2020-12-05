@@ -15,8 +15,8 @@ import { SharedModule } from '../shared.module';
             runtimeChecks: {
                 strictStateImmutability: true,
                 strictActionImmutability: true,
-                strictStateSerializability: true,
-                strictActionSerializability: true,
+                strictStateSerializability: false,
+                strictActionSerializability: false,
                 strictActionWithinNgZone: true,
                 strictActionTypeUniqueness: true
             }
