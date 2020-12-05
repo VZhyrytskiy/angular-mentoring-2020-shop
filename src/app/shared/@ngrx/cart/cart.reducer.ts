@@ -15,14 +15,18 @@ const reducer = createReducer(
 
         return { ...state };
     }),
-    on(CartActions.setCartItems, (state,{ items }) => {
+    on(CartActions.setCartItems, ({ items }) => {
         console.log('SET_CART_ITEMS action being handled!');
 
-        return {
-            items: items,
-            totalQuantity: items.map(item => item.quantity).reduce((prev, next) => prev + next, 0),
-            totalSum: items.map(item => item.product.price * item.quantity).reduce((prev, next) => prev + next, 0)
-        }
+        const totalQuantity = items.map(item => item.quantity)
+            .reduce((prev, next) => prev + next, 0);
+
+        const totalSum = items.map(item => item.product.price * item.quantity)
+            .reduce((prev, next) => prev + next, 0);
+
+        const isEmpty = items.length === 0;
+
+        return { items, totalQuantity, totalSum, isEmpty };
     })
 );
 

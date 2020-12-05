@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+
 import { Observable } from 'rxjs';
 
 import { CartItemModel } from '../../models/cart-item.model';
@@ -10,6 +11,12 @@ import {
   CartOrderByOptions, CartSortDirectionOptions
 } from './cart-list.constants';
 
+import { select, Store } from '@ngrx/store';
+import {
+  selectCartItems, selectIsEmpty,
+  selectTotalQuantity, selectTotalSum
+} from 'src/app/shared/@ngrx/cart/cart.selectors';
+
 @Component({
   selector: 'app-cart-list',
   templateUrl: './cart-list.component.html',
@@ -17,7 +24,7 @@ import {
 })
 export class CartListComponent implements OnInit {
 
-  items: Observable<Array<CartItemModel>>;
+  items: Observable<ReadonlyArray<CartItemModel>>;
   totalSum: Observable<number>;
   totalQuantity: Observable<number>;
   isEmpty: Observable<boolean>;
@@ -28,7 +35,7 @@ export class CartListComponent implements OnInit {
   orderBySortDirectionOptions: CartListSortDirectionOption[];
   orderByIsAscending: boolean;
 
-  constructor(private readonly cartService: CartService, private readonly router: Router) { }
+  constructor(private readonly cartService: CartService, private readonly router: Router, private readonly store: Store) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
     this.cartService.decreaseQuantityByOne(item.product);
@@ -55,10 +62,11 @@ export class CartListComponent implements OnInit {
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
     this.orderBySelectedOptionValue = this.orderByOptions[0].value;
-    this.items = this.cartService.getItems();
-    this.totalSum = this.cartService.totalSum();
-    this.totalQuantity = this.cartService.totalQuantity();
-    this.isEmpty = this.cartService.isEmpty();
+
+    this.items = this.store.pipe(select(selectCartItems));
+    this.totalSum = this.store.pipe(select(selectTotalSum));
+    this.totalQuantity = this.store.pipe(select(selectTotalQuantity));
+    this.isEmpty = this.store.pipe(select(selectIsEmpty));
   }
 }
 

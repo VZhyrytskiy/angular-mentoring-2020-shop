@@ -29,31 +29,6 @@ export class CartService {
         return storedItems || [];
     }
 
-    totalQuantity(): Observable<number> {
-        return this.cartItems.pipe(
-            map(items => items
-                .map(item => item.quantity)
-                .reduce((prev, next) => prev + next, 0)
-            )
-        );
-    }
-
-    isEmpty(): Observable<boolean> {
-        return this.totalQuantity().pipe(map(quantity => quantity === 0));
-    }
-
-    totalSum(): Observable<number> {
-        return this.cartItems.pipe(
-            map(items => items.map(this.getItemTotalPrice)
-                .reduce((prev, next) => prev + next, 0)
-            )
-        );
-    }
-
-    getItems(): Observable<Array<CartItemModel>> {
-        return this.cartItems.asObservable();
-    }
-
     getItemTotalPrice(cartItem: CartItemModel): number {
         return cartItem.product.price * cartItem.quantity;
     }

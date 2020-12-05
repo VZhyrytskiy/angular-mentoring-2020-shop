@@ -4,11 +4,13 @@ export interface CartState {
     items: ReadonlyArray<CartItemModel>;
     readonly totalQuantity: number;
     readonly totalSum: number;
+    readonly isEmpty: boolean;
 }
 
 export const initialCartState: CartState = {
     items: [],
     totalQuantity: 0,
-    totalSum: 0
+    totalSum: 0,
+    isEmpty: true
 };
 

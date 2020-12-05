@@ -3,7 +3,8 @@
         <span class="navigation-item">
             <a mat-button routerLink="/">
                 <h1 #appTitle></h1>
-            </a></span>
+            </a>
+        </span>
     </div>
     <div>
         <span class="navigation-item" *ngIf="(isLoggedIn | async) === false else loggedUser">
@@ -27,7 +28,7 @@
         </ng-template>
         <span class="navigation-item">
             <a mat-button routerLink="/cart">
-                <mat-icon>shopping_cart</mat-icon>({{this.cartService.totalQuantity() | async}})
+                <mat-icon>shopping_cart</mat-icon>({{this.totalQuantity | async}})
             </a>
         </span>
     </div>

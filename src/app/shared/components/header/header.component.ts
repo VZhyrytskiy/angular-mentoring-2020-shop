@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
 
-import { CartService } from 'src/app/cart/services/cart.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { selectTotalQuantity } from '../../@ngrx';
+
 import { ThemeService } from '../../services/theme.service';
 import { LoginComponent } from '../login/login.component';
 import { AppConfig, UsersService } from './../../services/index';
@@ -23,10 +25,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   userName: BehaviorSubject<string> = new BehaviorSubject(null);
   isLoggedIn: Observable<boolean>;
   isAdmin: Observable<boolean>;
+  totalQuantity: Observable<number>;
 
   constructor(
     public readonly themeService: ThemeService,
-    public readonly cartService: CartService,
+    public readonly store: Store,
     @Inject(AppConfig) private readonly appConfig: AppConfig,
     private readonly loginDialog: MatDialog,
     private readonly usersService: UsersService,
@@ -56,6 +59,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }));
 
     this.isAdmin = this.usersService.isCurrentUserInRole('admin');
+    this.totalQuantity = this.store.pipe(select(selectTotalQuantity));
   }
 
   ngAfterViewInit(): void {
