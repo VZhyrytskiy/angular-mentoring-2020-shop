@@ -17,7 +17,15 @@ const createStateFrom = function (items: ReadonlyArray<CartItemModel>): CartStat
     return { items, totalQuantity, totalSum, isEmpty }
 }
 
-function toCartItem(product: ProductModel): CartItemModel {
+const increaseQuantityByOne = function (productIndex: number,
+    items: ReadonlyArray<CartItemModel>): ReadonlyArray<CartItemModel> {
+    const item = items[productIndex];
+    const updatedItem = { ...item, quantity: item.quantity + 1 };
+
+    return [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
+}
+
+const toCartItem = function (product: ProductModel): CartItemModel {
     return {
         product,
         quantity: 1
@@ -26,25 +34,15 @@ function toCartItem(product: ProductModel): CartItemModel {
 
 const reducer = createReducer(
     initialCartState,
-    on(CartActions.getCartItems, state => {
-        return { ...state };
-    }),
-    on(CartActions.getLocalCartItems, state => {
-        return { ...state };
-    }),
-    on(CartActions.setCartItems, ({ items }) =>  createStateFrom(items)),
-    on(CartActions.addProductToCartItem, (state, { product }) => {
-        let items = state.items;
-
+    on(CartActions.setCartItems, state => createStateFrom(state.items)),
+    on(CartActions.addProductToCartItem, ({ items }, { product }) => {
         const productIndex = items.findIndex(x => x.product.id === product.id);
 
         if (productIndex === -1) {
-          items = [...items, toCartItem(product)];
-        } else {
-            //this.increaseQuantityByOne(product);
+            return createStateFrom([...items, toCartItem(product)]);
         }
 
-        return createStateFrom(items);
+        return createStateFrom(increaseQuantityByOne(productIndex, items));
     })
 );
 

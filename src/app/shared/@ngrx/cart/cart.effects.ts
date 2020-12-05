@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import * as CartActions from './cart.actions';
@@ -33,9 +33,17 @@ export class CartEffects {
         )
     );
 
+    productAddedToCart$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(CartActions.addProductToCartItem),
+            switchMap(async (action) => {
+                return CartActions.addProductToCartSuccess({ addedProduct: action.product });
+            })
+        )
+    );
+
     constructor(private actions$: Actions,
         private cartService: CartService,
         private store: Store<AppState>) {
-        console.log('[CART EFFECTS]');
     }
 }

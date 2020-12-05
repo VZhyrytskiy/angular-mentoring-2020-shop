@@ -34,3 +34,7 @@ export const addProductToCartItem = createAction(
     '[Cart] ADD_PRODUCT_TO_CART',
     props<{ product: ProductModel }>()
 )
+export const addProductToCartSuccess = createAction(
+    '[Cart] ADD_PRODUCT_TO_CART_SUCCESS',
+    props<{ addedProduct: ProductModel }>()
+)

@@ -35,20 +35,6 @@ export class CartService {
         return cartItem.product.price * cartItem.quantity;
     }
 
-    addProduct(product: ProductModel): Promise<ProductModel> {
-        const items = this.cartItems.getValue();
-
-        const productIndex = items.findIndex(x => x.product.id === product.id);
-
-        if (productIndex === -1) {
-            this.publish([...items, this.toCartItem(product)]);
-        } else {
-            this.increaseQuantityByOne(product);
-        }
-
-        return Promise.resolve(product);
-    }
-
     increaseQuantityByOne(product: ProductModel): void {
         const items = this.cartItems.getValue();
 

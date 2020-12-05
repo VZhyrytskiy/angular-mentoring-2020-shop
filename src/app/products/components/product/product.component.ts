@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { CartService } from './../../../cart/services/cart.service';
+import { Store } from '@ngrx/store';
+
+import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
 import { ProductModel } from './../../models/product.model';
 
 @Component({
@@ -16,10 +18,10 @@ export class ProductComponent implements OnInit {
   product: ProductModel;
   averageScore: number;
 
-  constructor(private readonly cartService: CartService, private readonly activatedRoute: ActivatedRoute) { }
+  constructor(private readonly activatedRoute: ActivatedRoute, private store: Store) { }
 
   onAddToCart(): void {
-    this.cartService.addProduct(this.product);
+    this.store.dispatch(addProductToCartItem({ product: this.product }));
   }
 
   ngOnInit(): void {
