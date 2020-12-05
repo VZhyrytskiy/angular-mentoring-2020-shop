@@ -13,7 +13,7 @@ export class CartService {
     constructor(private localStorageService: LocalStorageService) { }
 
     getLocalCartItems(): ReadonlyArray<CartItemModel> {
-        const storedItems = this.localStorageService.getItem<ReadonlyArray<CartItemModel>>(this.cartItemsStorageKey);
+        const storedItems = this.localStorageService.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
 
         return storedItems || [];
     }

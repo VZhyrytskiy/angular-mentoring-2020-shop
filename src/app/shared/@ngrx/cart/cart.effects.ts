@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { concatMap, exhaustMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import * as CartActions from './cart.actions';
 import { AppState } from '../app.state';
@@ -19,6 +19,7 @@ export class CartEffects {
             ofType(CartActions.getLocalCartItems),
             switchMap(async () => {
                 const items = this.cartService.getLocalCartItems();
+                console.log("Effect:"+JSON.stringify(items));
                 return CartActions.setCartItems({ items: items });
             })
         )
@@ -26,7 +27,7 @@ export class CartEffects {
 
     updateLocalCartItems$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
-            ofType(CartActions.setCartItems,
+            ofType(
                 CartActions.removeAllProductsFromCart,
                 CartActions.increaseCartItemQuantityByOne,
                 CartActions.decreaseCartItemQuantityByOne,
@@ -35,8 +36,8 @@ export class CartEffects {
             concatMap(action => of(action).pipe(
                 withLatestFrom(this.store.select(selectCartItems))
             )),
-            switchMap(async ([action, items]) => {
-                this.cartService.updateLocalCartItems(items);
+            tap(([, items]) => this.cartService.updateLocalCartItems(items)),
+            switchMap(async () => {
                 return CartActions.updateLocalCartItemsSuccess();
             })
         )

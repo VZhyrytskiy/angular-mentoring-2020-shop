@@ -8,7 +8,7 @@ const createStateFrom = function (items: ReadonlyArray<CartItemModel>): CartStat
     const totalQuantity = items.map(item => item.quantity)
         .reduce((prev, next) => prev + next, 0);
 
-    const totalSum = items.map(item => item.getTotalSum())
+    const totalSum = items.map(item => item.product.price * item.quantity)
         .reduce((prev, next) => prev + next, 0);
 
     const isEmpty = items.length === 0;
@@ -26,7 +26,12 @@ const increaseQuantityByOne = function (productIndex: number,
 
 const reducer = createReducer(
     initialCartState,
-    on(CartActions.setCartItems, ({ items }) => createStateFrom(items)),
+    on(CartActions.setCartItems, (_state,{ items }) => {
+        console.log(items);
+        const newState = createStateFrom(items);
+        console.log(newState);
+        return newState;
+    }),
     on(CartActions.addProductToCartItem, ({ items }, { product }) => {
         const productIndex = items.findIndex(x => x.product.id === product.id);
 

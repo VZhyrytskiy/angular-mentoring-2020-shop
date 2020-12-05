@@ -5,7 +5,8 @@
         <mat-card-title>{{item.product.name}}</mat-card-title>
     </mat-card-header>
     <mat-card-content fxLayoutAlign="center center">
-        <input class="cart-item__price" matInput disabled value="{{item.getTotalSum()| currency:'USD'}}">
+        <input class="cart-item__price" matInput disabled
+            value="{{ (item.product.price * item.quantity)| currency:'USD'}}">
     </mat-card-content>
     <mat-card-actions class="cart-item__actions" fxLayoutAlign="center center">
         <button mat-button color="primary" (click)="onIncreaseByOne()">+</button>

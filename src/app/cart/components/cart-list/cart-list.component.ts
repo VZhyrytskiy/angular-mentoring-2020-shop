@@ -56,7 +56,6 @@ export class CartListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(CartActions.getLocalCartItems());
     this.orderByOptions = CartOrderByOptions;
     this.orderBySortDirectionOptions = CartSortDirectionOptions;
     this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;

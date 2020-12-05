@@ -1,5 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
 
+import { Store } from '@ngrx/store';
+
+import { getLocalCartItems } from './shared/@ngrx';
 import { GeneratedId, GeneratorService } from './shared/index';
 import { generatorFactory } from './shared/services/generator/generator.factory';
 
@@ -16,5 +19,7 @@ import { generatorFactory } from './shared/services/generator/generator.factory'
   ]
 })
 export class AppComponent {
-  constructor(@Optional() @Inject(GeneratedId) private readonly id: string) { }
+  constructor(@Optional() @Inject(GeneratedId) private readonly id: string, private store: Store) {  
+    this.store.dispatch(getLocalCartItems());
+  }
 }
