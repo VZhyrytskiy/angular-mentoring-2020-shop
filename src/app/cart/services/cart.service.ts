@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ProductModel } from 'src/app/products/models/product.model';
 import { CartItemModel } from '../models/cart-item.model';
@@ -18,15 +17,18 @@ export class CartService {
     constructor(private readonly storage: LocalStorageService) {
 
         this.cartItems = new BehaviorSubject<Array<CartItemModel>>([]);
-        this.cartItems.subscribe(updatedItems => this.updateLocal(updatedItems));
 
-        this.publish(this.loadCartItems());
+        this.publish(this.getLocalCartItems());
     }
 
-    loadCartItems(): Array<CartItemModel> {
+    getLocalCartItems(): Array<CartItemModel> {
         const storedItems = this.storage.getItem<Array<CartItemModel>>(this.cartItemsStorageKey);
 
         return storedItems || [];
+    }
+
+    updateLocalCartItems(items: CartItemModel[]): void {
+        this.storage.setItem<Array<CartItemModel>>(this.cartItemsStorageKey, items);
     }
 
     getItemTotalPrice(cartItem: CartItemModel): number {
@@ -88,10 +90,6 @@ export class CartService {
 
     removeAllProducts(): void {
         this.publish([]);
-    }
-
-    private updateLocal(items: CartItemModel[]): void {
-        this.storage.setItem<Array<CartItemModel>>(this.cartItemsStorageKey, items);
     }
 
     private publish(value: Array<CartItemModel>): void {
