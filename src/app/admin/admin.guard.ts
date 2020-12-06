@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { selectIsAdminUser } from '../shared/@ngrx';
+import { selectUserRoles } from '../shared/@ngrx';
 import { go } from '../shared/@ngrx/router/router.actions';
 
 @Injectable({
@@ -31,8 +31,10 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
   private isAdmin(): Observable<boolean | UrlTree> {
     return this.store.pipe(
-      select(selectIsAdminUser),
-      map(isAdmin => {
+      select(selectUserRoles),
+      map(roles => {
+        const isAdmin = roles.some(role => role === 'admin');
+
         if (!isAdmin) {
           this.store.dispatch(go({ path: ['/not-found'] }));
         }

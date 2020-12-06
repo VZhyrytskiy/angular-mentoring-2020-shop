@@ -19,7 +19,6 @@ export class ThemeService {
     @Inject(AppConfig) private appConfig: AppConfig,
     private appSettings: AppSettingsService,
     private store: Store) {
-      
     this.store.pipe(
       select(selectIsDarkTheme),
       filter(value => this.isSwitchThemeRequired(value))

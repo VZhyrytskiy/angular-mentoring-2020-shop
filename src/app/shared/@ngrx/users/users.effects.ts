@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
 
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import * as UsersActions from './users.actions';
 import { UsersService } from '../../services';
 import { AppSettingsService } from '../../services/app-settings.service';
 import { ThemeService } from '../../services/theme.service';
+import { selectUserName } from './users.selectors';
 
 @Injectable()
 export class UsersEffects {
@@ -55,8 +56,20 @@ export class UsersEffects {
         )
     );
 
+    userChangedTheme$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.userChangesTheme),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.select(selectUserName))
+            )),
+            tap(([action, name]) => this.themeService.setIsDarkTheme(name, action.isDark)),
+            map(() => UsersActions.userChangesThemeSuccess())
+        )
+    );
+
     constructor(private actions$: Actions,
         private usersService: UsersService,
         private themeService: ThemeService,
-        private appSettings: AppSettingsService) { }
+        private appSettings: AppSettingsService,
+        private store: Store) { }
 }

@@ -25,6 +25,15 @@ export const userLogout = createAction(
     '[User] USER_LOGOUT'
 );
 
+export const userChangesTheme = createAction(
+    '[User] USER_CHANGES_THEME',
+    props<{ isDark: boolean }>()
+)
+
+export const userChangesThemeSuccess = createAction(
+    '[User] USER_CHANGES_THEME_SUCCESS'
+)
+
 export const userLogoutSuccess = createAction(
     '[User Logout Effect] USER_LOGOUT_SUCCESS'
 );

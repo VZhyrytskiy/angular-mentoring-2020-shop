@@ -7,19 +7,19 @@
         </span>
     </div>
     <div>
-        <span class="navigation-item" *ngIf="(isLoggedIn | async) === false else loggedUser">
+        <span class="navigation-item" *ngIf="(isLoggedIn$ | async) === false else loggedUser">
             <a mat-button (click)="onLoginClick()">Login</a>
         </span>
         <ng-template #loggedUser>
             <span class="navigation-item">
                 <a mat-button [matMenuTriggerFor]="accountMenu">
-                    <mat-icon>account_circle</mat-icon>Hi, {{userName | async}}
+                    <mat-icon>account_circle</mat-icon>Hi, {{username$ | async}}
                 </a>
                 <mat-menu #accountMenu="matMenu">
-                    <button mat-menu-item *ngIf="isAdmin | async" routerLink="/admin">Admin dashboard</button>
+                    <button mat-menu-item *ngIf="isAdmin$ | async" routerLink="/admin">Admin dashboard</button>
                     <button mat-menu-item (click)="onLogoutClick()">Logout</button>
                     <span mat-menu-item>
-                        <mat-slide-toggle (change)="onChange($event)" [checked]="this.themeService.isDarkTheme | async">
+                        <mat-slide-toggle (change)="onChange($event)" [checked]="isDarkTheme$ | async">
                             Dark theme
                         </mat-slide-toggle>
                     </span>
@@ -28,7 +28,7 @@
         </ng-template>
         <span class="navigation-item">
             <a mat-button routerLink="/cart">
-                <mat-icon>shopping_cart</mat-icon>({{this.totalQuantity | async}})
+                <mat-icon>shopping_cart</mat-icon>({{totalQuantity$ | async}})
             </a>
         </span>
     </div>
