@@ -5,13 +5,14 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
+import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { selectTotalQuantity } from '../../@ngrx';
-import { go } from '../../@ngrx/router/router.actions';
+import { switchMap, take, tap } from 'rxjs/operators';
 
+import { selectTotalQuantity, userLogout, userLogoutSuccess } from '../../@ngrx';
+import { go } from '../../@ngrx/router/router.actions';
 import { ThemeService } from '../../services/theme.service';
 import { LoginComponent } from '../login/login.component';
 import { AppConfig, UsersService } from './../../services/index';
@@ -35,16 +36,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     public store: Store,
     @Inject(AppConfig) private appConfig: AppConfig,
     private loginDialog: MatDialog,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    private actions$: Actions) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout().subscribe(() =>
-      this.store.dispatch(go({ path: [''] }))
-    );
+    this.store.dispatch(userLogout());
   }
 
   onChange(event: MatSlideToggleChange): void {
@@ -61,6 +61,14 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
       return of(isLogged);
     }));
+
+    this.actions$.pipe(
+      ofType(userLogoutSuccess),
+      tap(() =>
+        this.store.dispatch(go({ path: [''] }))
+      ),
+      take(1)
+    ).subscribe();
 
     this.isAdmin = this.usersService.isCurrentUserInRole('admin');
     this.totalQuantity = this.store.pipe(select(selectTotalQuantity));
