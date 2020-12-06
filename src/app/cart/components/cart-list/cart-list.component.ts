@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
@@ -8,6 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { CartItemModel } from '../../models/cart-item.model';
 import * as CartSelectors from 'src/app/shared/@ngrx/cart/cart.selectors';
 import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
+import { go } from 'src/app/shared/@ngrx/router/router.actions';
 
 @Component({
   selector: 'app-cart-list',
@@ -50,10 +50,11 @@ export class CartListComponent implements OnInit {
     }
   ];
 
-  orderBySelectedOptionValue = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
-  orderByIsAscending = this.orderByOptions[0].value;
+  orderBySelectedOptionValue = this.orderByOptions[0].value;
+  orderByIsAscending = this.orderBySortDirectionOptions
+    .find(option => option.isDefault).isAscending;
 
-  constructor(private router: Router, private store: Store) { }
+  constructor(private store: Store) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
     this.store.dispatch(CartActions.decreaseCartItemQuantityByOne({ cartItem: item }));
@@ -68,7 +69,8 @@ export class CartListComponent implements OnInit {
   }
 
   onCheckoutClick(): void {
-    this.router.navigateByUrl('/order/delivery');
+    const link = ['/order/delivery'];
+    this.store.dispatch(go({ path: link }));
   }
 
   onClearClick(): void {

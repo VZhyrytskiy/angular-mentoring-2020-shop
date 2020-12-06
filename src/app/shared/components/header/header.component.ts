@@ -1,13 +1,16 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef,
+  Inject, OnInit, ViewChild
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
 
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { selectTotalQuantity } from '../../@ngrx';
+import { go } from '../../@ngrx/router/router.actions';
 
 import { ThemeService } from '../../services/theme.service';
 import { LoginComponent } from '../login/login.component';
@@ -32,15 +35,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     public store: Store,
     @Inject(AppConfig) private appConfig: AppConfig,
     private loginDialog: MatDialog,
-    private usersService: UsersService,
-    private router: Router) { }
+    private usersService: UsersService) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout().subscribe(() => this.router.navigateByUrl(''));
+    this.usersService.logout().subscribe(() =>
+      this.store.dispatch(go({ path: [''] }))
+    );
   }
 
   onChange(event: MatSlideToggleChange): void {

@@ -7,8 +7,7 @@ import {
   UrlSegment,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  UrlTree,
-  Router
+  UrlTree
 } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
@@ -16,13 +15,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { selectIsEmpty } from '../shared/@ngrx';
+import { go } from '../shared/@ngrx/router/router.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartIsNotEmptyGuard implements CanActivate, CanActivateChild, CanLoad {
 
-  constructor(private readonly store: Store, private readonly router: Router) { }
+  constructor(private readonly store: Store) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.cartIsNotEmpty();
@@ -41,7 +41,7 @@ export class CartIsNotEmptyGuard implements CanActivate, CanActivateChild, CanLo
       select(selectIsEmpty),
       map(isEmpty => {
         if (isEmpty) {
-          this.router.navigateByUrl('/cart');
+          this.store.dispatch(go({ path: ['/cart'] }));
         }
 
         return true;
