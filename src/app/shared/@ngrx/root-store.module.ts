@@ -11,6 +11,7 @@ import { RouterSerializer } from './router';
 import { CartStoreModule } from './cart/cart-store.module';
 import { ProductsStoreModule } from './products/products-store.module';
 import { RouterEffects } from './router/router.effects';
+import { UserStoreModule } from './users/users-store.module';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import { RouterEffects } from './router/router.effects';
         EffectsModule.forRoot([RouterEffects]),
         CartStoreModule,
         ProductsStoreModule,
+        UserStoreModule,
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]
 })

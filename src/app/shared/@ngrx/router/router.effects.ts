@@ -10,7 +10,7 @@ import * as RouterActions from './router.actions';
 
 @Injectable()
 export class RouterEffects {
-    
+
     navigate$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RouterActions.go),
@@ -48,6 +48,6 @@ export class RouterEffects {
     );
 
     constructor(private actions$: Actions,
-        private router: Router,
-        private location: Location) { }
+                private router: Router,
+                private location: Location) { }
 }
