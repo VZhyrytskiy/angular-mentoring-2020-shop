@@ -3,13 +3,13 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Observable } from 'rxjs';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 
 import { ProductModel } from '../../models/product.model';
-import { ProductsService } from '../../services/products.service';
 import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
 import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
+import { getProductItems, selectProductItems } from 'src/app/shared/@ngrx/products';
 
 @Component({
   selector: 'app-product-list',
@@ -18,10 +18,9 @@ import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Observable<ProductModel[]>;
+  products: Observable<ReadonlyArray<ProductModel>>;
 
   constructor(
-    private productsService: ProductsService,
     private snackBar: MatSnackBar,
     private store: Store,
     private actions$: Actions) {
@@ -32,7 +31,9 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProducts();
+    this.products = this.store.pipe(select(selectProductItems));
+    
+    this.store.dispatch(getProductItems());
 
     this.actions$.pipe(ofType(CartActions.addProductToCartSuccess))
       .subscribe(action => this.showProductAddedMessage(action.addedProduct));

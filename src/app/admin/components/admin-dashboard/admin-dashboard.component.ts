@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
 import { ProductModel } from 'src/app/products/models/product.model';
-import { ProductsService } from 'src/app/products/services/products.service';
+import { selectProductItems } from 'src/app/shared/@ngrx/products';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,11 +13,11 @@ import { ProductsService } from 'src/app/products/services/products.service';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  public products: Observable<ProductModel[]>;
+  public products: Observable<ReadonlyArray<ProductModel>>;
 
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProducts();
+    this.products = this.store.pipe(select(selectProductItems));
   }
 }
