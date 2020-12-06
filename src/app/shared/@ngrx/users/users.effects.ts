@@ -4,13 +4,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, select, Store } from '@ngrx/store';
 
 import { EMPTY, Observable, of } from 'rxjs';
-import { catchError, concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import {
+    catchError, concatMap, filter,
+    map, mergeMap, switchMap,
+    tap, withLatestFrom
+} from 'rxjs/operators';
 
 import * as UsersActions from './users.actions';
 import { UsersService } from '../../services';
 import { AppSettingsService } from '../../services/app-settings.service';
 import { ThemeService } from '../../services/theme.service';
-import { selectUserName } from './users.selectors';
+import { selectIsDarkTheme, selectUserName, selectUsersState } from './users.selectors';
 
 @Injectable()
 export class UsersEffects {
@@ -18,15 +22,47 @@ export class UsersEffects {
     userLogin$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loginUser),
-            switchMap(action => of(this.usersService.login(action.username)).pipe(
-                tap(user => this.themeService.restore(user.username)),
+            mergeMap(action => of(this.usersService.login(action.username)).pipe(
                 map(user => UsersActions.loginUserSuccess({ user })),
                 catchError(() => EMPTY))
             )
         )
     );
 
-    userLoad$: Observable<Action> = createEffect(() =>
+    loadLocalSettings$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.loginUserSuccess),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.pipe(select(selectUserName)))
+            )),
+            switchMap(([, username]) =>
+                of(this.appSettings.getLocalSettings(username)).pipe(
+                    map(settings => {
+                        if (settings !== null) {
+                            return UsersActions.userLoadLocalSettingSuccess({ settings });
+                        }
+
+                        return UsersActions.userFetchSettings();
+                    }),
+                    catchError(async () => UsersActions.userLoadLocalSettingFailture())
+                ))
+        )
+    );
+
+    fetchSettings$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.userLoadLocalSettingFailture, UsersActions.userFetchSettings),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.pipe(select(selectUserName)))
+            )),
+            switchMap(([, username]) => this.appSettings.fetch(username).pipe(
+                map(settings => UsersActions.userFetchSettingsSuccess({ settings })),
+                catchError(async () => UsersActions.userFetchSettingsFailture())
+            ))
+        )
+    );
+
+    userLoadFromLocal$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loadUserFromLocal),
             concatMap(() => of(this.usersService.loadFromLocal()).pipe(
@@ -36,12 +72,10 @@ export class UsersEffects {
         )
     );
 
-    userLoginAfterLoad$: Observable<Action> = createEffect(() =>
+    userLoadFromLocalPostLogin$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loadUserFromLocalSuccess),
-            switchMap(async (action) =>
-                UsersActions.loginUser({ username: action.user.username })
-            )
+            switchMap(async (action) => UsersActions.loginUser({ username: action.user.username }))
         )
     );
 
@@ -49,23 +83,41 @@ export class UsersEffects {
         this.actions$.pipe(
             ofType(UsersActions.userLogout),
             switchMap(() => of(this.usersService.logout()).pipe(
-                tap(() => this.appSettings.reset()),
                 map(() => UsersActions.userLogoutSuccess()),
                 catchError(() => EMPTY)
             ))
         )
     );
 
-    userChangedTheme$: Observable<Action> = createEffect(() =>
+    updateThemeSettings$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.userChangesTheme),
             concatMap(action => of(action).pipe(
-                withLatestFrom(this.store.select(selectUserName))
+                withLatestFrom(this.store.select(selectUsersState))
             )),
-            tap(([action, name]) => this.themeService.setIsDarkTheme(name, action.isDark)),
-            map(() => UsersActions.userChangesThemeSuccess())
+            tap(([action, state]) => {
+                const settings = { ...state.appSettings, isDarkTheme: action.isDark };
+                this.appSettings.updateLocalSettings(state.user.username, settings);
+            }),
+            map(([action,]) => UsersActions.userChangesThemeSuccess({ isDark: action.isDark }))
         )
     );
+
+    restoreThemePreference$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.userFetchSettingsSuccess,
+                UsersActions.userLoadLocalSettingSuccess,
+                UsersActions.userChangesThemeSuccess,
+                UsersActions.userLogoutSuccess),
+            concatMap(action => of(action).pipe(
+                withLatestFrom(this.store.select(selectIsDarkTheme))
+            )),
+            filter(([, isDarkTheme]) => this.themeService.isNotMatchToCurrent(isDarkTheme)),
+            tap(() => this.themeService.toggle()),
+            map(([,isDarkTheme]) => UsersActions.userChangesThemeSuccess({ isDark: isDarkTheme }))
+        )
+    );
+
 
     constructor(private actions$: Actions,
         private usersService: UsersService,

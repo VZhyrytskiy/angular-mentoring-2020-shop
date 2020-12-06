@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { AppSettingsModel } from '../../models/app-settings.model';
 
 import { UserModel } from '../../models/user.model';
 
@@ -31,9 +32,32 @@ export const userChangesTheme = createAction(
 )
 
 export const userChangesThemeSuccess = createAction(
-    '[User] USER_CHANGES_THEME_SUCCESS'
+    '[User Changes Theme Effect] USER_CHANGES_THEME_SUCCESS',
+    props<{ isDark: boolean }>()
 )
 
 export const userLogoutSuccess = createAction(
     '[User Logout Effect] USER_LOGOUT_SUCCESS'
 );
+
+export const userLoadLocalSettingSuccess = createAction(
+    '[User Login Success Effect] USER_LOAD_LOCAL_SETTINGS_SUCCESS',
+    props<{ settings: AppSettingsModel }>()
+)
+
+export const userLoadLocalSettingFailture = createAction(
+    '[User Login Success Effect] USER_LOAD_LOCAL_SETTINGS_FAILTURE'
+)
+
+export const userFetchSettings = createAction(
+    '[User Login Success Effect] FETCH_SETTINGS',
+)
+
+export const userFetchSettingsSuccess = createAction(
+    '[User Login Success Effect] USER_FETCH_SETTINGS_SUCCESS',
+    props<{ settings: AppSettingsModel }>()
+)
+
+export const userFetchSettingsFailture = createAction(
+    '[User Login Success Effect] USER_FETCH_SETTINGS_FAILTURE'
+)

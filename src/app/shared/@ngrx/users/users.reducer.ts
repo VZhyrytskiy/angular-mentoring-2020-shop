@@ -5,10 +5,34 @@ import { initialUsersState, UsersState } from './users.state';
 
 const reducer = createReducer(initialUsersState,
     on(UsersActions.loginUserSuccess, (state, { user }) => {
-        return { ...state, user };
+        return {
+            ...state,
+            user
+        };
     }),
-    on(UsersActions.userLogoutSuccess, state => {
-        return { ...state, user: null }
+    on(UsersActions.userLogoutSuccess, () => {
+        return { ...initialUsersState };
+    }),
+    on(UsersActions.userFetchSettingsSuccess, (state, { settings }) => {
+        return {
+            ...state,
+            appSettings: settings
+        };
+    }),
+    on(UsersActions.userChangesThemeSuccess, (state, { isDark }) => {
+        return {
+            ...state,
+            appSettings: {
+                ...state.appSettings,
+                isDarkTheme: isDark
+            }
+        };
+    }),
+    on(UsersActions.userLoadLocalSettingSuccess, (state, { settings }) => {
+        return {
+            ...state,
+            appSettings: settings
+        };
     })
 );
 
