@@ -13,5 +13,4 @@ import { productsReducer, ProductsEffects } from '.';
         EffectsModule.forFeature([ProductsEffects])
     ]
 })
-export class ProductsStoreModule {
-}
+export class ProductsStoreModule { }

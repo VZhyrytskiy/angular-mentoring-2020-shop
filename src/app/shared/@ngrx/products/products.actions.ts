@@ -19,4 +19,3 @@ export const getProductItemsSuccess = createAction(
     '[Get Product Items Effect] GET_PRODUCT_ITEMS_SUCCESS',
     props<{ products: ReadonlyArray<ProductModel> }>()
 );
-

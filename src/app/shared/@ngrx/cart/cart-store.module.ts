@@ -13,5 +13,4 @@ import { CartEffects, cartReducer } from '.';
         EffectsModule.forFeature([CartEffects])
     ]
 })
-export class CartStoreModule {
-}
+export class CartStoreModule { }

@@ -15,10 +15,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(
-    public readonly dialogRef: MatDialogRef<LoginComponent>,
-    private readonly formBuilder: FormBuilder,
-    private readonly usersService: UsersService,
-    private readonly themeService: ThemeService
+    public dialogRef: MatDialogRef<LoginComponent>,
+    private formBuilder: FormBuilder,
+    private usersService: UsersService,
+    private themeService: ThemeService
   ) { }
 
   onSubmit(): void {

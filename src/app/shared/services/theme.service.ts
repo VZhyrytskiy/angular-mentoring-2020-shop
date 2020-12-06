@@ -14,10 +14,10 @@ export class ThemeService {
   isDarkTheme: Observable<boolean>;
 
   constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    @Inject(AppConfig) private readonly appConfig: AppConfig,
-    private readonly appSettings: AppSettingsService,
-    private readonly usersService: UsersService) {
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(AppConfig) private appConfig: AppConfig,
+    private appSettings: AppSettingsService,
+    private usersService: UsersService) {
 
     this.restore(this.usersService.getCurrentUser()?.username);
 

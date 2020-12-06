@@ -35,6 +35,5 @@ export class ProductsEffects {
     );
 
     constructor(private actions$: Actions,
-        private productsService: ProductsService,
-        private store: Store<ProductsState>) { }
+        private productsService: ProductsService) { }
 }

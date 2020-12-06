@@ -10,7 +10,7 @@ import { ProductModel } from '../models/product.model';
     providedIn: 'root'
 })
 export class ProductsService {
-    constructor(private readonly http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
     private readonly baseUrl = `${environment.apiBaseUrl}/products`;
 

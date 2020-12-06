@@ -9,12 +9,12 @@ import { ProductModel } from '../../models/product.model';
   styleUrls: ['./product-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductItemComponent implements OnInit {
+export class ProductItemComponent {
 
   constructor(private router: Router) { }
 
   @Input() model: ProductModel;
-  @Output() productAdded: EventEmitter<ProductModel> = new EventEmitter<ProductModel>();
+  @Output() productAdded = new EventEmitter<ProductModel>();
 
   onViewClick(): void {
     this.router.navigate([`/product/${this.model.id}`]);
@@ -23,6 +23,4 @@ export class ProductItemComponent implements OnInit {
   onAddToCart(): void {
     this.productAdded.emit(this.model);
   }
-
-  ngOnInit(): void { }
 }

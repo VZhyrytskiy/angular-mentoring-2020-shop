@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, UrlTree, Router, CanLoad, Route, UrlSegment } from '@angular/router';
+import {
+  CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot,
+  CanActivateChild, UrlTree, Router, CanLoad, Route, UrlSegment
+} from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -17,12 +20,12 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   canActivateChild(childRoute: ActivatedRouteSnapshot,
-                   state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.isAdmin();
   }
 
   canActivate(route: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.isAdmin();
   }
 

@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit {
   product: ProductModel;
   averageScore: number;
 
-  constructor(private readonly activatedRoute: ActivatedRoute, private store: Store) { }
+  constructor(private activatedRoute: ActivatedRoute, private store: Store) { }
 
   onAddToCart(): void {
     this.store.dispatch(addProductToCartItem({ product: this.product }));

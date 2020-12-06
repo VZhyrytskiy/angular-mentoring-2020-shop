@@ -20,8 +20,8 @@ export class AppSettingsService {
   settings$: Observable<AppSettingsModel> = this.settings.asObservable();
 
   constructor(
-    private readonly localStorageService: LocalStorageService,
-    private readonly http: HttpClient) { }
+    private localStorageService: LocalStorageService,
+    private http: HttpClient) { }
 
   update(username: string, settings: AppSettingsModel): void {
     this.settings.next(settings);
