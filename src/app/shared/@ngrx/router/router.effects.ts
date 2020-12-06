@@ -10,6 +10,7 @@ import * as RouterActions from './router.actions';
 
 @Injectable()
 export class RouterEffects {
+    
     navigate$ = createEffect(() =>
         this.actions$.pipe(
             ofType(RouterActions.go),

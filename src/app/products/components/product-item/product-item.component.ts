@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Store } from '@ngrx/store';
+
+import * as RouterActions from 'src/app/shared/@ngrx/router/router.actions';
 import { ProductModel } from '../../models/product.model';
 
 @Component({
@@ -11,13 +14,14 @@ import { ProductModel } from '../../models/product.model';
 })
 export class ProductItemComponent {
 
-  constructor(private router: Router) { }
+  constructor(private store: Store) { }
 
   @Input() model: ProductModel;
   @Output() productAdded = new EventEmitter<ProductModel>();
 
   onViewClick(): void {
-    this.router.navigate([`/product/${this.model.id}`]);
+    const link = ['/product/', this.model.id];
+    this.store.dispatch(RouterActions.go({ path: link }));
   }
 
   onAddToCart(): void {
