@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import * as UsersActions from './users.actions';
@@ -17,7 +17,7 @@ export class UsersEffects {
     userLogin$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loginUser),
-            switchMap(action => this.usersService.login(action.username).pipe(
+            switchMap(action => of(this.usersService.login(action.username)).pipe(
                 tap(user => this.themeService.restore(user.username)),
                 map(user => UsersActions.loginUserSuccess({ user })),
                 catchError(() => EMPTY))
@@ -28,7 +28,7 @@ export class UsersEffects {
     userLoad$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loadUserFromLocal),
-            concatMap(() => this.usersService.loadFromLocal().pipe(
+            concatMap(() => of(this.usersService.loadFromLocal()).pipe(
                 filter(user => user !== null),
                 map(user => UsersActions.loadUserFromLocalSuccess({ user }))
             ))
@@ -47,7 +47,7 @@ export class UsersEffects {
     userLogout$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.userLogout),
-            switchMap(() => this.usersService.logout().pipe(
+            switchMap(() => of(this.usersService.logout()).pipe(
                 tap(() => this.appSettings.reset()),
                 map(() => UsersActions.userLogoutSuccess()),
                 catchError(() => EMPTY)

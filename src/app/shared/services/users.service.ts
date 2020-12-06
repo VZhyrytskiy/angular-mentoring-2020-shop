@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
-
 import { UserModel } from '../models/user.model';
 import { LocalStorageService } from './local-storage/local-storage.service';
 
@@ -14,7 +12,7 @@ export class UsersService {
 
   constructor(private readonly localStorageService: LocalStorageService) { }
 
-  login(username: string): Observable<UserModel> {
+  login(username: string): UserModel {
     const roles = ['user'];
 
     if (username === 'admin') {
@@ -25,14 +23,14 @@ export class UsersService {
 
     this.localStorageService.setItem<UserModel>(this.userKey, user);
 
-    return of(user);
+    return user;
   }
 
-  loadFromLocal(): Observable<UserModel> {
-    return of(this.localStorageService.getItem<UserModel>(this.userKey));
+  loadFromLocal(): UserModel {
+    return this.localStorageService.getItem<UserModel>(this.userKey);
   }
 
-  logout(): Observable<void> {
-    return of(this.localStorageService.removeItem(this.userKey));
+  logout(): void {
+    return this.localStorageService.removeItem(this.userKey);
   }
 }
