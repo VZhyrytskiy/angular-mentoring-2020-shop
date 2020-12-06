@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.id) {
-      console.log(this.id);
+      console.log(`GeneratedId: ${this.id}`);
     }
 
     this.store.dispatch(getLocalCartItems());
