@@ -11,5 +11,5 @@ export const back = createAction(
 
 export const go = createAction(
     '[Router] GO',
-    props<{ path: object[]; queryParams?: object; extras?: NavigationExtras }>()
+    props<{ path: unknown[]; queryParams?: object; extras?: NavigationExtras }>()
 );

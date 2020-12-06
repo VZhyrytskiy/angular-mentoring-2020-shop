@@ -10,6 +10,7 @@ import { SharedModule } from '../shared.module';
 import { RouterSerializer } from './router';
 import { CartStoreModule } from './cart/cart-store.module';
 import { ProductsStoreModule } from './products/products-store.module';
+import { RouterEffects } from './router/router.effects';
 
 @NgModule({
     imports: [
@@ -29,11 +30,10 @@ import { ProductsStoreModule } from './products/products-store.module';
             routerState: RouterState.Minimal,
             serializer: RouterSerializer
         }),
-        EffectsModule.forRoot([]),
+        EffectsModule.forRoot([RouterEffects]),
         CartStoreModule,
         ProductsStoreModule,
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]
 })
-export class RootStoreModule {
-}
+export class RootStoreModule { }
