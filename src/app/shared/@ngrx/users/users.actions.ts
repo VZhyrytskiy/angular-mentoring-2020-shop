@@ -7,6 +7,15 @@ export const loginUser = createAction(
     props<{ username: string }>()
 );
 
+export const loadUserFromLocal = createAction(
+    '[User] USER_LOAD_FROM_LOCAL'
+);
+
+export const loadUserFromLocalSuccess = createAction(
+    '[User Load From Local Effect] USER_LOAD_FROM_LOCAL_SUCCESS',
+    props<{ user: UserModel }>()
+)
+
 export const loginUserSuccess = createAction(
     '[User Login Effect] USER_LOGIN_SUCCESS',
     props<{ user: UserModel }>()

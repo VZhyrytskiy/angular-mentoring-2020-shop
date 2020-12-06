@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { AppConfig, UsersService } from '.';
+import { AppConfig } from '.';
 import { AppSettingsService } from './app-settings.service';
 
 @Injectable({
@@ -16,15 +16,9 @@ export class ThemeService {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     @Inject(AppConfig) private appConfig: AppConfig,
-    private appSettings: AppSettingsService,
-    private usersService: UsersService) {
-
-    this.restore(this.usersService.getCurrentUser()?.username);
-
+    private appSettings: AppSettingsService) {
     this.isDarkTheme = this.appSettings.settings$.pipe(switchMap(settings => of(settings.isDarkTheme)));
     this.isDarkTheme.pipe(filter(value => this.isSwitchThemeRequired(value))).subscribe(() => this.toggleTheme());
-
-    this.usersService.user$.pipe(filter(x => x === null)).subscribe(() => this.appSettings.reset());
   }
 
   setIsDarkTheme(username: string, isDark: boolean): void {

@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, switchMap, tap } from 'rxjs/operators';
 
-import * as UsersActions from '.';
+import * as UsersActions from './users.actions';
 import { UsersService } from '../../services';
 import { AppSettingsService } from '../../services/app-settings.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Injectable()
 export class UsersEffects {
+
     userLogin$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.loginUser),
@@ -20,6 +21,25 @@ export class UsersEffects {
                 tap(user => this.themeService.restore(user.username)),
                 map(user => UsersActions.loginUserSuccess({ user })),
                 catchError(() => EMPTY))
+            )
+        )
+    );
+
+    userLoad$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.loadUserFromLocal),
+            concatMap(() => this.usersService.loadFromLocal().pipe(
+                filter(user => user !== null),
+                map(user => UsersActions.loadUserFromLocalSuccess({ user }))
+            ))
+        )
+    );
+
+    userLoginAfterLoad$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.loadUserFromLocalSuccess),
+            switchMap(async (action) =>
+                UsersActions.loginUser({ username: action.user.username })
             )
         )
     );
@@ -38,6 +58,5 @@ export class UsersEffects {
     constructor(private actions$: Actions,
         private usersService: UsersService,
         private themeService: ThemeService,
-        private appSettings: AppSettingsService,
-        private store: Store) { }
+        private appSettings: AppSettingsService) { }
 }

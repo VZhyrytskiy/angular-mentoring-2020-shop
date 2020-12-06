@@ -3,12 +3,12 @@ import {
   CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot,
   CanActivateChild, UrlTree, CanLoad, Route, UrlSegment
 } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UsersService } from '../shared';
+import { selectIsAdminUser } from '../shared/@ngrx';
 import { go } from '../shared/@ngrx/router/router.actions';
 
 @Injectable({
@@ -16,7 +16,7 @@ import { go } from '../shared/@ngrx/router/router.actions';
 })
 export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
-  constructor(private readonly usersService: UsersService, private store: Store) { }
+  constructor(private store: Store) { }
   canLoad(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> {
     return this.isAdmin();
   }
@@ -30,11 +30,13 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   private isAdmin(): Observable<boolean | UrlTree> {
-    return this.usersService.isCurrentUserInRole('admin').pipe(
+    return this.store.pipe(
+      select(selectIsAdminUser),
       map(isAdmin => {
         if (!isAdmin) {
           this.store.dispatch(go({ path: ['/not-found'] }));
         }
+
         return isAdmin;
       }));
   }

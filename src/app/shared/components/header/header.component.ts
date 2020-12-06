@@ -11,11 +11,11 @@ import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
-import { selectTotalQuantity, userLogout, userLogoutSuccess } from '../../@ngrx';
+import { selectIsAdminUser, selectTotalQuantity, selectUser, userLogout, userLogoutSuccess } from '../../@ngrx';
 import { go } from '../../@ngrx/router/router.actions';
 import { ThemeService } from '../../services/theme.service';
 import { LoginComponent } from '../login/login.component';
-import { AppConfig, UsersService } from './../../services/index';
+import { AppConfig } from './../../services/index';
 
 @Component({
   selector: 'app-header',
@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     public store: Store,
     @Inject(AppConfig) private appConfig: AppConfig,
     private loginDialog: MatDialog,
-    private usersService: UsersService,
     private actions$: Actions) { }
 
   onLoginClick(): void {
@@ -52,15 +51,17 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.usersService.user$.pipe(switchMap(user => {
-      const isLogged = user !== null && user !== undefined;
+    this.isLoggedIn = this.store.pipe(
+      select(selectUser),
+      switchMap(user => {
+        const isLogged = user !== null && user !== undefined;
 
-      if (isLogged) {
-        this.userName.next(user.username);
-      }
+        if (isLogged) {
+          this.userName.next(user.username);
+        }
 
-      return of(isLogged);
-    }));
+        return of(isLogged);
+      }));
 
     this.actions$.pipe(
       ofType(userLogoutSuccess),
@@ -70,7 +71,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       take(1)
     ).subscribe();
 
-    this.isAdmin = this.usersService.isCurrentUserInRole('admin');
+    this.isAdmin = this.store.pipe(select(selectIsAdminUser));
     this.totalQuantity = this.store.pipe(select(selectTotalQuantity));
   }
 

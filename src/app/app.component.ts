@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, Optional } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
-import { getLocalCartItems } from './shared/@ngrx';
+import { getLocalCartItems, loadUserFromLocal } from './shared/@ngrx';
 import { GeneratedId, GeneratorService } from './shared/index';
 import { generatorFactory } from './shared/services/generator/generator.factory';
 
@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   constructor(@Optional() @Inject(GeneratedId) private id: string, private store: Store) { }
 
   ngOnInit(): void {
-
     if (this.id) {
       console.log(`GeneratedId: ${this.id}`);
     }
 
     this.store.dispatch(getLocalCartItems());
+    this.store.dispatch(loadUserFromLocal());
   }
 }
