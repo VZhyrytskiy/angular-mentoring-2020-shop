@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Location } from '@angular/common';
+
+import { Store } from '@ngrx/store';
+import { back } from '../../@ngrx/router/router.actions';
 
 @Component({
   selector: 'app-feature-not-available',
@@ -9,8 +11,7 @@ import { Location } from '@angular/common';
 })
 export class FeatureNotAvailableComponent implements OnInit {
 
-  constructor(private readonly dialog: MatDialog,
-              private readonly location: Location) { }
+  constructor(private dialog: MatDialog, private store: Store) { }
 
   ngOnInit(): void {
     this.dialog.afterOpened.subscribe(dialogRef =>
@@ -19,13 +20,17 @@ export class FeatureNotAvailableComponent implements OnInit {
     this.dialog.open(FeatureNotAvailableDialogComponent, { disableClose: true });
   }
 
-  private onDialogOpened(dialogRef: MatDialogRef<FeatureNotAvailableDialogComponent, unknown>): void {
+  private onDialogOpened(dialogRef: MatDialogRef<Component, unknown>): void {
     dialogRef.close();
-    this.location.back();
+    this.store.dispatch(back());
   }
 }
 
 @Component({
-  template: `<div><b>Unfortunately, this feature is not available</b></div><div>Redirecting to previous page...</div>`
+  template: `
+  <div>
+    <b>Unfortunately, this feature is not available</b>
+  </div>
+  <div>Redirecting to previous page...</div>`
 })
 class FeatureNotAvailableDialogComponent { }
