@@ -32,7 +32,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.products = this.store.pipe(select(selectProductItems));
-    
+
     this.store.dispatch(getProductItems());
 
     this.actions$.pipe(ofType(CartActions.addProductToCartSuccess))
