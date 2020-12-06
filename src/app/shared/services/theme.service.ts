@@ -1,24 +1,29 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+
+import { filter, map } from 'rxjs/operators';
 
 import { AppConfig } from '.';
+import { selectIsDarkTheme } from '../@ngrx/users/users.selectors';
 import { AppSettingsService } from './app-settings.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  isDarkTheme: Observable<boolean>;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     @Inject(AppConfig) private appConfig: AppConfig,
-    private appSettings: AppSettingsService) {
-    this.isDarkTheme = this.appSettings.settings$.pipe(switchMap(settings => of(settings.isDarkTheme)));
-    this.isDarkTheme.pipe(filter(value => this.isSwitchThemeRequired(value))).subscribe(() => this.toggleTheme());
+    private appSettings: AppSettingsService,
+    private store: Store) {
+      
+    this.store.pipe(
+      select(selectIsDarkTheme),
+      filter(value => this.isSwitchThemeRequired(value))
+    ).subscribe(() => this.toggleTheme());
   }
 
   setIsDarkTheme(username: string, isDark: boolean): void {
