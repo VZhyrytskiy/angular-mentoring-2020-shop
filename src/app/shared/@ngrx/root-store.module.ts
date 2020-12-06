@@ -8,8 +8,8 @@ import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../shared.module';
 import { RouterSerializer } from './router';
-import { ProductsModule } from 'src/app/products/products.module';
 import { CartStoreModule } from './cart/cart-store.module';
+import { ProductsStoreModule } from './products/products-store.module';
 
 @NgModule({
     imports: [
@@ -31,7 +31,7 @@ import { CartStoreModule } from './cart/cart-store.module';
         }),
         EffectsModule.forRoot([]),
         CartStoreModule,
-        ProductsModule,
+        ProductsStoreModule,
         !environment.production ? StoreDevtoolsModule.instrument() : []
     ]
 })
