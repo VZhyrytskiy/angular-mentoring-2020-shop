@@ -8,7 +8,7 @@ import { MaterialModule } from './material.module';
 import { OrderByPipe } from './pipes/order-by/order-by.pipe';
 import { HighlightDirective } from './directives/highlight/highlight.directive';
 import { FontAdjustmentDirective } from './directives/font-adjustment/font-adjustment.directive';
-import { HeaderComponent, LoginComponent, FeatureNotAvailableComponent } from './components';
+import { HeaderComponent, LoginComponent, FeatureNotAvailableComponent, NotFoundComponent } from './components';
 import { AppConfig, ConstantsService } from '.';
 
 const imports = [
@@ -24,6 +24,7 @@ const declarations = [
     HeaderComponent,
     LoginComponent,
     FeatureNotAvailableComponent,
+    NotFoundComponent,
     HighlightDirective,
     FontAdjustmentDirective,
     OrderByPipe
