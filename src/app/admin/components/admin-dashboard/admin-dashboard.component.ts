@@ -18,6 +18,6 @@ export class AdminDashboardComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.products = this.store.pipe(select(selectProductItems));
+    this.products = this.store.select(selectProductItems);
   }
 }

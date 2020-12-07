@@ -31,7 +31,7 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this.store.pipe(select(selectProductItems));
+    this.products = this.store.select(selectProductItems);
 
     this.store.dispatch(getProductItems());
 

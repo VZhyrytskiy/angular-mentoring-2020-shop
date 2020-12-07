@@ -6,10 +6,10 @@ export interface UsersState {
     appSettings: AppSettingsModel;
 }
 
-const isDarkThemeDefault= false;
+const isDarkThemeDefault = false;
 const defaultSettings = new AppSettingsModel(isDarkThemeDefault);
 
 export const initialUsersState: UsersState = {
     user: null,
-    appSettings: defaultSettings 
+    appSettings: defaultSettings
 };

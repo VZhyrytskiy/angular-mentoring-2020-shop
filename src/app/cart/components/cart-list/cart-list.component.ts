@@ -78,9 +78,9 @@ export class CartListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.items = this.store.pipe(select(CartSelectors.selectCartItems));
-    this.totalSum = this.store.pipe(select(CartSelectors.selectTotalSum));
-    this.totalQuantity = this.store.pipe(select(CartSelectors.selectTotalQuantity));
-    this.isEmpty = this.store.pipe(select(CartSelectors.selectIsEmpty));
+    this.items = this.store.select(CartSelectors.selectCartItems);
+    this.totalSum = this.store.select(CartSelectors.selectTotalSum);
+    this.totalQuantity = this.store.select(CartSelectors.selectTotalQuantity);
+    this.isEmpty = this.store.select(CartSelectors.selectIsEmpty);
   }
 }

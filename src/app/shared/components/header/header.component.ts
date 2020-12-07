@@ -75,8 +75,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       switchMap(roles => of(roles.some(role => role === 'admin')))
     );
 
-    this.isDarkTheme$ = this.store.pipe(select(selectIsDarkTheme));
-    this.totalQuantity$ = this.store.pipe(select(selectTotalQuantity));
+    this.isDarkTheme$ = this.store.select(selectIsDarkTheme);
+    this.totalQuantity$ = this.store.select(selectTotalQuantity);
   }
 
   ngAfterViewInit(): void {

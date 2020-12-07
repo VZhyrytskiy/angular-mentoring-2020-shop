@@ -33,7 +33,7 @@ export class UsersEffects {
         this.actions$.pipe(
             ofType(UsersActions.loginUserSuccess),
             concatMap(action => of(action).pipe(
-                withLatestFrom(this.store.pipe(select(selectUserName)))
+                withLatestFrom(this.store.select(selectUserName))
             )),
             switchMap(([, username]) =>
                 of(this.appSettings.getLocalSettings(username)).pipe(
@@ -53,7 +53,7 @@ export class UsersEffects {
         this.actions$.pipe(
             ofType(UsersActions.userLoadLocalSettingFailture, UsersActions.userFetchSettings),
             concatMap(action => of(action).pipe(
-                withLatestFrom(this.store.pipe(select(selectUserName)))
+                withLatestFrom(this.store.select(selectUserName))
             )),
             switchMap(([, username]) => this.appSettings.fetch(username).pipe(
                 map(settings => UsersActions.userFetchSettingsSuccess({ settings })),
@@ -99,7 +99,7 @@ export class UsersEffects {
                 const settings = { ...state.appSettings, isDarkTheme: action.isDark };
                 this.appSettings.updateLocalSettings(state.user.username, settings);
             }),
-            map(([action,]) => UsersActions.userChangesThemeSuccess({ isDark: action.isDark }))
+            map(([action, ]) => UsersActions.userChangesThemeSuccess({ isDark: action.isDark }))
         )
     );
 
@@ -114,14 +114,14 @@ export class UsersEffects {
             )),
             filter(([, isDarkTheme]) => this.themeService.isNotMatchToCurrent(isDarkTheme)),
             tap(() => this.themeService.toggle()),
-            map(([,isDarkTheme]) => UsersActions.userChangesThemeSuccess({ isDark: isDarkTheme }))
+            map(([, isDarkTheme]) => UsersActions.userChangesThemeSuccess({ isDark: isDarkTheme }))
         )
     );
 
 
     constructor(private actions$: Actions,
-        private usersService: UsersService,
-        private themeService: ThemeService,
-        private appSettings: AppSettingsService,
-        private store: Store) { }
+                private usersService: UsersService,
+                private themeService: ThemeService,
+                private appSettings: AppSettingsService,
+                private store: Store) { }
 }
