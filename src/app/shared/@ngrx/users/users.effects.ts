@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action, select, Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 import { EMPTY, Observable, of } from 'rxjs';
 import {
@@ -15,6 +15,7 @@ import { UsersService } from '../../services';
 import { AppSettingsService } from '../../services/app-settings.service';
 import { ThemeService } from '../../services/theme.service';
 import { selectIsDarkTheme, selectUserName, selectUsersState } from './users.selectors';
+import { go } from '../router/router.actions';
 
 @Injectable()
 export class UsersEffects {
@@ -89,6 +90,16 @@ export class UsersEffects {
         )
     );
 
+    userLogoutSuccess$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UsersActions.userLogoutSuccess),
+            tap(() => this.store.dispatch(go({ path: [''] })))
+        ),
+        {
+            dispatch: false
+        }
+    );
+
     updateThemeSettings$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(UsersActions.userChangesTheme),
@@ -118,10 +129,7 @@ export class UsersEffects {
         )
     );
 
-
-    constructor(private actions$: Actions,
-                private usersService: UsersService,
-                private themeService: ThemeService,
-                private appSettings: AppSettingsService,
+    constructor(private actions$: Actions, private usersService: UsersService,
+                private themeService: ThemeService, private appSettings: AppSettingsService,
                 private store: Store) { }
 }

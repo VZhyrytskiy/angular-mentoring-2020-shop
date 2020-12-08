@@ -39,8 +39,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(
     @Inject(AppConfig) private appConfig: AppConfig,
     private loginDialog: MatDialog,
-    private actions$: Actions,
-    public store: Store) { }
+    private store: Store) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
@@ -64,11 +63,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
       select(selectUserName),
       filter(name => name !== null)
     );
-
-    this.actions$.pipe(
-      ofType(UsersActions.userLogoutSuccess),
-      tap(() => this.store.dispatch(go({ path: [''] }))),
-      take(1)).subscribe();
 
     this.isAdmin$ = this.store.pipe(
       select(selectUserRoles),

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 import { CartItemModel } from '../../models/cart-item.model';
 import * as CartSelectors from 'src/app/shared/@ngrx/cart/cart.selectors';
