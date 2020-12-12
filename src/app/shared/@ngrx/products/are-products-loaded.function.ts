@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 
-import { selectProductsLoaded } from '.';
+import { selectProductsLoaded } from './products.selectors';
 import * as ProductsActions from './products.actions';
 import { ProductsState } from './products.state';
 

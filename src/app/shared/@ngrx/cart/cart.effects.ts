@@ -7,9 +7,9 @@ import { Observable, of } from 'rxjs';
 import { concatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import * as CartActions from './cart.actions';
-import { AppState } from '../app.state';
 import { CartService } from 'src/app/cart/services/cart.service';
 import { selectCartItems } from './cart.selectors';
+import { CartState } from './cart.state';
 
 @Injectable()
 export class CartEffects {
@@ -53,5 +53,5 @@ export class CartEffects {
 
     constructor(private actions$: Actions,
                 private cartService: CartService,
-                private store: Store<AppState>) { }
+                private store: Store<CartState>) { }
 }

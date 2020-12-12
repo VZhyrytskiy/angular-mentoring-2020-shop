@@ -1,86 +1,83 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
-import { CartState, initialCartState } from './cart.state';
+import { adapter, CartState, initialCartState } from './cart.state';
 import * as CartActions from './cart.actions';
-import { CartItemModel } from 'src/app/cart/models/cart-item.model';
+import { CartItemModel } from '../../../cart/models/cart-item.model';
 
-const createStateFrom = (items: ReadonlyArray<CartItemModel>): CartState => {
-    const totalQuantity = items.map(item => item.quantity)
-        .reduce((prev, next) => prev + next, 0);
+const updateStateProperties = (state: CartState): CartState => {
+    const items = Object.values(state.entities);
 
-    const totalSum = items.map(item => item.product.price * item.quantity)
-        .reduce((prev, next) => prev + next, 0);
+    const sum = (values: number[]): number =>
+        values.reduce((prev, next) => prev + next, 0);
+
+    const totalQuantity = sum(items.map(item => item.quantity, state));
+
+    const totalSum = sum(items.map(item => item.product.price * item.quantity));
 
     const isEmpty = items.length === 0;
 
-    return { items, totalQuantity, totalSum, isEmpty };
+    return { ...state, totalQuantity, totalSum, isEmpty };
 };
 
-const increaseQuantityByOne = (productIndex: number, items: ReadonlyArray<CartItemModel>):
-    ReadonlyArray<CartItemModel> => {
-    const item = items[productIndex];
-    const updatedItem = new CartItemModel(item.product, item.quantity + 1);
-
-    return [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
-};
-
-const reducer = createReducer(
-    initialCartState,
+const reducer = createReducer(initialCartState,
     on(CartActions.setCartItems, (state, { items }) => {
-        return createStateFrom(items);
+        return adapter.setAll(items, state);
     }),
-    on(CartActions.addProductToCartItem, ({ items }, { product }) => {
-        const productIndex = items.findIndex(x => x.product.id === product.id);
+    on(CartActions.addProductToCartItem, (state, { product }) => {
+        const item = state.entities[product.id];
 
-        if (productIndex === -1) {
-            return createStateFrom([...items, new CartItemModel(product, 1)]);
+        if (!!!item) {
+            return adapter.addOne(new CartItemModel(product, 1), state);
         }
 
-        return createStateFrom(increaseQuantityByOne(productIndex, items));
+        return adapter.setOne({ ...item, quantity: item.quantity + 1 }, state);
     }),
     on(CartActions.increaseCartItemQuantityByOne, (state, { cartItem }) => {
-        const productIndex = state.items.findIndex(item => item.product.id === cartItem.product.id);
+        const item = state.entities[cartItem.product.id];
 
-        if (productIndex === -1) {
+        if (!!!item) {
             return { ...state };
         }
 
-        return createStateFrom(increaseQuantityByOne(productIndex, state.items));
+        const update = {
+            id: item.product.id,
+            changes: { quantity: item.quantity + 1 }
+        };
+
+        return adapter.updateOne(update, state);
     }),
     on(CartActions.decreaseCartItemQuantityByOne, (state, { cartItem }) => {
-        const items = state.items;
+        const item = state.entities[cartItem.product.id];
 
-        const productIndex = items.findIndex(item => item.product.id === cartItem.product.id);
-
-        if (productIndex === -1) {
+        if (!!!item) {
             return { ...state };
         }
 
-        const itemToUpdate = items[productIndex];
-
-        if (itemToUpdate.quantity === 1) {
-            return createStateFrom([...items.slice(0, productIndex), ...items.slice(productIndex + 1)]);
+        if (item.quantity === 1) {
+            return adapter.removeOne(item.product.id, state);
         }
 
-        const updatedItem = new CartItemModel(itemToUpdate.product, itemToUpdate.quantity - 1);
-        const updatedItems = [...items.slice(0, productIndex), updatedItem, ...items.slice(productIndex + 1)];
+        const update = {
+            id: item.product.id,
+            changes: { quantity: item.quantity - 1 }
+        };
 
-        return createStateFrom(updatedItems);
+        return adapter.updateOne(update, state);
     }),
     on(CartActions.removeProductFromCart, (state, { product }) => {
-        const productIndex = state.items.findIndex(item => item.product.id === product.id);
+        const item = state.entities[product.id];
 
-        if (productIndex === -1) {
+        if (!!!item) {
             return { ...state };
         }
 
-        const updatedItems = [...state.items.slice(0, productIndex), ...state.items.slice(productIndex + 1)];
-
-        return createStateFrom(updatedItems);
+        return adapter.removeOne(item.product.id, state);
     }),
-    on(CartActions.removeAllProductsFromCart, () => createStateFrom([]))
+    on(CartActions.removeAllProductsFromCart, state =>{
+        return adapter.removeAll(state);
+    })
 );
 
 export function cartReducer(state: CartState, action: Action): CartState {
-    return reducer(state, action);
+    return updateStateProperties(reducer(state, action));
 }
