@@ -7,9 +7,9 @@ import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 
 import { ProductModel } from '../../models/product.model';
-import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
 import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
 import { selectProductItems } from 'src/app/shared/@ngrx/products';
+import { CartFacade } from 'src/app/shared/@ngrx/cart/cart.facade';
 
 @Component({
   selector: 'app-product-list',
@@ -23,11 +23,12 @@ export class ProductListComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private store: Store,
-    private actions$: Actions) {
+    private actions$: Actions,
+    private cartFacade: CartFacade) {
   }
 
   onAddedToCart(product: ProductModel): void {
-    this.store.dispatch(addProductToCartItem({ product }));
+    this.cartFacade.addProduct(product);
   }
 
   ngOnInit(): void {

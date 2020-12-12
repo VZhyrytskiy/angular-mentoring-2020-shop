@@ -5,9 +5,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { CartItemModel } from '../../models/cart-item.model';
-import * as CartSelectors from 'src/app/shared/@ngrx/cart/cart.selectors';
-import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
 import { go } from 'src/app/shared/@ngrx/router/router.actions';
+import { CartFacade } from 'src/app/shared/@ngrx/cart/cart.facade';
 
 @Component({
   selector: 'app-cart-list',
@@ -16,10 +15,10 @@ import { go } from 'src/app/shared/@ngrx/router/router.actions';
 })
 export class CartListComponent implements OnInit {
 
-  items: Observable<ReadonlyArray<CartItemModel>>;
-  totalSum: Observable<number>;
-  totalQuantity: Observable<number>;
-  isEmpty: Observable<boolean>;
+  items$: Observable<ReadonlyArray<CartItemModel>>;
+  totalSum$: Observable<number>;
+  totalQuantity$: Observable<number>;
+  isEmpty$: Observable<boolean>;
 
   orderByOptions =
     [
@@ -54,18 +53,18 @@ export class CartListComponent implements OnInit {
   orderByIsAscending = this.orderBySortDirectionOptions
     .find(option => option.isDefault).isAscending;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private cartFacade: CartFacade) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
-    this.store.dispatch(CartActions.decreaseCartItemQuantityByOne({ cartItem: item }));
+    this.cartFacade.decreaseQuantityByOne(item);
   }
 
   onItemQuantityIncreased(item: CartItemModel): void {
-    this.store.dispatch(CartActions.increaseCartItemQuantityByOne({ cartItem: item }));
+    this.cartFacade.increaseQuantityByOne(item);
   }
 
   onItemRemoved(item: CartItemModel): void {
-    this.store.dispatch(CartActions.removeProductFromCart({ product: item.product }));
+    this.cartFacade.removeProduct(item.product);
   }
 
   onCheckoutClick(): void {
@@ -74,13 +73,13 @@ export class CartListComponent implements OnInit {
   }
 
   onClearClick(): void {
-    this.store.dispatch(CartActions.removeAllProductsFromCart());
+    this.cartFacade.clear();
   }
 
   ngOnInit(): void {
-    this.items = this.store.select(CartSelectors.selectCartItems);
-    this.totalSum = this.store.select(CartSelectors.selectTotalSum);
-    this.totalQuantity = this.store.select(CartSelectors.selectTotalQuantity);
-    this.isEmpty = this.store.select(CartSelectors.selectIsEmpty);
+    this.items$ = this.cartFacade.items$;
+    this.totalSum$ = this.cartFacade.totalSum$;
+    this.totalQuantity$ = this.cartFacade.totalQuantity$;
+    this.isEmpty$ = this.cartFacade.isEmpty$;
   }
 }
