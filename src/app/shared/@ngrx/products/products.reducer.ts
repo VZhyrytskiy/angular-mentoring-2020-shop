@@ -5,7 +5,7 @@ import { initialProductsState, ProductsState as ProductsState } from './products
 
 const reducer = createReducer(initialProductsState,
     on(productsActions.getProductItemsSuccess, (state, { products }) => {
-        return { ...state, items: products };
+        return { ...state, loaded: true, items: products };
     }));
 
 export function productsReducer(state: ProductsState, action: Action): ProductsState {

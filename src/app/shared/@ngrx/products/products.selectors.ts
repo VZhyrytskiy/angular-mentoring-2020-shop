@@ -5,6 +5,7 @@ import { ProductsState } from './products.state';
 
 export const selectProductsState = createFeatureSelector<ProductsState>('products');
 export const selectProductItems = createSelector(selectProductsState, (state: ProductsState) => state.items);
+export const selectProductsLoaded = createSelector(selectProductsState, (state: ProductsState) => state.loaded);
 
 export const selectProductByUrl = createSelector(
     selectProductItems,

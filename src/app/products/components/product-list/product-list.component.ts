@@ -3,13 +3,13 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { Observable } from 'rxjs';
 
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 
 import { ProductModel } from '../../models/product.model';
 import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
 import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
-import { getProductItems, selectProductItems } from 'src/app/shared/@ngrx/products';
+import { selectProductItems } from 'src/app/shared/@ngrx/products';
 
 @Component({
   selector: 'app-product-list',
@@ -32,8 +32,6 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.products = this.store.select(selectProductItems);
-
-    this.store.dispatch(getProductItems());
 
     this.actions$.pipe(ofType(CartActions.addProductToCartSuccess))
       .subscribe(action => this.showProductAddedMessage(action.addedProduct));

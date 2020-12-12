@@ -6,18 +6,25 @@ import { CartListComponent } from './cart';
 import {
   AdminGuard,
   CartIsNotEmptyGuard,
-  NotFoundComponent
+  NotFoundComponent,
+  ProductExistsGuard,
+  ProductsPreloadingGuard
 } from './shared';
 
 const routes: Routes = [
-  { path: 'cart', component: CartListComponent },
+  {
+    path: 'cart',
+    component: CartListComponent
+  },
   {
     path: 'product/:id',
     component: ProductComponent,
+    canActivate: [ProductExistsGuard]
   },
   {
     path: 'products',
-    component: ProductListComponent
+    component: ProductListComponent,
+    canActivate: [ProductsPreloadingGuard]
   },
   {
     path: 'not-found',
