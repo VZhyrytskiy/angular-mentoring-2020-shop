@@ -17,6 +17,7 @@ import { CartState } from './cart.state';
     providedIn: 'root'
 })
 export class CartFacade {
+
     items$: Observable<Array<CartItemModel>>;
     totalSum$: Observable<number>;
     totalQuantity$: Observable<number>;
@@ -29,7 +30,7 @@ export class CartFacade {
         this.isEmpty$ = this.store.select(CartSelectors.selectIsEmpty);
     }
 
-    addProduct(product: ProductModel) {
+    addProduct(product: ProductModel): void {
         this.store.dispatch(CartActions.addProductToCartItem({ product }));
     }
 

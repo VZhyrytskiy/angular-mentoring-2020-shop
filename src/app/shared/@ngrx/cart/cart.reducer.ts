@@ -73,7 +73,7 @@ const reducer = createReducer(initialCartState,
 
         return adapter.removeOne(item.product.id, state);
     }),
-    on(CartActions.removeAllProductsFromCart, state =>{
+    on(CartActions.removeAllProductsFromCart, state => {
         return adapter.removeAll(state);
     })
 );
