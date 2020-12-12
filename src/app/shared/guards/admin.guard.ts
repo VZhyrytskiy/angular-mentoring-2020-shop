@@ -8,8 +8,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { selectUserRoles } from '../shared/@ngrx';
-import { go } from '../shared/@ngrx/router/router.actions';
+import { selectUserRoles } from '../@ngrx';
+import { go } from '../@ngrx/router/router.actions';
 
 @Injectable({
   providedIn: 'root'

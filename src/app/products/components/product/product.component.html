@@ -13,7 +13,7 @@
             <mat-card-content style="margin: 0 16px;">
                 <p class="product__description">{{product.description}}</p>
                 <div>
-                    <span *ngFor="let i of [].constructor(averageScore)">
+                    <span *ngFor="let i of [].constructor(getAverageScore)">
                         <mat-icon color="accent">star_rate</mat-icon>
                     </span>
                 </div>

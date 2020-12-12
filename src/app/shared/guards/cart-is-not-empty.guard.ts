@@ -11,11 +11,11 @@ import {
 } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
-import { selectIsEmpty } from '../shared/@ngrx';
-import { go } from '../shared/@ngrx/router/router.actions';
+import { selectIsEmpty } from '../@ngrx';
+import { go } from '../@ngrx/router/router.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -39,12 +39,13 @@ export class CartIsNotEmptyGuard implements CanActivate, CanActivateChild, CanLo
   private cartIsNotEmpty(): Observable<boolean | UrlTree> {
     return this.store.pipe(
       select(selectIsEmpty),
-      map(isEmpty => {
+      switchMap(isEmpty => {
         if (isEmpty) {
           this.store.dispatch(go({ path: ['/cart'] }));
         }
 
-        return true;
-      }));
+        return of(true);
+      }),
+      take(1));
   }
 }

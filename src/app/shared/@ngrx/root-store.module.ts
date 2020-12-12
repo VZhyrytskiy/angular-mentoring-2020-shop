@@ -7,7 +7,7 @@ import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../shared.module';
-import { RouterSerializer } from './router';
+import { RouterSerializer, routerReducers } from './router';
 import { CartStoreModule } from './cart/cart-store.module';
 import { ProductsStoreModule } from './products/products-store.module';
 import { RouterEffects } from './router/router.effects';
@@ -16,7 +16,7 @@ import { UserStoreModule } from './users/users-store.module';
 @NgModule({
     imports: [
         SharedModule,
-        StoreModule.forRoot({}, {
+        StoreModule.forRoot(routerReducers, {
             runtimeChecks: {
                 strictStateImmutability: true,
                 strictActionImmutability: true,

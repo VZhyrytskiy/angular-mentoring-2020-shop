@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FeatureNotAvailableComponent } from '../shared/components/feature-not-available/feature-not-available.component';
 
-import { AdminGuard } from './admin.guard';
-import { AdminDashboardComponent} from './index';
+import { FeatureNotAvailableComponent } from '../shared/components';
+import { AdminGuard } from '../shared/guards';
+import { AdminDashboardComponent } from './index';
 
 const routes: Routes = [
   {
@@ -12,13 +12,16 @@ const routes: Routes = [
     canActivateChild: [AdminGuard],
     children: [
       {
-        path: '', component: AdminDashboardComponent
+        path: '',
+        component: AdminDashboardComponent
       },
       {
-        path: 'products/create', component: FeatureNotAvailableComponent
+        path: 'products/create',
+        component: FeatureNotAvailableComponent
       },
       {
-        path: 'products/edit/:id', component: FeatureNotAvailableComponent
+        path: 'products/edit/:id',
+        component: FeatureNotAvailableComponent
       }
     ]
   }

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CartIsNotEmptyGuard } from '../shared/guards';
+
 import {
   ConfirmationComponent,
   DeliveryComponent,
-  PaymentComponent,
-  CartIsNotEmptyGuard
+  PaymentComponent
 } from './index';
 
 const routes: Routes = [

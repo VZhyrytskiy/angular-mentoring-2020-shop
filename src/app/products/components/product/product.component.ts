@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 
+import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+
 import { addProductToCartItem } from 'src/app/shared/@ngrx/cart/cart.actions';
+import { selectProductByUrl } from 'src/app/shared/@ngrx/products';
 import { ProductModel } from './../../models/product.model';
 
 @Component({
@@ -13,20 +16,33 @@ import { ProductModel } from './../../models/product.model';
   styleUrls: ['./product.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
 
   product: ProductModel;
-  averageScore: number;
 
-  constructor(private activatedRoute: ActivatedRoute, private store: Store) { }
+  private componentDestroyed$: Subject<void> = new Subject<void>();
+
+  constructor(private store: Store) { }
 
   onAddToCart(): void {
     this.store.dispatch(addProductToCartItem({ product: this.product }));
   }
 
   ngOnInit(): void {
-    this.product = this.activatedRoute.snapshot.data.product;
+    this.store.select(selectProductByUrl).pipe(
+      tap(product => this.product = product),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe();
+  }
+
+  getAverageScore(): number {
     const ratesSum = this.product.rates.reduce((prev, next) => prev + next, 0);
-    this.averageScore = Math.ceil(ratesSum / this.product.rates.length);
+
+    return Math.ceil(ratesSum / this.product.rates.length);
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.complete();
   }
 }

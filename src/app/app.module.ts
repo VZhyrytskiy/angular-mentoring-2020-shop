@@ -26,8 +26,8 @@ import { RootStoreModule } from './shared/@ngrx/root-store.module';
     CartModule,
     OrdersModule,
     AdminModule,
-    AppRoutingModule,
-    RootStoreModule
+    RootStoreModule,
+    AppRoutingModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
