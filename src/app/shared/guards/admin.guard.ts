@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-  CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot,
-  CanActivateChild, UrlTree, CanLoad, Route, UrlSegment
+  CanActivate, ActivatedRouteSnapshot,
+  RouterStateSnapshot, CanActivateChild,
+  CanLoad, Route, UrlSegment
 } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 
@@ -17,19 +18,19 @@ import { go } from '../@ngrx/router/router.actions';
 export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
   constructor(private store: Store) { }
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> {
+  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> {
     return this.isAdmin();
   }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.isAdmin();
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.isAdmin();
   }
 
-  private isAdmin(): Observable<boolean | UrlTree> {
+  private isAdmin(): Observable<boolean> {
     return this.store.pipe(
       select(selectUserRoles),
       map(roles => {
@@ -37,6 +38,8 @@ export class AdminGuard implements CanActivate, CanActivateChild, CanLoad {
 
         if (!isAdmin) {
           this.store.dispatch(go({ path: ['/not-found'] }));
+
+          return false;
         }
 
         return isAdmin;

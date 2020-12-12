@@ -31,12 +31,12 @@ export class ProductExistsGuard implements CanActivate {
     return this.store.pipe(
       select(selectProductItems),
       map(items => !!items.find(item => item.id === id)),
-      tap(isLoaded => {
-        if (!isLoaded) {
+      tap(isFound => {
+        if (!isFound) {
           this.store.dispatch(RouterActions.go({ path: [''] }));
         }
       }),
       take(1)
     );
   }
-};
+}
