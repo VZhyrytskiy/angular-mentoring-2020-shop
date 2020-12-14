@@ -1,15 +1,25 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef,
+  Inject, OnInit, ViewChild
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Actions, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 
-import { CartService } from 'src/app/cart/services/cart.service';
-import { ThemeService } from '../../services/theme.service';
+import { Observable, of } from 'rxjs';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
+
+import * as UsersActions from '../../@ngrx/users/users.actions';
+import {
+  selectUserRoles, selectUser,
+  selectUserName, selectIsDarkTheme
+} from '../../@ngrx/users';
+import { selectTotalQuantity } from '../../@ngrx/cart';
+import { go } from '../../@ngrx/router/router.actions';
 import { LoginComponent } from '../login/login.component';
-import { AppConfig, UsersService } from './../../services/index';
+import { AppConfig } from './../../services';
 
 @Component({
   selector: 'app-header',
@@ -20,42 +30,47 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('appTitle') titleRef: ElementRef<HTMLHeadingElement>;
 
-  userName: BehaviorSubject<string> = new BehaviorSubject(null);
-  isLoggedIn: Observable<boolean>;
-  isAdmin: Observable<boolean>;
+  isLoggedIn$: Observable<boolean>;
+  isAdmin$: Observable<boolean>;
+  totalQuantity$: Observable<number>;
+  username$: Observable<string>;
+  isDarkTheme$: Observable<boolean>;
 
   constructor(
-    public readonly themeService: ThemeService,
-    public readonly cartService: CartService,
-    @Inject(AppConfig) private readonly appConfig: AppConfig,
-    private readonly loginDialog: MatDialog,
-    private readonly usersService: UsersService,
-    private readonly router: Router) { }
+    @Inject(AppConfig) private appConfig: AppConfig,
+    private loginDialog: MatDialog,
+    private store: Store) { }
 
   onLoginClick(): void {
     this.loginDialog.open(LoginComponent);
   }
 
   onLogoutClick(): void {
-    this.usersService.logout().subscribe(() => this.router.navigateByUrl(''));
+    this.store.dispatch(UsersActions.userLogout());
   }
 
   onChange(event: MatSlideToggleChange): void {
-    this.themeService.setIsDarkTheme(this.userName.getValue(), event.checked);
+    this.store.dispatch(UsersActions.userChangesTheme({ isDark: event.checked }));
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.usersService.user$.pipe(switchMap(user => {
-      const isLogged = user !== null && user !== undefined;
+    this.isLoggedIn$ = this.store.pipe(
+      select(selectUser),
+      switchMap(user => of(user !== null))
+    );
 
-      if (isLogged) {
-        this.userName.next(user.username);
-      }
+    this.username$ = this.store.pipe(
+      select(selectUserName),
+      filter(name => name !== null)
+    );
 
-      return of(isLogged);
-    }));
+    this.isAdmin$ = this.store.pipe(
+      select(selectUserRoles),
+      switchMap(roles => of(roles.some(role => role === 'admin')))
+    );
 
-    this.isAdmin = this.usersService.isCurrentUserInRole('admin');
+    this.isDarkTheme$ = this.store.select(selectIsDarkTheme);
+    this.totalQuantity$ = this.store.select(selectTotalQuantity);
   }
 
   ngAfterViewInit(): void {

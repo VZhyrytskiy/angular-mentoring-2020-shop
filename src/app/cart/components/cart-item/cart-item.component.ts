@@ -1,22 +1,19 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { CartItemModel } from '../../models/cart-item.model';
-import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-cart-item',
   templateUrl: './cart-item.component.html',
   styleUrls: ['./cart-item.component.scss']
 })
-export class CartItemComponent implements OnInit {
+export class CartItemComponent {
 
   @Input() item: CartItemModel;
 
-  @Output() itemQuantityIncreased: EventEmitter<CartItemModel> = new EventEmitter<CartItemModel>();
-  @Output() itemQuantityDecreased: EventEmitter<CartItemModel> = new EventEmitter<CartItemModel>();
-  @Output() itemRemoved: EventEmitter<CartItemModel> = new EventEmitter<CartItemModel>();
-
-  constructor(private readonly cartService: CartService) { }
+  @Output() itemQuantityIncreased = new EventEmitter<CartItemModel>();
+  @Output() itemQuantityDecreased = new EventEmitter<CartItemModel>();
+  @Output() itemRemoved = new EventEmitter<CartItemModel>();
 
   onDecreaseByOne(): void {
     this.itemQuantityDecreased.emit(this.item);
@@ -29,10 +26,4 @@ export class CartItemComponent implements OnInit {
   onRemoved(): void {
     this.itemRemoved.emit(this.item);
   }
-
-  getTotalPrice(): number {
-    return this.cartService.getItemTotalPrice(this.item);
-  }
-
-  ngOnInit(): void { }
 }

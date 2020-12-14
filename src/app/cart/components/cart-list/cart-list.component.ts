@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+
 import { CartItemModel } from '../../models/cart-item.model';
-import { CartService } from '../../services/cart.service';
-import {
-  CartListOrderByOption, CartListSortDirectionOption,
-  CartOrderByOptions, CartSortDirectionOptions
-} from './cart-list.constants';
+import { go } from 'src/app/shared/@ngrx/router/router.actions';
+import { CartFacade } from 'src/app/shared/@ngrx/cart/cart.facade';
 
 @Component({
   selector: 'app-cart-list',
@@ -17,48 +15,71 @@ import {
 })
 export class CartListComponent implements OnInit {
 
-  items: Observable<Array<CartItemModel>>;
-  totalSum: Observable<number>;
-  totalQuantity: Observable<number>;
-  isEmpty: Observable<boolean>;
+  items$: Observable<ReadonlyArray<CartItemModel>>;
+  totalSum$: Observable<number>;
+  totalQuantity$: Observable<number>;
+  isEmpty$: Observable<boolean>;
 
-  orderBySelectedOptionValue: string;
-  orderByOptions: CartListOrderByOption[];
+  orderByOptions =
+    [
+      {
+        value: 'product.name',
+        displayValue: 'Product name'
+      },
+      {
+        value: 'product.price',
+        displayValue: 'Unit price'
+      },
+      {
+        value: 'quantity',
+        displayValue: 'Unit quantity'
+      }
+    ];
 
-  orderBySortDirectionOptions: CartListSortDirectionOption[];
-  orderByIsAscending: boolean;
+  orderBySortDirectionOptions = [
+    {
+      isAscending: true,
+      isDefault: true,
+      displayValue: 'Ascending'
+    },
+    {
+      isAscending: false,
+      isDefault: false,
+      displayValue: 'Descending'
+    }
+  ];
 
-  constructor(private readonly cartService: CartService, private readonly router: Router) { }
+  orderBySelectedOptionValue = this.orderByOptions[0].value;
+  orderByIsAscending = this.orderBySortDirectionOptions
+    .find(option => option.isDefault).isAscending;
+
+  constructor(private store: Store, private cartFacade: CartFacade) { }
 
   onItemQuantityDecreased(item: CartItemModel): void {
-    this.cartService.decreaseQuantityByOne(item.product);
+    this.cartFacade.decreaseQuantityByOne(item);
   }
 
   onItemQuantityIncreased(item: CartItemModel): void {
-    this.cartService.increaseQuantityByOne(item.product);
+    this.cartFacade.increaseQuantityByOne(item);
   }
 
   onItemRemoved(item: CartItemModel): void {
-    this.cartService.removeProduct(item.product);
+    this.cartFacade.removeProduct(item.product);
   }
 
   onCheckoutClick(): void {
-    this.router.navigateByUrl('/order/delivery');
+    const link = ['/order/delivery'];
+    this.store.dispatch(go({ path: link }));
   }
 
   onClearClick(): void {
-    this.cartService.removeAllProducts();
+    this.cartFacade.clear();
   }
 
   ngOnInit(): void {
-    this.orderByOptions = CartOrderByOptions;
-    this.orderBySortDirectionOptions = CartSortDirectionOptions;
-    this.orderByIsAscending = this.orderBySortDirectionOptions.find(x => x.isDefault).isAscending;
-    this.orderBySelectedOptionValue = this.orderByOptions[0].value;
-    this.items = this.cartService.getItems();
-    this.totalSum = this.cartService.totalSum();
-    this.totalQuantity = this.cartService.totalQuantity();
-    this.isEmpty = this.cartService.isEmpty();
+    this.items$ = this.cartFacade.items$;
+    this.totalSum$ = this.cartFacade.totalSum$;
+    this.totalQuantity$ = this.cartFacade.totalQuantity$;
+    this.isEmpty$ = this.cartFacade.isEmpty$;
   }
 }
-

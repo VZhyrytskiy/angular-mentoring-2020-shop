@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+
 import { Observable } from 'rxjs';
 
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+
 import { ProductModel } from '../../models/product.model';
-import { CartService } from 'src/app/cart/services/cart.service';
-import { ProductsService } from '../../services/products.service';
+import * as CartActions from 'src/app/shared/@ngrx/cart/cart.actions';
+import { selectProductItems } from 'src/app/shared/@ngrx/products';
+import { CartFacade } from 'src/app/shared/@ngrx/cart/cart.facade';
 
 @Component({
   selector: 'app-product-list',
@@ -13,28 +18,35 @@ import { ProductsService } from '../../services/products.service';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Observable<ProductModel[]>;
+  products: Observable<ReadonlyArray<ProductModel>>;
 
   constructor(
-    private readonly productsService: ProductsService,
-    private readonly cartService: CartService,
-    private readonly snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private store: Store,
+    private actions$: Actions,
+    private cartFacade: CartFacade) {
+  }
 
   onAddedToCart(product: ProductModel): void {
-    this.cartService.addProduct(product).then((addedProduct) => {
-      const message = `Product ${addedProduct.name} was added to cart`;
-
-      const snackBarConfig: MatSnackBarConfig = {
-        duration: 2000,
-        verticalPosition: 'bottom',
-        horizontalPosition: 'end'
-      };
-
-      this.snackBar.open(message, null, snackBarConfig);
-    });
+    this.cartFacade.addProduct(product);
   }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProducts();
+    this.products = this.store.select(selectProductItems);
+
+    this.actions$.pipe(ofType(CartActions.addProductToCartSuccess))
+      .subscribe(action => this.showProductAddedMessage(action.addedProduct));
+  }
+
+  private showProductAddedMessage(addedProduct: ProductModel): void {
+    const message = `Product ${addedProduct.name} was added to cart`;
+
+    const snackBarConfig: MatSnackBarConfig = {
+      duration: 2000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'end'
+    };
+
+    this.snackBar.open(message, null, snackBarConfig);
   }
 }

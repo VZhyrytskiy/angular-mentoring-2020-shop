@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 import { UserModel } from '../models/user.model';
 import { LocalStorageService } from './local-storage/local-storage.service';
 
@@ -12,15 +9,10 @@ import { LocalStorageService } from './local-storage/local-storage.service';
 export class UsersService {
 
   private readonly userKey = 'user';
-  private readonly user: BehaviorSubject<UserModel>;
-  user$: Observable<UserModel>;
 
-  constructor(private readonly localStorageService: LocalStorageService) {
-    this.user = new BehaviorSubject<UserModel>(this.localStorageService.getItem(this.userKey));
-    this.user$ = this.user.asObservable();
-  }
+  constructor(private readonly localStorageService: LocalStorageService) { }
 
-  login(username: string): Observable<UserModel> {
+  login(username: string): UserModel {
     const roles = ['user'];
 
     if (username === 'admin') {
@@ -31,22 +23,14 @@ export class UsersService {
 
     this.localStorageService.setItem<UserModel>(this.userKey, user);
 
-    this.user.next(user);
-
-    return of(user);
+    return user;
   }
 
-  logout(): Observable<void> {
-    this.localStorageService.removeItem(this.userKey);
-    this.user.next(null);
-    return of();
+  loadFromLocal(): UserModel {
+    return this.localStorageService.getItem<UserModel>(this.userKey);
   }
 
-  getCurrentUser(): UserModel {
-    return this.user.getValue();
-  }
-
-  isCurrentUserInRole(role: string): Observable<boolean> {
-    return this.user$.pipe(map(user => user?.roles.some(userRole => userRole === role)));
+  logout(): void {
+    return this.localStorageService.removeItem(this.userKey);
   }
 }

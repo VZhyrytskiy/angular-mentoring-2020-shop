@@ -48,3 +48,7 @@ Project changes will be described in this file.
 - Dark theme added with ThemeService. Theme preference saved for concrete user.
 - Small styles fixes.
 - Angular version updated to 11
+
+## [Module 7]
+- Migration app logic to NgRx.
+- Added cart facade and @ngrx/entity for Cart feature. 

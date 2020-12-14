@@ -1,6 +1,6 @@
 <h2>Cart items</h2>
 <mat-divider></mat-divider>
-<div *ngIf="(isEmpty | async) else cartWithItems" fxLayout.lt-sm="column">
+<div *ngIf="(isEmpty$ | async) else cartWithItems" fxLayout.lt-sm="column">
     <mat-card>No items...
         <a routerLink="/products" mat-button color="primary">Let's add few here</a>
     </mat-card>
@@ -25,12 +25,12 @@
     <mat-divider></mat-divider>
     <app-cart-item [item]="item" (itemQuantityDecreased)="onItemQuantityDecreased($event)"
         (itemQuantityIncreased)="onItemQuantityIncreased($event)" (itemRemoved)="onItemRemoved($event)"
-        *ngFor="let item of items | async | orderBy: orderBySelectedOptionValue:orderByIsAscending">
+        *ngFor="let item of items$ | async | orderBy: orderBySelectedOptionValue:orderByIsAscending">
     </app-cart-item>
     <mat-divider></mat-divider>
     <mat-card fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <div>Total: <span>{{totalSum | async | currency: 'USD'}}</span></div>
-        <div>Total items: <span>{{totalQuantity | async }}</span></div>
+        <div>Total: <span>{{totalSum$ | async | currency: 'USD'}}</span></div>
+        <div>Total items: <span>{{totalQuantity$ | async }}</span></div>
         <button mat-flat-button color="warn" (click)="onClearClick()">Clear</button>
         <button mat-flat-button color="accent" (click)="onCheckoutClick()">Checkout</button>
     </mat-card>

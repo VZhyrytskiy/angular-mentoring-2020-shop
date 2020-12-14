@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 import { ProductModel } from 'src/app/products/models/product.model';
 
 @Component({
@@ -6,10 +7,8 @@ import { ProductModel } from 'src/app/products/models/product.model';
   templateUrl: './admin-dashboard-item.component.html',
   styleUrls: ['./admin-dashboard-item.component.scss']
 })
-export class AdminDashboardItemComponent implements OnInit {
+export class AdminDashboardItemComponent {
+
   @Input() item: ProductModel;
 
-  constructor() { }
-
-  ngOnInit(): void { }
 }

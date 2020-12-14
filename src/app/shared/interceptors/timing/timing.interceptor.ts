@@ -13,8 +13,6 @@ export class TimingInterceptor implements HttpInterceptor {
 
   private readonly requestStartTimeKey = 'requestStartTime';
 
-  constructor() { }
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!request.url.includes('product')) {
       return next.handle(request);
