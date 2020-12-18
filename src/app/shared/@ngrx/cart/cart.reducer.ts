@@ -26,6 +26,8 @@ const reducer = createReducer(initialCartState,
     on(CartActions.addProductToCartItem, (state, { product }) => {
         const item = state.entities[product.id];
 
+        // первый раз встречаю !!!, раньше встречал ! и !!
+        // одного ! не достаточно?
         if (!!!item) {
             return adapter.addOne(new CartItemModel(product, 1), state);
         }
